@@ -1,0 +1,404 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bps-blue: #1a4fa0;
+    --bps-blue-dark: #0d2f6e;
+    --bps-blue-light: #e8f0fb;
+    --bps-blue-mid: #2e6cc7;
+    --bps-orange: #f47920;
+    --bps-orange-light: #fff3e8;
+    --bps-orange-dark: #c45f0a;
+    --gray-100: #f8f9fc;
+    --gray-200: #eef0f5;
+    --gray-400: #9aa0b4;
+    --gray-700: #3d4564;
+    --gray-900: #1a1f36;
+    --white: #ffffff;
+    --shadow-sm: 0 1px 3px rgba(26,79,160,0.08);
+    --shadow-md: 0 4px 16px rgba(26,79,160,0.12);
+  }
+
+  body-equiv { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+  .wrap { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-100); min-height: 600px; color: var(--gray-900); }
+
+  /* HEADER */
+  .header { background: linear-gradient(135deg, var(--bps-blue-dark) 0%, var(--bps-blue) 60%, var(--bps-blue-mid) 100%); padding: 0; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; border-radius: 50%; background: rgba(244,121,32,0.12); }
+  .header::after { content: ''; position: absolute; right: 80px; bottom: -40px; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+  .header-inner { display: flex; align-items: center; gap: 16px; padding: 20px 28px 16px; position: relative; z-index: 1; }
+  .logo-box { width: 52px; height: 52px; background: var(--white); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .logo-bps { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--bps-blue); font-weight: 400; letter-spacing: -0.5px; }
+  .header-text { flex: 1; }
+  .header-title { font-size: 17px; font-weight: 700; color: var(--white); letter-spacing: -0.2px; }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px; font-weight: 400; }
+  .header-badge { background: var(--bps-orange); color: var(--white); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+  .header-tabs { display: flex; padding: 0 28px; gap: 0; border-top: 1px solid rgba(255,255,255,0.1); position: relative; z-index: 1; }
+  .tab { padding: 12px 18px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .tab:hover { color: rgba(255,255,255,0.9); }
+  .tab.active { color: var(--white); border-bottom-color: var(--bps-orange); }
+
+  /* PERIOD BAR */
+  .period-bar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 12px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .period-label { font-size: 12px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+  .period-select { display: flex; gap: 6px; }
+  .period-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--gray-200); background: var(--white); font-size: 12px; font-weight: 500; color: var(--gray-400); cursor: pointer; transition: all 0.15s; font-family: inherit; }
+  .period-btn.active { background: var(--bps-blue-light); border-color: var(--bps-blue); color: var(--bps-blue); }
+
+  /* SUMMARY CARDS */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; padding: 20px 28px 0; }
+  .s-card { background: var(--white); border-radius: 12px; padding: 16px; border: 1px solid var(--gray-200); position: relative; overflow: hidden; }
+  .s-card::after { content: ''; position: absolute; right: -10px; top: -10px; width: 60px; height: 60px; border-radius: 50%; opacity: 0.07; }
+  .s-card.blue::after { background: var(--bps-blue); }
+  .s-card.orange::after { background: var(--bps-orange); }
+  .s-card.green::after { background: #22c55e; }
+  .s-card.red::after { background: #ef4444; }
+  .s-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+  .s-icon.blue { background: var(--bps-blue-light); color: var(--bps-blue); }
+  .s-icon.orange { background: var(--bps-orange-light); color: var(--bps-orange); }
+  .s-icon.green { background: #f0fdf4; color: #16a34a; }
+  .s-icon.red { background: #fef2f2; color: #dc2626; }
+  .s-val { font-size: 24px; font-weight: 700; color: var(--gray-900); line-height: 1; }
+  .s-lbl { font-size: 12px; color: var(--gray-400); margin-top: 4px; font-weight: 500; }
+  .s-delta { font-size: 11px; font-weight: 600; margin-top: 6px; }
+  .s-delta.up { color: #16a34a; }
+  .s-delta.down { color: #dc2626; }
+
+  /* MAIN CONTENT */
+  .content { display: grid; grid-template-columns: 1fr 300px; gap: 16px; padding: 16px 28px 28px; }
+
+  /* RANKING TABLE */
+  .panel { background: var(--white); border-radius: 14px; border: 1px solid var(--gray-200); overflow: hidden; }
+  .panel-head { padding: 16px 20px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
+  .panel-title { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+  .panel-sub { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+  .filter-row { display: flex; gap: 8px; align-items: center; }
+  .filter-chip { padding: 4px 12px; border-radius: 20px; border: 1px solid var(--gray-200); font-size: 12px; color: var(--gray-400); cursor: pointer; font-family: inherit; background: var(--white); }
+  .filter-chip.active { background: var(--bps-orange-light); border-color: var(--bps-orange); color: var(--bps-orange-dark); font-weight: 600; }
+
+  .rank-table { width: 100%; border-collapse: collapse; }
+  .rank-table thead tr { background: var(--gray-100); }
+  .rank-table th { padding: 10px 16px; font-size: 11px; font-weight: 600; color: var(--gray-400); text-align: left; text-transform: uppercase; letter-spacing: 0.4px; }
+  .rank-table th.center { text-align: center; }
+  .rank-table tbody tr { border-top: 1px solid var(--gray-200); transition: background 0.15s; cursor: pointer; }
+  .rank-table tbody tr:hover { background: var(--gray-100); }
+  .rank-table tbody tr.top3 { background: linear-gradient(90deg, rgba(26,79,160,0.03) 0%, transparent 100%); }
+  .rank-table td { padding: 12px 16px; font-size: 13px; color: var(--gray-700); }
+  .rank-num { font-size: 13px; font-weight: 700; width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .rank-1 { background: #fef9c3; color: #854d0e; }
+  .rank-2 { background: var(--gray-200); color: var(--gray-700); }
+  .rank-3 { background: #fff3e8; color: var(--bps-orange-dark); }
+  .rank-other { color: var(--gray-400); font-weight: 500; }
+  .emp-info { display: flex; align-items: center; gap: 10px; }
+  .emp-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--white); flex-shrink: 0; }
+  .emp-name { font-size: 13px; font-weight: 600; color: var(--gray-900); }
+  .emp-nip { font-size: 11px; color: var(--gray-400); margin-top: 1px; }
+  .score-bar-wrap { display: flex; align-items: center; gap: 8px; }
+  .score-bar-bg { flex: 1; height: 6px; background: var(--gray-200); border-radius: 3px; overflow: hidden; }
+  .score-bar-fill { height: 100%; border-radius: 3px; }
+  .score-val { font-size: 13px; font-weight: 700; min-width: 32px; text-align: right; }
+  .badge-hadir { background: #f0fdf4; color: #16a34a; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+  .badge-alpa { background: #fef2f2; color: #dc2626; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+  .badge-izin { background: var(--bps-orange-light); color: var(--bps-orange-dark); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+  .total-score { font-size: 14px; font-weight: 700; }
+  .total-A { color: #16a34a; }
+  .total-B { color: var(--bps-blue); }
+  .total-C { color: var(--bps-orange); }
+  .total-D { color: #dc2626; }
+  .grade-badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .grade-A { background: #f0fdf4; color: #16a34a; }
+  .grade-B { background: var(--bps-blue-light); color: var(--bps-blue); }
+  .grade-C { background: var(--bps-orange-light); color: var(--bps-orange-dark); }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+  /* TOP 3 PODIUM */
+  .podium-panel { background: linear-gradient(160deg, var(--bps-blue-dark) 0%, var(--bps-blue) 100%); border-radius: 14px; padding: 18px; position: relative; overflow: hidden; }
+  .podium-panel::before { content: ''; position: absolute; bottom: -30px; right: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(244,121,32,0.15); }
+  .podium-title { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px; }
+  .podium-list { display: flex; flex-direction: column; gap: 10px; position: relative; z-index: 1; }
+  .podium-item { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+  .podium-item.first { background: rgba(244,121,32,0.25); border: 1px solid rgba(244,121,32,0.4); }
+  .podium-medal { font-size: 18px; width: 28px; text-align: center; }
+  .podium-name { font-size: 13px; font-weight: 600; color: var(--white); }
+  .podium-score { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+  .podium-pts { margin-left: auto; font-size: 16px; font-weight: 700; color: var(--white); }
+
+  /* CHART PANEL */
+  .chart-panel { background: var(--white); border-radius: 14px; border: 1px solid var(--gray-200); padding: 16px; }
+  .chart-title { font-size: 13px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+  .chart-sub { font-size: 11px; color: var(--gray-400); margin-bottom: 14px; }
+
+  /* INDIKATOR */
+  .indikator-panel { background: var(--white); border-radius: 14px; border: 1px solid var(--gray-200); padding: 16px; }
+  .ind-title { font-size: 13px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; }
+  .ind-item { margin-bottom: 10px; }
+  .ind-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .ind-name { font-size: 12px; color: var(--gray-700); font-weight: 500; }
+  .ind-pct { font-size: 12px; font-weight: 700; color: var(--gray-900); }
+  .ind-bar { height: 5px; background: var(--gray-200); border-radius: 3px; overflow: hidden; }
+  .ind-fill { height: 100%; border-radius: 3px; }
+
+  /* FOOTER */
+  .footer { text-align: center; padding: 10px; font-size: 11px; color: var(--gray-400); }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Dashboard penilaian pegawai terbaik BPS Kota Palu dengan data absensi dan skor kinerja</h2>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-box">
+        <span class="logo-bps">BPS</span>
+      </div>
+      <div class="header-text">
+        <div class="header-title">Sistem Penilaian Pegawai Terbaik</div>
+        <div class="header-sub">Badan Pusat Statistik Kota Palu · Tahun 2024</div>
+      </div>
+      <div class="header-badge">Semester I</div>
+    </div>
+    <div class="header-tabs">
+      <div class="tab active">Peringkat Pegawai</div>
+      <div class="tab">Rekap Absensi</div>
+      <div class="tab">Penilaian Kinerja</div>
+      <div class="tab">Laporan</div>
+    </div>
+  </div>
+
+  <!-- PERIOD BAR -->
+  <div class="period-bar">
+    <span class="period-label">Periode Penilaian</span>
+    <div class="period-select">
+      <button class="period-btn">Jan</button>
+      <button class="period-btn">Feb</button>
+      <button class="period-btn">Mar</button>
+      <button class="period-btn active">Apr</button>
+      <button class="period-btn">Mei</button>
+      <button class="period-btn">Jun</button>
+      <button class="period-btn">Kumulatif</button>
+    </div>
+  </div>
+
+  <!-- SUMMARY CARDS -->
+  <div class="summary-grid">
+    <div class="s-card blue">
+      <div class="s-icon blue"><i class="ti ti-users" aria-hidden="true" style="font-size:16px"></i></div>
+      <div class="s-val">28</div>
+      <div class="s-lbl">Total Pegawai</div>
+      <div class="s-delta up">↑ Aktif semua</div>
+    </div>
+    <div class="s-card orange">
+      <div class="s-icon orange"><i class="ti ti-calendar-check" aria-hidden="true" style="font-size:16px"></i></div>
+      <div class="s-val">94,3%</div>
+      <div class="s-lbl">Tingkat Kehadiran</div>
+      <div class="s-delta up">↑ +1.2% vs bulan lalu</div>
+    </div>
+    <div class="s-card green">
+      <div class="s-icon green"><i class="ti ti-chart-bar" aria-hidden="true" style="font-size:16px"></i></div>
+      <div class="s-val">82,6</div>
+      <div class="s-lbl">Rata-rata Skor Kinerja</div>
+      <div class="s-delta up">↑ +3.1 poin</div>
+    </div>
+    <div class="s-card red">
+      <div class="s-icon red"><i class="ti ti-clock-off" aria-hidden="true" style="font-size:16px"></i></div>
+      <div class="s-val">12</div>
+      <div class="s-lbl">Total Keterlambatan</div>
+      <div class="s-delta down">↑ +3 kejadian</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="content">
+    <!-- TABLE -->
+    <div class="panel">
+      <div class="panel-head">
+        <div>
+          <div class="panel-title">Peringkat Pegawai — April 2024</div>
+          <div class="panel-sub">Berdasarkan absensi (40%) + SKP/penilaian kinerja (60%)</div>
+        </div>
+        <div class="filter-row">
+          <button class="filter-chip active">Semua</button>
+          <button class="filter-chip">Fungsional</button>
+          <button class="filter-chip">Struktural</button>
+        </div>
+      </div>
+      <table class="rank-table">
+        <thead>
+          <tr>
+            <th style="width:40px">#</th>
+            <th>Nama Pegawai</th>
+            <th class="center">Kehadiran</th>
+            <th class="center">Alpa</th>
+            <th>Skor Kinerja</th>
+            <th class="center">Total</th>
+            <th class="center">Grade</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <!-- PODIUM -->
+      <div class="podium-panel">
+        <div class="podium-title">🏆 Pegawai Terbaik</div>
+        <div class="podium-list" id="podiumList"></div>
+      </div>
+
+      <!-- CHART -->
+      <div class="chart-panel">
+        <div class="chart-title">Distribusi Skor</div>
+        <div class="chart-sub">Sebaran nilai akhir pegawai</div>
+        <div style="position:relative; height:160px;">
+          <canvas id="distChart" role="img" aria-label="Distribusi skor pegawai BPS Palu">Distribusi skor pegawai.</canvas>
+        </div>
+      </div>
+
+      <!-- INDIKATOR -->
+      <div class="indikator-panel">
+        <div class="ind-title">Komponen Penilaian</div>
+        <div class="ind-item">
+          <div class="ind-row"><span class="ind-name">Kehadiran & Disiplin</span><span class="ind-pct" style="color:var(--bps-blue)">40%</span></div>
+          <div class="ind-bar"><div class="ind-fill" style="width:40%;background:var(--bps-blue)"></div></div>
+        </div>
+        <div class="ind-item">
+          <div class="ind-row"><span class="ind-name">SKP / Kinerja Utama</span><span class="ind-pct" style="color:var(--bps-orange)">40%</span></div>
+          <div class="ind-bar"><div class="ind-fill" style="width:40%;background:var(--bps-orange)"></div></div>
+        </div>
+        <div class="ind-item">
+          <div class="ind-row"><span class="ind-name">Perilaku Kerja</span><span class="ind-pct" style="color:#16a34a">20%</span></div>
+          <div class="ind-bar"><div class="ind-fill" style="width:20%;background:#16a34a"></div></div>
+        </div>
+        <div style="border-top:1px solid var(--gray-200);margin-top:10px;padding-top:10px;">
+          <div style="font-size:11px;color:var(--gray-400);line-height:1.6">
+            <b style="color:var(--gray-700)">Grade:</b> A ≥ 90 · B 75–89 · C 60–74 · D &lt; 60
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">BPS Kota Palu · Sistem Informasi Kepegawaian · Data per 30 April 2024</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const pegawai = [
+  { nama: "Drs. Ahmad Fauzi, M.Si", nip: "198203142006041001", hadir: 22, totalHari: 22, alpa: 0, kinerjaSKP: 93, kinerjaPerilaku: 91, warna: "#1a4fa0" },
+  { nama: "Rina Susanti, S.ST", nip: "199001052014022001", hadir: 22, totalHari: 22, alpa: 0, kinerjaSKP: 90, kinerjaPerilaku: 89, warna: "#f47920" },
+  { nama: "Hendra Pratama, S.Si", nip: "198711202010121002", hadir: 21, totalHari: 22, alpa: 0, kinerjaSKP: 87, kinerjaPerilaku: 88, warna: "#2e6cc7" },
+  { nama: "Siti Rahmawati, S.ST", nip: "199205182016022003", hadir: 21, totalHari: 22, alpa: 1, kinerjaSKP: 86, kinerjaPerilaku: 84, warna: "#22c55e" },
+  { nama: "Bambang Setiawan", nip: "197805092003121004", hadir: 20, totalHari: 22, alpa: 0, kinerjaSKP: 85, kinerjaPerilaku: 83, warna: "#8b5cf6" },
+  { nama: "Dewi Anggraini, S.Tr.Stat", nip: "199408232018022001", hadir: 21, totalHari: 22, alpa: 0, kinerjaSKP: 82, kinerjaPerilaku: 81, warna: "#ec4899" },
+  { nama: "Muhamad Ridwan, S.Si", nip: "199103152015021002", hadir: 20, totalHari: 22, alpa: 1, kinerjaSKP: 80, kinerjaPerilaku: 79, warna: "#06b6d4" },
+  { nama: "Nur Halimah, A.Md.Stat", nip: "199609272019022004", hadir: 19, totalHari: 22, alpa: 1, kinerjaSKP: 78, kinerjaPerilaku: 77, warna: "#f59e0b" },
+  { nama: "Arif Budiman, S.ST", nip: "198906102013121003", hadir: 19, totalHari: 22, alpa: 2, kinerjaSKP: 75, kinerjaPerilaku: 74, warna: "#6366f1" },
+  { nama: "Fitri Handayani, S.Stat", nip: "199712012020122001", hadir: 18, totalHari: 22, alpa: 2, kinerjaSKP: 72, kinerjaPerilaku: 70, warna: "#14b8a6" },
+];
+
+pegawai.forEach(p => {
+  const pctHadir = (p.hadir / p.totalHari) * 100;
+  const skorAbsen = Math.max(0, pctHadir - (p.alpa * 5));
+  p.skorAbsen = Math.min(100, skorAbsen);
+  p.total = Math.round(p.skorAbsen * 0.40 + p.kinerjaSKP * 0.40 + p.kinerjaPerilaku * 0.20);
+  p.grade = p.total >= 90 ? 'A' : p.total >= 75 ? 'B' : p.total >= 60 ? 'C' : 'D';
+});
+
+pegawai.sort((a,b) => b.total - a.total);
+
+function initials(nama) {
+  return nama.replace(/[^a-zA-Z\s]/g,'').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+}
+
+const tbody = document.getElementById('tableBody');
+pegawai.forEach((p, i) => {
+  const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-other';
+  const rankDisplay = i < 3 ? `<div class="rank-num ${rankClass}">${i+1}</div>` : `<div class="rank-num"><span class="rank-other">${i+1}</span></div>`;
+  const hadir_pct = Math.round((p.hadir/p.totalHari)*100);
+  const hadirBadge = hadir_pct === 100 ? `<span class="badge-hadir">100%</span>` : hadir_pct >= 90 ? `<span class="badge-izin">${hadir_pct}%</span>` : `<span class="badge-alpa">${hadir_pct}%</span>`;
+  const alpaBadge = p.alpa === 0 ? `<span class="badge-hadir">0</span>` : `<span class="badge-alpa">${p.alpa}×</span>`;
+  const barColor = p.kinerjaSKP >= 88 ? '#1a4fa0' : p.kinerjaSKP >= 78 ? '#f47920' : '#9ca3af';
+  const gradeClass = p.grade === 'A' ? 'grade-A' : p.grade === 'B' ? 'grade-B' : 'grade-C';
+  const totalClass = p.total >= 90 ? 'total-A' : p.total >= 75 ? 'total-B' : 'total-C';
+
+  const tr = document.createElement('tr');
+  if (i < 3) tr.className = 'top3';
+  tr.innerHTML = `
+    <td>${rankDisplay}</td>
+    <td>
+      <div class="emp-info">
+        <div class="emp-avatar" style="background:${p.warna}">${initials(p.nama)}</div>
+        <div>
+          <div class="emp-name">${p.nama}</div>
+          <div class="emp-nip">NIP ${p.nip}</div>
+        </div>
+      </div>
+    </td>
+    <td style="text-align:center">${hadirBadge}</td>
+    <td style="text-align:center">${alpaBadge}</td>
+    <td>
+      <div class="score-bar-wrap">
+        <div class="score-bar-bg"><div class="score-bar-fill" style="width:${p.kinerjaSKP}%;background:${barColor}"></div></div>
+        <span class="score-val" style="color:${barColor}">${p.kinerjaSKP}</span>
+      </div>
+    </td>
+    <td style="text-align:center"><span class="total-score ${totalClass}">${p.total}</span></td>
+    <td style="text-align:center"><span class="grade-badge ${gradeClass}">${p.grade}</span></td>
+  `;
+  tbody.appendChild(tr);
+});
+
+// PODIUM
+const medals = ['🥇','🥈','🥉'];
+const podium = document.getElementById('podiumList');
+pegawai.slice(0,3).forEach((p,i) => {
+  const div = document.createElement('div');
+  div.className = 'podium-item' + (i===0?' first':'');
+  div.innerHTML = `
+    <span class="podium-medal">${medals[i]}</span>
+    <div>
+      <div class="podium-name">${p.nama.split(',')[0]}</div>
+      <div class="podium-score">Skor: ${p.total} · Grade ${p.grade}</div>
+    </div>
+    <div class="podium-pts">${p.total}</div>
+  `;
+  podium.appendChild(div);
+});
+
+// CHART
+const gradeCount = { '≥90': 0, '75–89': 0, '60–74': 0, '<60': 0 };
+pegawai.forEach(p => {
+  if (p.total >= 90) gradeCount['≥90']++;
+  else if (p.total >= 75) gradeCount['75–89']++;
+  else if (p.total >= 60) gradeCount['60–74']++;
+  else gradeCount['<60']++;
+});
+
+new Chart(document.getElementById('distChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['A (≥90)', 'B (75–89)', 'C (60–74)', 'D (<60)'],
+    datasets: [{
+      data: Object.values(gradeCount),
+      backgroundColor: ['#1a4fa0','#f47920','#f59e0b','#ef4444'],
+      borderWidth: 2,
+      borderColor: '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { boxWidth: 10, font: { size: 11 }, padding: 8 } }
+    }
+  }
+});
+</script>
