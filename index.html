@@ -6,695 +6,1147 @@
   <title>Penilaian Pegawai Terbaik — BPS Kota Palu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --b9:#0d2f6e;--b8:#1a4fa0;--b7:#2e6cc7;--b6:#4a84dc;--b1:#dce9fa;--b0:#eef4fd;
-      --o7:#c45f0a;--o6:#f47920;--o1:#fde8cc;--o0:#fff5ea;
-      --g6:#16a34a;--g0:#f0fdf4;
-      --r6:#dc2626;--r0:#fef2f2;
-      --am6:#d97706;--am0:#fffbeb;
-      --gy9:#1a1f36;--gy7:#3d4564;--gy5:#6b7394;--gy4:#9aa0b4;--gy2:#e4e7f0;--gy1:#f2f4f9;--gy0:#f8f9fc;
-      --wh:#ffffff;
-      --rl:14px;--rxl:18px;--rm:10px;
-      --sh-xs:0 1px 2px rgba(26,79,160,.06);--sh-sm:0 2px 8px rgba(26,79,160,.09);--sh-md:0 4px 20px rgba(26,79,160,.13);--sh-lg:0 8px 32px rgba(26,79,160,.16)
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Palette — Navy Government Professional */
+      --navy-950: #0a1628;
+      --navy-900: #0f2044;
+      --navy-800: #163060;
+      --navy-700: #1e4080;
+      --navy-600: #2452a0;
+      --navy-500: #3366bf;
+      --navy-400: #5585d4;
+      --navy-200: #b8cef0;
+      --navy-100: #dce8f9;
+      --navy-50:  #eef4fd;
+
+      --gold-600: #b45309;
+      --gold-500: #d97706;
+      --gold-400: #f59e0b;
+      --gold-100: #fef3c7;
+      --gold-50:  #fffbeb;
+
+      --green-700: #15803d;
+      --green-600: #16a34a;
+      --green-100: #dcfce7;
+      --green-50:  #f0fdf4;
+
+      --red-600:  #dc2626;
+      --red-100:  #fee2e2;
+      --red-50:   #fef2f2;
+
+      --gray-950: #0d1117;
+      --gray-900: #1a1f2e;
+      --gray-700: #374151;
+      --gray-600: #4b5563;
+      --gray-500: #6b7280;
+      --gray-400: #9ca3af;
+      --gray-300: #d1d5db;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --gray-50:  #f9fafb;
+      --white:    #ffffff;
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 18px;
+      --radius-full: 9999px;
+
+      --shadow-xs: 0 1px 2px rgba(0,0,0,.06);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.13);
     }
-    html{font-size:14px}
-    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--gy1);color:var(--gy9);min-height:100vh}
 
-    /* ── TOPBAR ── */
-    .topbar{background:linear-gradient(135deg,var(--b9) 0%,var(--b8) 55%,var(--b7) 100%);position:relative;overflow:hidden}
-    .topbar::before{content:'';position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(244,121,32,.18) 0%,transparent 70%)}
-    .topbar-inner{position:relative;z-index:1;display:flex;align-items:center;gap:16px;padding:18px 32px 14px}
-    .logo-img-box{width:54px;height:54px;background:var(--wh);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.18)}
-    .logo-img-box img{width:48px;height:48px;object-fit:contain}
-    .logo-fallback{font-family:'DM Serif Display',serif;font-size:19px;color:var(--b8);display:none}
-    .logo-divider{width:1px;height:38px;background:rgba(255,255,255,.25);flex-shrink:0}
-    .topbar-info{flex:1}
-    .topbar-title{font-size:17px;font-weight:800;color:var(--wh);letter-spacing:-.3px}
-    .topbar-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:3px}
-    .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
-    .badge{font-size:11.5px;font-weight:700;padding:5px 14px;border-radius:20px}
-    .badge-orange{background:var(--o6);color:var(--wh)}
-    .badge-ghost{background:rgba(255,255,255,.12);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.2)}
-    .tabs-bar{position:relative;z-index:1;display:flex;padding:0 32px;border-top:1px solid rgba(255,255,255,.1)}
-    .tab{padding:12px 18px;font-size:13px;font-weight:500;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s;user-select:none}
-    .tab:hover{color:rgba(255,255,255,.85)}
-    .tab.active{color:var(--wh);border-bottom-color:var(--o6);font-weight:700}
+    html { font-size: 14px; scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-900);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    /* ── PAGE ── */
-    .page{padding:24px 32px 48px}
+    /* ══ TOPBAR ══ */
+    .topbar {
+      background: var(--navy-900);
+      border-bottom: 3px solid var(--gold-400);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-lg);
+    }
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 32px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .logo-box {
+      width: 52px;
+      height: 52px;
+      background: var(--white);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      padding: 4px;
+    }
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .divider-v {
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,.15);
+      flex-shrink: 0;
+    }
+    .topbar-text { flex: 1; }
+    .topbar-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -.2px;
+      line-height: 1.2;
+    }
+    .topbar-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .badge-periode {
+      background: var(--gold-400);
+      color: var(--navy-950);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      letter-spacing: .2px;
+    }
+    .badge-tahun {
+      background: rgba(255,255,255,.1);
+      color: rgba(255,255,255,.8);
+      border: 1px solid rgba(255,255,255,.15);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+    }
+    .btn-refresh {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      color: rgba(255,255,255,.85);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .2s;
+    }
+    .btn-refresh:hover {
+      background: rgba(255,255,255,.15);
+      color: var(--white);
+    }
+    .btn-refresh.loading svg { animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ══════════════════════════════
-       UPLOAD SCREEN
-    ══════════════════════════════ */
-    #uploadScreen{display:block}
-    #mainScreen{display:none}
+    /* ══ TABS ══ */
+    .tabs-bar {
+      background: var(--navy-950);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 0 32px;
+      display: flex;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    /* override for sticky topbar that contains both */
+    .topbar .tabs-bar { max-width: none; padding: 0 32px; }
 
-    .upload-hero{text-align:center;padding:40px 0 28px}
-    .upload-hero-icon{width:64px;height:64px;background:var(--b0);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--b8)}
-    .upload-hero h2{font-size:20px;font-weight:800;color:var(--gy9);margin-bottom:6px}
-    .upload-hero p{font-size:13px;color:var(--gy4);max-width:480px;margin:0 auto;line-height:1.7}
+    .tab-nav {
+      background: var(--navy-950);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .tab-nav-inner {
+      display: flex;
+      padding: 0 32px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .tab-btn {
+      padding: 13px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,.45);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: inherit;
+      border-bottom: 2px solid transparent;
+      transition: all .2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: rgba(255,255,255,.75); }
+    .tab-btn.active {
+      color: var(--gold-400);
+      border-bottom-color: var(--gold-400);
+      font-weight: 700;
+    }
 
-    .upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:820px;margin:0 auto 28px}
-    .upload-card{background:var(--wh);border:2px dashed var(--gy2);border-radius:var(--rxl);padding:24px;text-align:center;transition:all .2s;cursor:pointer;position:relative}
-    .upload-card:hover{border-color:var(--b6);background:var(--b0)}
-    .upload-card.has-file{border-style:solid;border-color:var(--g6);background:var(--g0)}
-    .upload-card.has-file .uc-icon{background:var(--g0);color:var(--g6)}
-    .uc-icon{width:44px;height:44px;border-radius:12px;background:var(--gy1);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--gy4);transition:all .2s}
-    .uc-title{font-size:14px;font-weight:700;color:var(--gy9);margin-bottom:4px}
-    .uc-sub{font-size:12px;color:var(--gy4);line-height:1.6}
-    .uc-badge{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:4px 11px;border-radius:20px;font-size:11.5px;font-weight:600}
-    .uc-badge-wait{background:var(--gy1);color:var(--gy4)}
-    .uc-badge-ok{background:var(--g0);color:var(--g6)}
-    .uc-badge-err{background:var(--r0);color:var(--r6)}
-    .file-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    /* ══ LOADING / ERROR STATES ══ */
+    .state-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--gray-100);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      gap: 16px;
+    }
+    .state-overlay.hidden { display: none; }
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 3px solid var(--navy-100);
+      border-top-color: var(--navy-600);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    .state-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy-800);
+    }
+    .state-sub {
+      font-size: 13px;
+      color: var(--gray-500);
+      text-align: center;
+      max-width: 360px;
+      line-height: 1.7;
+    }
+    .btn-retry {
+      background: var(--navy-700);
+      color: var(--white);
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 8px;
+      transition: background .2s;
+    }
+    .btn-retry:hover { background: var(--navy-600); }
 
-    /* multi nilai upload */
-    .multi-upload{background:var(--wh);border:2px dashed var(--gy2);border-radius:var(--rxl);padding:22px 26px;max-width:820px;margin:0 auto 28px;transition:all .2s}
-    .multi-upload:hover{border-color:var(--o6);background:var(--o0)}
-    .multi-upload.has-file{border-style:solid;border-color:var(--g6);background:var(--g0)}
-    .mu-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;position:relative}
-    .mu-icon{width:40px;height:40px;border-radius:11px;background:var(--gy1);display:flex;align-items:center;justify-content:center;color:var(--gy4);flex-shrink:0}
-    .multi-upload.has-file .mu-icon{background:var(--g0);color:var(--g6)}
-    .mu-title{font-size:14px;font-weight:700;color:var(--gy9)}
-    .mu-sub{font-size:12px;color:var(--gy4);margin-top:2px}
-    .mu-file-input{position:absolute;right:0;opacity:0;cursor:pointer;height:36px;width:160px}
-    .mu-btn{position:absolute;right:0;pointer-events:none;background:var(--b8);color:var(--wh);font-size:12px;font-weight:700;padding:7px 16px;border-radius:20px;font-family:inherit}
-    .mu-list{display:flex;flex-wrap:wrap;gap:7px}
-    .mu-chip{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11.5px;font-weight:600;background:var(--g0);color:var(--g6)}
-    .mu-chip-wait{background:var(--gy1);color:var(--gy4)}
+    /* ══ PERIOD BAR ══ */
+    .period-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 10px 32px;
+      box-shadow: var(--shadow-xs);
+    }
+    .period-bar-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .period-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      white-space: nowrap;
+    }
+    .period-pills { display: flex; gap: 5px; flex-wrap: wrap; }
+    .pill {
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all .15s;
+      font-family: inherit;
+    }
+    .pill:hover { border-color: var(--navy-400); color: var(--navy-700); }
+    .pill.active {
+      background: var(--navy-50);
+      border-color: var(--navy-500);
+      color: var(--navy-700);
+      font-weight: 700;
+    }
 
-    .upload-action{text-align:center;max-width:820px;margin:0 auto}
-    .btn-proses{background:linear-gradient(135deg,var(--b8),var(--b7));color:var(--wh);font-size:14px;font-weight:800;padding:13px 40px;border-radius:30px;border:none;cursor:pointer;font-family:inherit;box-shadow:var(--sh-md);transition:all .2s;letter-spacing:.2px}
-    .btn-proses:hover{box-shadow:var(--sh-lg);transform:translateY(-1px)}
-    .btn-proses:disabled{opacity:.45;cursor:not-allowed;transform:none}
-    .upload-note{margin-top:12px;font-size:11.5px;color:var(--gy4);line-height:1.7}
-    .btn-reset{background:none;border:1px solid var(--gy2);color:var(--gy5);font-size:12px;font-weight:600;padding:7px 18px;border-radius:20px;cursor:pointer;font-family:inherit;margin-top:10px;transition:all .2s}
-    .btn-reset:hover{border-color:var(--r6);color:var(--r6)}
+    /* ══ PAGE ══ */
+    .page {
+      padding: 24px 32px 56px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
 
-    /* ══════════════════════════════
-       MAIN DASHBOARD
-    ══════════════════════════════ */
-    .period-bar{background:var(--wh);border-bottom:1px solid var(--gy2);padding:10px 32px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:var(--sh-xs)}
-    .period-label{font-size:11.5px;font-weight:600;color:var(--gy4);text-transform:uppercase;letter-spacing:.7px;white-space:nowrap}
-    .period-pills{display:flex;gap:5px;flex-wrap:wrap}
-    .pill{padding:5px 14px;border-radius:20px;border:1px solid var(--gy2);background:var(--wh);font-size:12px;font-weight:500;color:var(--gy4);cursor:pointer;transition:all .15s;font-family:inherit}
-    .pill:hover{border-color:var(--b6);color:var(--b7)}
-    .pill.active{background:var(--b0);border-color:var(--b7);color:var(--b8);font-weight:700}
+    /* ══ STAT CARDS ══ */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow .2s, transform .15s;
+    }
+    .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .stat-card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .stat-val {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+    .stat-lbl {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-top: 5px;
+      font-weight: 500;
+    }
+    .stat-delta {
+      font-size: 11.5px;
+      font-weight: 600;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
-    .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-    .stat-card{background:var(--wh);border:1px solid var(--gy2);border-radius:var(--rl);padding:17px 19px;position:relative;overflow:hidden;box-shadow:var(--sh-xs);transition:box-shadow .2s,transform .2s}
-    .stat-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-    .stat-glow{position:absolute;right:-16px;top:-16px;width:80px;height:80px;border-radius:50%;opacity:.08}
-    .stat-icon{width:35px;height:35px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:11px}
-    .stat-val{font-size:26px;font-weight:800;line-height:1}
-    .stat-lbl{font-size:12px;color:var(--gy4);margin-top:5px;font-weight:500}
-    .stat-delta{font-size:11.5px;font-weight:600;margin-top:6px}
-    .up{color:var(--g6)}.dn{color:var(--r6)}.neu{color:var(--gy4)}
+    /* ══ MAIN GRID ══ */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 18px;
+      align-items: start;
+    }
 
-    .main-grid{display:grid;grid-template-columns:1fr 308px;gap:18px;align-items:start}
-    .panel{background:var(--wh);border:1px solid var(--gy2);border-radius:var(--rxl);overflow:hidden;box-shadow:var(--sh-sm)}
-    .panel-head{padding:16px 20px;border-bottom:1px solid var(--gy2);display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-    .panel-title{font-size:15px;font-weight:800;color:var(--gy9)}
-    .panel-sub{font-size:11.5px;color:var(--gy4);margin-top:3px}
-    .filter-row{display:flex;gap:5px;flex-shrink:0;flex-wrap:wrap}
-    .fbtn{padding:4px 12px;border-radius:20px;border:1px solid var(--gy2);font-size:12px;color:var(--gy4);cursor:pointer;font-family:inherit;background:var(--wh);transition:all .15s;font-weight:500}
-    .fbtn:hover{border-color:var(--o6);color:var(--o7)}
-    .fbtn.active{background:var(--o0);border-color:var(--o6);color:var(--o7);font-weight:700}
+    /* ══ PANEL ══ */
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .panel-head {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--gray-50);
+    }
+    .panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -.2px;
+    }
+    .panel-sub {
+      font-size: 11.5px;
+      color: var(--gray-400);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+    .filter-row { display: flex; gap: 5px; flex-wrap: wrap; }
+    .fbtn {
+      padding: 5px 13px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--gray-200);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      cursor: pointer;
+      font-family: inherit;
+      background: var(--white);
+      transition: all .15s;
+    }
+    .fbtn:hover { border-color: var(--gold-400); color: var(--gold-600); }
+    .fbtn.active {
+      background: var(--gold-50);
+      border-color: var(--gold-400);
+      color: var(--gold-600);
+      font-weight: 700;
+    }
 
-    .rank-table{width:100%;border-collapse:collapse}
-    .rank-table thead tr{background:var(--gy0)}
-    .rank-table th{padding:9px 14px;font-size:10.5px;font-weight:700;color:var(--gy4);text-align:left;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
-    .rank-table th.tc{text-align:center}
-    .rank-table tbody tr{border-top:1px solid var(--gy2);transition:background .12s;cursor:pointer}
-    .rank-table tbody tr:hover{background:var(--b0)}
-    .rank-table tbody tr.gold-row{background:linear-gradient(90deg,rgba(255,191,0,.05) 0%,transparent 60%)}
-    .rank-table td{padding:11px 14px;font-size:13px;color:var(--gy7);vertical-align:middle}
-    .rn{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700}
-    .rn1{background:#fef9c3;color:#854d0e}.rn2{background:var(--gy2);color:var(--gy7)}.rn3{background:var(--o0);color:var(--o7)}.rnn{color:var(--gy4);font-weight:500}
-    .emp-row{display:flex;align-items:center;gap:10px}
-    .av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--wh);flex-shrink:0}
-    .emp-name{font-size:13px;font-weight:700;color:var(--gy9);line-height:1.3}
-    .emp-nip{font-size:10.5px;color:var(--gy4);margin-top:1px}
-    .emp-job{font-size:10.5px;color:var(--b7);margin-top:1px;font-weight:500}
-    .bdg{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
-    .bdg-g{background:var(--g0);color:var(--g6)}.bdg-o{background:var(--o0);color:var(--o7)}.bdg-r{background:var(--r0);color:var(--r6)}
-    .sbar-wrap{display:flex;align-items:center;gap:7px}
-    .sbar-bg{flex:1;height:6px;background:var(--gy2);border-radius:3px;overflow:hidden;min-width:50px}
-    .sbar-fill{height:100%;border-radius:3px}
-    .sval{font-size:13px;font-weight:800;min-width:34px;text-align:right}
-    .grade-bdg{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:800}
-    .gA{background:var(--g0);color:var(--g6)}.gB{background:var(--b0);color:var(--b8)}.gC{background:var(--o0);color:var(--o7)}.gD{background:var(--r0);color:var(--r6)}
-    .tv{font-size:15px;font-weight:800}
-    .tvA{color:var(--g6)}.tvB{color:var(--b8)}.tvC{color:var(--o7)}.tvD{color:var(--r6)}
+    /* ══ RANK TABLE ══ */
+    .rank-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .rank-table thead tr {
+      background: var(--gray-50);
+      border-bottom: 2px solid var(--gray-200);
+    }
+    .rank-table th {
+      padding: 10px 16px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      white-space: nowrap;
+    }
+    .rank-table th.tc { text-align: center; }
+    .rank-table tbody tr {
+      border-bottom: 1px solid var(--gray-100);
+      transition: background .1s;
+      cursor: default;
+    }
+    .rank-table tbody tr:hover { background: var(--navy-50); }
+    .rank-table tbody tr.top3 { background: #fffbf0; }
+    .rank-table tbody tr.top3:hover { background: #fff5d6; }
+    .rank-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--gray-700);
+      vertical-align: middle;
+    }
 
-    .sidebar{display:flex;flex-direction:column;gap:14px}
-    .podium{background:linear-gradient(160deg,var(--b9) 0%,var(--b8) 55%,var(--b7) 100%);border-radius:var(--rxl);padding:18px;position:relative;overflow:hidden;box-shadow:var(--sh-lg)}
-    .podium::before{content:'';position:absolute;bottom:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:rgba(244,121,32,.18)}
-    .pod-head{font-size:10.5px;font-weight:700;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:1px;margin-bottom:13px;position:relative;z-index:1;display:flex;align-items:center;gap:6px}
-    .pod-list{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
-    .pod-item{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:9px;transition:background .2s}
-    .pod-item:hover{background:rgba(255,255,255,.13)}
-    .pod-item.gold{background:rgba(244,121,32,.22);border-color:rgba(244,121,32,.45)}
-    .medal{font-size:18px;width:24px;text-align:center;flex-shrink:0}
-    .pod-info{flex:1;min-width:0}
-    .pod-name{font-size:12.5px;font-weight:700;color:var(--wh);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .pod-detail{font-size:10.5px;color:rgba(255,255,255,.55);margin-top:2px}
-    .pod-pts{font-size:19px;font-weight:800;color:var(--wh);flex-shrink:0}
+    .rank-num {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .rn-1 { background: #fef9c3; color: #713f12; }
+    .rn-2 { background: var(--gray-200); color: var(--gray-600); }
+    .rn-3 { background: var(--gold-100); color: var(--gold-600); }
+    .rn-n { color: var(--gray-400); font-weight: 500; font-size: 13px; }
 
-    .mini-panel{background:var(--wh);border:1px solid var(--gy2);border-radius:var(--rl);padding:16px;box-shadow:var(--sh-xs)}
-    .mini-title{font-size:13.5px;font-weight:800;color:var(--gy9);margin-bottom:3px}
-    .mini-sub{font-size:11.5px;color:var(--gy4);margin-bottom:13px}
-    .ind-item{margin-bottom:10px}.ind-item:last-child{margin-bottom:0}
-    .ind-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-    .ind-name{font-size:12px;color:var(--gy7);font-weight:500}
-    .ind-pct{font-size:12px;font-weight:800}
-    .ind-bg{height:5px;background:var(--gy2);border-radius:3px;overflow:hidden}
-    .ind-fill{height:100%;border-radius:3px}
-    .ind-note{margin-top:12px;padding-top:11px;border-top:1px solid var(--gy2);font-size:11px;color:var(--gy4);line-height:1.75}
-    .ind-note b{color:var(--gy7)}
-    .att-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-    .att-cell{background:var(--gy0);border:1px solid var(--gy2);border-radius:var(--rm);padding:10px 12px}
-    .att-val{font-size:19px;font-weight:800}
-    .att-lbl{font-size:11px;color:var(--gy4);margin-top:2px;font-weight:500}
+    .emp-row { display: flex; align-items: center; gap: 11px; }
+    .av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--white);
+      flex-shrink: 0;
+      letter-spacing: .5px;
+    }
+    .emp-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.3;
+    }
+    .emp-nip { font-size: 10.5px; color: var(--gray-400); margin-top: 1px; }
+    .emp-job { font-size: 10.5px; color: var(--navy-500); margin-top: 2px; font-weight: 500; }
 
-    /* Absensi & Kinerja Tab */
-    .tab-content{display:none}.tab-content.active{display:block}
-    .month-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
-    .month-card{background:var(--wh);border:1px solid var(--gy2);border-radius:var(--rl);overflow:hidden;box-shadow:var(--sh-xs)}
-    .month-head{padding:12px 16px;font-size:13px;font-weight:700;color:var(--wh);display:flex;align-items:center;justify-content:space-between}
-    .month-scroll{max-height:340px;overflow-y:auto}
-    .mini-table{width:100%;border-collapse:collapse;font-size:12px}
-    .mini-table th{padding:7px 10px;font-size:10.5px;font-weight:700;color:var(--gy4);text-transform:uppercase;letter-spacing:.4px;background:var(--gy0);text-align:center;position:sticky;top:0;z-index:1}
-    .mini-table th:first-child{text-align:left}
-    .mini-table td{padding:8px 10px;border-top:1px solid var(--gy2);text-align:center;color:var(--gy7)}
-    .mini-table td:first-child{text-align:left;font-weight:600;color:var(--gy9);font-size:11.5px}
-    .mini-table tr:hover td{background:var(--b0)}
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .chip-green { background: var(--green-100); color: var(--green-700); }
+    .chip-gold  { background: var(--gold-100); color: var(--gold-600); }
+    .chip-red   { background: var(--red-100); color: var(--red-600); }
+    .chip-blue  { background: var(--navy-100); color: var(--navy-700); }
 
-    /* empty state */
-    .empty-state{text-align:center;padding:60px 20px;color:var(--gy4)}
-    .empty-state svg{margin:0 auto 16px;display:block;opacity:.35}
-    .empty-state p{font-size:13px;line-height:1.7}
+    .sbar-wrap { display: flex; align-items: center; gap: 8px; }
+    .sbar-bg {
+      flex: 1;
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: 3px;
+      overflow: hidden;
+      min-width: 55px;
+    }
+    .sbar-fill { height: 100%; border-radius: 3px; transition: width .4s ease; }
+    .sval { font-size: 13px; font-weight: 700; min-width: 36px; text-align: right; }
 
-    .footer{text-align:center;padding:13px;font-size:11.5px;color:var(--gy4);border-top:1px solid var(--gy2)}
-    .footer b{color:var(--gy5)}
+    .grade-chip {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+    .g-A { background: var(--green-100); color: var(--green-700); }
+    .g-B { background: var(--navy-100); color: var(--navy-700); }
+    .g-C { background: var(--gold-100); color: var(--gold-600); }
+    .g-D { background: var(--red-100); color: var(--red-600); }
 
-    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-    .fade-in{animation:fadeUp .35s ease both}
+    .na-val { font-size: 16px; font-weight: 800; }
+    .na-A { color: var(--green-600); }
+    .na-B { color: var(--navy-600); }
+    .na-C { color: var(--gold-500); }
+    .na-D { color: var(--red-600); }
 
-    @media(max-width:1100px){.main-grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}.month-grid{grid-template-columns:1fr 1fr}}
-    @media(max-width:700px){.topbar-inner,.page,.period-bar,.tabs-bar{padding-left:14px;padding-right:14px}.stat-grid{grid-template-columns:1fr 1fr}.topbar-right{display:none}.upload-grid{grid-template-columns:1fr}.month-grid{grid-template-columns:1fr}}
+    /* ══ SIDEBAR ══ */
+    .sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+    .podium {
+      background: linear-gradient(145deg, var(--navy-950) 0%, var(--navy-800) 60%, var(--navy-700) 100%);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+    .podium::after {
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,.2) 0%, transparent 70%);
+    }
+    .pod-head {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,.4);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pod-list { display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
+    .pod-item {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius-md);
+      padding: 11px 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background .2s;
+    }
+    .pod-item:hover { background: rgba(255,255,255,.1); }
+    .pod-item.gold {
+      background: rgba(245,158,11,.15);
+      border-color: rgba(245,158,11,.3);
+    }
+    .medal { font-size: 20px; width: 26px; text-align: center; flex-shrink: 0; }
+    .pod-info { flex: 1; min-width: 0; }
+    .pod-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pod-detail { font-size: 10.5px; color: rgba(255,255,255,.45); margin-top: 2px; }
+    .pod-score { font-size: 20px; font-weight: 800; color: var(--white); flex-shrink: 0; }
+
+    .mini-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-xs);
+    }
+    .mini-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -.1px;
+    }
+    .mini-sub {
+      font-size: 11.5px;
+      color: var(--gray-400);
+      margin-top: 2px;
+      margin-bottom: 14px;
+    }
+
+    .ind-item { margin-bottom: 11px; }
+    .ind-item:last-of-type { margin-bottom: 0; }
+    .ind-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .ind-name { font-size: 12px; color: var(--gray-700); font-weight: 500; }
+    .ind-pct { font-size: 12px; font-weight: 800; }
+    .ind-bg { height: 5px; background: var(--gray-200); border-radius: 3px; overflow: hidden; }
+    .ind-fill { height: 100%; border-radius: 3px; }
+
+    .formula-note {
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid var(--gray-200);
+      font-size: 11px;
+      color: var(--gray-400);
+      line-height: 1.9;
+    }
+    .formula-note b { color: var(--gray-600); }
+
+    .att-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .att-cell {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 11px 13px;
+    }
+    .att-val { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
+    .att-lbl { font-size: 11px; color: var(--gray-400); margin-top: 2px; font-weight: 500; }
+
+    /* ══ MONTH GRID (Absensi & Kinerja tabs) ══ */
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .month-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .month-head {
+      padding: 13px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .month-head span:last-child { font-size: 11px; opacity: .7; font-weight: 500; }
+    .month-scroll { max-height: 360px; overflow-y: auto; }
+    .month-scroll::-webkit-scrollbar { width: 4px; }
+    .month-scroll::-webkit-scrollbar-track { background: transparent; }
+    .month-scroll::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
+
+    .mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .mini-table thead th {
+      padding: 8px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      background: var(--gray-50);
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .mini-table thead th:first-child { text-align: left; }
+    .mini-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--gray-100);
+      text-align: center;
+      color: var(--gray-700);
+    }
+    .mini-table td:first-child {
+      text-align: left;
+      font-weight: 600;
+      color: var(--gray-900);
+      font-size: 11.5px;
+    }
+    .mini-table tr:hover td { background: var(--navy-50); }
+
+    /* ══ EMPTY STATE ══ */
+    .empty-state {
+      text-align: center;
+      padding: 56px 20px;
+      color: var(--gray-400);
+      grid-column: 1 / -1;
+    }
+    .empty-state p { font-size: 13px; line-height: 1.8; margin-top: 12px; }
+
+    /* ══ FOOTER ══ */
+    .footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 11.5px;
+      color: var(--gray-400);
+      border-top: 1px solid var(--gray-200);
+      background: var(--white);
+    }
+    .footer b { color: var(--gray-600); }
+
+    /* ══ FADE IN ══ */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeUp .3s ease both; }
+    .fade-in-1 { animation-delay: .05s; }
+    .fade-in-2 { animation-delay: .1s; }
+    .fade-in-3 { animation-delay: .15s; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1100px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .month-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      .topbar-inner, .page, .period-bar-inner, .tab-nav-inner { padding-left: 16px; padding-right: 16px; }
+      .stat-grid { grid-template-columns: 1fr 1fr; }
+      .month-grid { grid-template-columns: 1fr; }
+      .topbar-right .badge-tahun { display: none; }
+      .main-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
+<!-- ══ LOADING OVERLAY ══ -->
+<div class="state-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="state-title">Memuat Data...</div>
+  <div class="state-sub">Mengambil data presensi dan penilaian kinerja dari server.</div>
+</div>
+
+<!-- ══ ERROR OVERLAY ══ -->
+<div class="state-overlay hidden" id="errorOverlay">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <div class="state-title">Gagal Memuat Data</div>
+  <div class="state-sub" id="errorMsg">Pastikan koneksi internet tersedia dan spreadsheet dapat diakses publik.</div>
+  <button class="btn-retry" onclick="loadAllData()">Coba Lagi</button>
+</div>
+
+<!-- ══ HEADER ══ -->
 <header class="topbar">
   <div class="topbar-inner">
-    <div class="logo-img-box">
-      <img id="bpsLogo"
-           src=/img/logo-bps.png"
-           alt="Logo BPS"
-           onerror="this.style.display='none';document.getElementById('logoFallback').style.display='block'"/>
-      <span class="logo-fallback" id="logoFallback">BPS</span>
+    <div class="logo-box">
+      <img src="img/logo-bps.png" alt="Logo BPS"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;background:var(--navy-800);border-radius:6px;color:white;font-weight:800;font-size:14px;">BPS</div>
     </div>
-    <div class="logo-divider"></div>
-    <div class="topbar-info">
-      <div class="topbar-title">Sistem Penentuan Pegawai Terbaik</div>
+    <div class="divider-v"></div>
+    <div class="topbar-text">
+      <div class="topbar-title">Sistem Penilaian Pegawai Terbaik</div>
       <div class="topbar-sub">Badan Pusat Statistik Kota Palu &nbsp;·&nbsp; Provinsi Sulawesi Tengah</div>
     </div>
     <div class="topbar-right">
-      <span class="badge badge-orange" id="headerBadgePeriode">—</span>
-      <span class="badge badge-ghost" id="headerBadgeTahun">—</span>
+      <span class="badge-periode" id="headerPeriode">—</span>
+      <span class="badge-tahun" id="headerTahun">—</span>
+      <button class="btn-refresh" id="btnRefresh" onclick="loadAllData()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21.5 2v6h-6"/><path d="M2.5 22v-6h6"/><path d="M22 13a10 10 0 0 1-17.2 7"/><path d="M2 11a10 10 0 0 1 17.2-7"/></svg>
+        Perbarui Data
+      </button>
     </div>
   </div>
-  <nav class="tabs-bar" id="tabsBar" style="display:none">
-    <div class="tab active" onclick="switchTab('ranking',this)">Peringkat Pegawai</div>
-    <div class="tab" onclick="switchTab('absensi',this)">Rekap Absensi</div>
-    <div class="tab" onclick="switchTab('kinerja',this)">Penilaian Kinerja</div>
-  </nav>
 </header>
 
-<!-- ═══ UPLOAD SCREEN ═══ -->
-<div id="uploadScreen">
-  <div class="page">
-    <div class="upload-hero fade-in">
-      <div class="upload-hero-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      </div>
-      <h2>Upload File Excel untuk Mulai Penilaian</h2>
-      <p>Upload file Rekap Presensi dan satu atau lebih file Rekap Nilai SKP. Sistem akan otomatis menghitung nilai akhir dan menentukan peringkat pegawai.</p>
-    </div>
-
-    <!-- Upload 2 jenis file -->
-    <div class="upload-grid">
-      <!-- Presensi -->
-      <div class="upload-card" id="cardPresensi">
-        <input type="file" class="file-input" id="filePresensi" accept=".xlsx,.xls" onchange="handlePresensi(this)"/>
-        <div class="uc-icon" id="iconPresensi">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <div class="uc-title">Rekap Presensi</div>
-        <div class="uc-sub">File Excel rekap absensi pegawai<br>(Triwulan / Bulanan)</div>
-        <div class="uc-badge uc-badge-wait" id="badgePresensi">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Belum ada file
-        </div>
-      </div>
-
-      <!-- Nilai SKP (multi) -->
-      <div class="upload-card" id="cardNilai" style="cursor:default">
-        <div class="uc-icon" id="iconNilai">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        </div>
-        <div class="uc-title">Rekap Nilai SKP</div>
-        <div class="uc-sub">Bisa upload beberapa bulan sekaligus<br>(Oktober, November, Desember, dst.)</div>
-        <div id="nilaiFileList" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;min-height:26px">
-          <div class="uc-badge uc-badge-wait" id="badgeNilai">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Belum ada file
-          </div>
-        </div>
-        <label style="display:inline-flex;align-items:center;gap:6px;margin-top:12px;background:var(--b8);color:var(--wh);font-size:12px;font-weight:700;padding:7px 16px;border-radius:20px;cursor:pointer">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Pilih File Nilai
-          <input type="file" id="fileNilai" accept=".xlsx,.xls" multiple onchange="handleNilai(this)" style="display:none"/>
-        </label>
-      </div>
-    </div>
-
-    <!-- Tombol proses -->
-    <div class="upload-action">
-      <button class="btn-proses" id="btnProses" onclick="prosesData()" disabled>
-        ⚙️ &nbsp;Proses &amp; Tampilkan Peringkat
-      </button>
-      <div class="upload-note" id="uploadNote">Upload minimal file Presensi untuk mulai memproses.</div>
-    </div>
+<!-- ══ TAB NAV ══ -->
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="switchTab('ranking', this)">📊 Peringkat Pegawai</button>
+    <button class="tab-btn" onclick="switchTab('absensi', this)">📅 Rekap Absensi</button>
+    <button class="tab-btn" onclick="switchTab('kinerja', this)">📋 Penilaian Kinerja</button>
   </div>
-</div>
+</nav>
 
-<!-- ═══ MAIN DASHBOARD ═══ -->
-<div id="mainScreen">
-  <!-- Period Bar -->
-  <div class="period-bar">
-    <span class="period-label">Periode Presensi</span>
+<!-- ══ PERIOD BAR ══ -->
+<div class="period-bar">
+  <div class="period-bar-inner">
+    <span class="period-label">Periode</span>
     <div class="period-pills" id="periodPills"></div>
-    <button class="btn-reset" onclick="resetUpload()">↩ Upload Ulang</button>
-  </div>
-
-  <div class="page">
-    <!-- Tab Ranking -->
-    <div class="tab-content active" id="tab-ranking">
-      <div class="stat-grid" id="statGrid"></div>
-      <div class="main-grid">
-        <div class="panel">
-          <div class="panel-head">
-            <div>
-              <div class="panel-title" id="panelTitle">Peringkat Pegawai</div>
-              <div class="panel-sub">Formula: Kehadiran (40%) + Rata-rata Nilai SKP (60%)</div>
-            </div>
-            <div class="filter-row" id="filterRow"></div>
-          </div>
-          <table class="rank-table">
-            <thead>
-              <tr>
-                <th style="width:40px">#</th>
-                <th>Nama Pegawai</th>
-                <th class="tc">Hadir</th>
-                <th class="tc">TK</th>
-                <th>Skor Hadir</th>
-                <th>Nilai SKP</th>
-                <th class="tc">Nilai Akhir</th>
-                <th class="tc">Grade</th>
-              </tr>
-            </thead>
-            <tbody id="rankBody"></tbody>
-          </table>
-        </div>
-        <div class="sidebar">
-          <div class="podium">
-            <div class="pod-head">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="rgba(255,255,255,.55)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              Pegawai Terbaik
-            </div>
-            <div class="pod-list" id="podiumList"></div>
-          </div>
-          <div class="mini-panel">
-            <div class="mini-title">Distribusi Nilai Akhir</div>
-            <div class="mini-sub">Sebaran grade seluruh pegawai</div>
-            <div style="position:relative;height:155px"><canvas id="distChart"></canvas></div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
-              <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gy5)"><span style="width:9px;height:9px;border-radius:2px;background:#16a34a;display:inline-block"></span>A</span>
-              <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gy5)"><span style="width:9px;height:9px;border-radius:2px;background:#1a4fa0;display:inline-block"></span>B</span>
-              <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gy5)"><span style="width:9px;height:9px;border-radius:2px;background:#f47920;display:inline-block"></span>C</span>
-              <span style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--gy5)"><span style="width:9px;height:9px;border-radius:2px;background:#dc2626;display:inline-block"></span>D</span>
-            </div>
-          </div>
-          <div class="mini-panel">
-            <div class="mini-title">Komponen Penilaian</div>
-            <div class="mini-sub">Bobot formula nilai akhir</div>
-            <div class="ind-item">
-              <div class="ind-row"><span class="ind-name">Kehadiran &amp; Disiplin</span><span class="ind-pct" style="color:var(--b8)">40%</span></div>
-              <div class="ind-bg"><div class="ind-fill" style="width:40%;background:var(--b8)"></div></div>
-            </div>
-            <div class="ind-item">
-              <div class="ind-row"><span class="ind-name">Rata-rata Nilai SKP</span><span class="ind-pct" style="color:var(--o6)">60%</span></div>
-              <div class="ind-bg"><div class="ind-fill" style="width:60%;background:var(--o6)"></div></div>
-            </div>
-            <div class="ind-note">
-              <b>Grade:</b> A ≥ 95 &nbsp;·&nbsp; B = 90–94 &nbsp;·&nbsp; C = 80–89 &nbsp;·&nbsp; D &lt; 80<br>
-              <b>TK</b> = Tanpa Keterangan (pengurangan 2 poin/hari)
-            </div>
-          </div>
-          <div class="mini-panel">
-            <div class="mini-title">Ringkasan Absensi</div>
-            <div class="mini-sub" id="absSubtitle">—</div>
-            <div class="att-grid" id="attGrid"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tab Absensi -->
-    <div class="tab-content" id="tab-absensi">
-      <div class="month-grid" id="absMonthGrid"></div>
-    </div>
-
-    <!-- Tab Kinerja -->
-    <div class="tab-content" id="tab-kinerja">
-      <div class="month-grid" id="kinMonthGrid"></div>
-    </div>
   </div>
 </div>
+
+<!-- ══ MAIN CONTENT ══ -->
+<main class="page">
+
+  <!-- TAB: RANKING -->
+  <div class="tab-content active" id="tab-ranking">
+    <div class="stat-grid" id="statGrid"></div>
+    <div class="main-grid">
+
+      <!-- Tabel Peringkat -->
+      <div class="panel fade-in">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title" id="panelTitle">Peringkat Pegawai</div>
+            <div class="panel-sub">Formula: Skor Kehadiran (40%) + Rata-rata Nilai SKP (60%)</div>
+          </div>
+          <div class="filter-row" id="filterRow"></div>
+        </div>
+        <table class="rank-table">
+          <thead>
+            <tr>
+              <th style="width:46px">#</th>
+              <th>Nama Pegawai</th>
+              <th class="tc">Hadir</th>
+              <th class="tc">TK</th>
+              <th>Skor Hadir</th>
+              <th>Nilai SKP</th>
+              <th class="tc">Nilai Akhir</th>
+              <th class="tc">Grade</th>
+            </tr>
+          </thead>
+          <tbody id="rankBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+
+        <!-- Podium -->
+        <div class="podium fade-in fade-in-1">
+          <div class="pod-head">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="rgba(255,255,255,.4)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            3 Pegawai Terbaik
+          </div>
+          <div class="pod-list" id="podiumList"></div>
+        </div>
+
+        <!-- Distribusi -->
+        <div class="mini-card fade-in fade-in-2">
+          <div class="mini-title">Distribusi Grade</div>
+          <div class="mini-sub">Sebaran nilai akhir seluruh pegawai</div>
+          <div style="position:relative;height:160px"><canvas id="distChart"></canvas></div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+            <span style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gray-500)"><span style="width:9px;height:9px;border-radius:2px;background:var(--green-600);display:inline-block"></span>A ≥ 95</span>
+            <span style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gray-500)"><span style="width:9px;height:9px;border-radius:2px;background:var(--navy-600);display:inline-block"></span>B 90–94</span>
+            <span style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gray-500)"><span style="width:9px;height:9px;border-radius:2px;background:var(--gold-400);display:inline-block"></span>C 80–89</span>
+            <span style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--gray-500)"><span style="width:9px;height:9px;border-radius:2px;background:var(--red-600);display:inline-block"></span>D &lt; 80</span>
+          </div>
+        </div>
+
+        <!-- Komponen -->
+        <div class="mini-card fade-in fade-in-3">
+          <div class="mini-title">Komponen Penilaian</div>
+          <div class="mini-sub">Bobot formula nilai akhir</div>
+          <div class="ind-item">
+            <div class="ind-row">
+              <span class="ind-name">Kehadiran &amp; Disiplin</span>
+              <span class="ind-pct" style="color:var(--navy-600)">40%</span>
+            </div>
+            <div class="ind-bg"><div class="ind-fill" style="width:40%;background:var(--navy-600)"></div></div>
+          </div>
+          <div class="ind-item">
+            <div class="ind-row">
+              <span class="ind-name">Rata-rata Nilai SKP</span>
+              <span class="ind-pct" style="color:var(--gold-500)">60%</span>
+            </div>
+            <div class="ind-bg"><div class="ind-fill" style="width:60%;background:var(--gold-400)"></div></div>
+          </div>
+          <div class="formula-note">
+            <b>Grade:</b> A ≥ 95 &nbsp;·&nbsp; B = 90–94 &nbsp;·&nbsp; C = 80–89 &nbsp;·&nbsp; D &lt; 80<br>
+            <b>TK</b> = Tanpa Keterangan &nbsp;·&nbsp; −2 poin/hari<br>
+            <b>Skor Hadir</b> = (HD÷HK × 100) − (TK × 2)
+          </div>
+        </div>
+
+        <!-- Ringkasan Absensi -->
+        <div class="mini-card fade-in fade-in-3">
+          <div class="mini-title">Ringkasan Absensi</div>
+          <div class="mini-sub" id="absSubtitle">—</div>
+          <div class="att-grid" id="attGrid"></div>
+        </div>
+
+      </div><!-- /sidebar -->
+    </div><!-- /main-grid -->
+  </div><!-- /tab-ranking -->
+
+  <!-- TAB: ABSENSI -->
+  <div class="tab-content" id="tab-absensi">
+    <div class="month-grid" id="absMonthGrid"></div>
+  </div>
+
+  <!-- TAB: KINERJA -->
+  <div class="tab-content" id="tab-kinerja">
+    <div class="month-grid" id="kinMonthGrid"></div>
+  </div>
+
+</main>
 
 <footer class="footer">
-  <b>BPS Kota Palu</b> &nbsp;·&nbsp; Sistem Penentuan Pegawai Terbaik &nbsp;·&nbsp; Jl. Baruga No.19, Palu, Sulawesi Tengah
+  <b>BPS Kota Palu</b> &nbsp;·&nbsp; Sistem Penilaian Pegawai Terbaik &nbsp;·&nbsp;
+  Jl. Baruga No.19, Palu, Sulawesi Tengah &nbsp;·&nbsp;
+  <span id="footerUpdate" style="color:var(--gray-400)"></span>
 </footer>
 
 <script>
 /* ══════════════════════════════════════════════════════
+   KONFIGURASI SPREADSHEET
+   Ganti Sheet ID di sini jika ada perubahan file
+══════════════════════════════════════════════════════ */
+const SHEETS = {
+  presensi: '1KxFyDzl9RJMePt7eLqAP3sPKfFZ-KqeH',
+  nilai: [
+    '1M-X6xxYjKTIpJVGij1Dm1AYZdBbOV9gB',  // Desember
+    '16k1ly7J1ShPutJZpy5In7XHfIWCLUBb_',  // November
+    '12kto-rbs3BEz9--GJKFirQbzPdJaWZTz',  // Oktober
+  ]
+};
+
+/* ══════════════════════════════════════════════════════
    STATE
 ══════════════════════════════════════════════════════ */
-let PRESENSI = {};   // { "Jan 2026": [ {nip, nama, hk, hd, tk}, ... ] }
-let NILAI    = {};   // { "Oktober 2025": [ {nip, nama, jabatan, hasilKerja, perilaku, rataRata, predikat} ] }
+let PRESENSI = {};
+let NILAI    = {};
 let currentPeriod = '';
 let currentFilter = 'Semua';
 let distChartInst = null;
 
 /* ══════════════════════════════════════════════════════
-   STEP 1 — BACA FILE EXCEL (SheetJS)
-══════════════════════════════════════════════════════
-
-   Cara kerja SheetJS:
-   1. FileReader ubah file jadi array of bytes
-   2. XLSX.read() parsing bytes itu jadi "workbook" (objek yang isinya semua sheet)
-   3. XLSX.utils.sheet_to_json() ubah satu sheet jadi array of objects
-   4. Kita mapping kolom-kolomnya sesuai format BPS
-*/
-
-function readExcel(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      try {
-        const data   = new Uint8Array(e.target.result);
-        const wb     = XLSX.read(data, { type: 'array' });
-        resolve(wb);
-      } catch(err) { reject(err); }
-    };
-    reader.onerror = reject;
-    reader.readAsArrayBuffer(file);
-  });
+   FETCH CSV DARI GOOGLE SHEETS
+══════════════════════════════════════════════════════ */
+async function fetchCSV(sheetId) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Gagal mengakses spreadsheet (ID: ${sheetId})`);
+  return await res.text();
 }
 
-/* ── Parse Presensi ──
-   Kolom yang dipakai: Bulan, NIP, Nama, HK, HD, TK
-   Header row di sheet bisa ada di baris mana saja → cari dulu
-*/
-function parsePresensi(wb) {
-  const sheetName = wb.SheetNames[0];
-  const rows = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: '' });
+function parseCSVLine(line) {
+  const result = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (c === ',' && !inQ) {
+      result.push(cur.trim()); cur = '';
+    } else cur += c;
+  }
+  result.push(cur.trim());
+  return result;
+}
 
-  // Cari baris header (ada kolom 'NIP' dan 'Nama')
-  let headerIdx = -1;
+function csvToRows(text) {
+  return text.split('\n').filter(l => l.trim()).map(parseCSVLine);
+}
+
+/* ══════════════════════════════════════════════════════
+   PARSE PRESENSI
+══════════════════════════════════════════════════════ */
+function parsePresensi(text) {
+  const rows = csvToRows(text);
+  let hi = -1;
   rows.forEach((r, i) => {
-    const flat = r.map(c => String(c).toLowerCase());
-    if (flat.includes('nip') && flat.includes('nama') && flat.includes('hk')) headerIdx = i;
+    const f = r.map(c => c.toLowerCase());
+    if (f.includes('nip') && f.includes('nama') && f.includes('hk') && f.includes('hd')) hi = i;
   });
-  if (headerIdx === -1) throw new Error('Format presensi tidak dikenali. Pastikan ada kolom NIP, Nama, HK, HD, TK.');
+  if (hi === -1) throw new Error('Header presensi tidak ditemukan.');
 
-  const headers = rows[headerIdx].map(c => String(c).toLowerCase().trim());
-  const iNip    = headers.indexOf('nip');
-  const iNama   = headers.indexOf('nama');
-  const iHK     = headers.indexOf('hk');
-  const iHD     = headers.indexOf('hd');
-  const iTK     = headers.findIndex(h => h === 'tk');
-  const iBulan  = headers.findIndex(h => h.includes('bulan') || h === 'month');
+  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
+  const iNip  = h.indexOf('nip');
+  const iNama = h.indexOf('nama');
+  const iHK   = h.indexOf('hk');
+  const iHD   = h.indexOf('hd');
+  const iTK   = h.indexOf('tk');
+  const iBulan = h.findIndex(x => x.includes('bulan') || x === 'month');
 
   const result = {};
-  for (let i = headerIdx + 1; i < rows.length; i++) {
+  for (let i = hi + 1; i < rows.length; i++) {
     const r = rows[i];
-    const nip  = String(r[iNip]  || '').trim();
-    const nama = String(r[iNama] || '').trim();
-    const hk   = parseFloat(r[iHK]) || 0;
-    const hd   = parseFloat(r[iHD]) || 0;
-    const tk   = iTK >= 0 ? parseFloat(r[iTK]) || 0 : 0;
+    if (r.length < 4) continue;
+    const nip  = (r[iNip]  || '').replace(/"/g,'').trim();
+    const nama = (r[iNama] || '').replace(/"/g,'').trim();
+    if (!nip || !nama || nip.toLowerCase() === 'nip') continue;
 
-    // Bulan: ambil dari kolom Bulan kalau ada, atau dari kolom pertama
-    let bulan = '';
-    if (iBulan >= 0) bulan = String(r[iBulan] || '').trim();
-    else bulan = String(r[0] || '').trim();
+    const hk = parseFloat(r[iHK]) || 0;
+    const hd = parseFloat(r[iHD]) || 0;
+    const tk = iTK >= 0 ? parseFloat(r[iTK]) || 0 : 0;
+    let bulan = iBulan >= 0 ? (r[iBulan] || '').replace(/"/g,'').trim() : (r[0] || '').replace(/"/g,'').trim();
 
-    if (!nip || !nama || !bulan || nip === 'NIP') continue;
-
+    if (!bulan || hk === 0) continue;
     const key = normBulan(bulan);
     if (!result[key]) result[key] = [];
-    result[key].push({ nip, nama, hk, hd, tk });
+    if (!result[key].find(x => x.nip === nip)) result[key].push({ nip, nama, hk, hd, tk });
   }
   return result;
 }
 
-/* ── Parse Nilai SKP ──
-   Kolom yang dipakai: NIP (Niplama), Nama, Jabatan,
-   Rata-rata hasil kerja, Rata-rata perilaku, Nilai rata-rata, Predikat kinerja
-*/
-function parseNilai(wb, fileName) {
-  const sheetName = wb.SheetNames[0];
-  const rows = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: '' });
-
-  let headerIdx = -1;
+/* ══════════════════════════════════════════════════════
+   PARSE NILAI SKP
+══════════════════════════════════════════════════════ */
+function parseNilai(text) {
+  const rows = csvToRows(text);
+  let hi = -1;
   rows.forEach((r, i) => {
-    const flat = r.map(c => String(c).toLowerCase());
-    if ((flat.some(c => c.includes('nip')) || flat.some(c => c.includes('niplama')))
-        && flat.some(c => c.includes('nama'))
-        && flat.some(c => c.includes('rata'))) headerIdx = i;
+    const f = r.map(c => c.toLowerCase().replace(/"/g,''));
+    if ((f.some(x => x.includes('nip') || x.includes('niplama')))
+        && f.some(x => x.includes('nama'))
+        && f.some(x => x.includes('rata'))) hi = i;
   });
-  if (headerIdx === -1) throw new Error(`Format nilai di file "${fileName}" tidak dikenali.`);
+  if (hi === -1) throw new Error('Header nilai SKP tidak ditemukan.');
 
-  const headers = rows[headerIdx].map(c => String(c).toLowerCase().trim());
-  const iNip    = headers.findIndex(h => h.includes('nip'));
-  const iNama   = headers.indexOf('nama');
-  const iJab    = headers.findIndex(h => h.includes('jabatan'));
-  const iHK     = headers.findIndex(h => h.includes('hasil kerja'));
-  const iPeril  = headers.findIndex(h => h.includes('perilaku'));
-  const iRata   = headers.findIndex(h => h.includes('nilai rata') || h === 'nilai rata-rata');
-  const iPred   = headers.findIndex(h => h.includes('predikat'));
-  const iBulan  = headers.findIndex(h => h.includes('bulan') || h.includes('month'));
-
-  // Deteksi nama bulan dari nama file jika kolom bulan tidak ada
-  const bulanFromFile = getBulanFromFileName(fileName);
+  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
+  const iNip   = h.findIndex(x => x.includes('nip') || x.includes('niplama'));
+  const iNama  = h.indexOf('nama');
+  const iJab   = h.findIndex(x => x.includes('jabatan'));
+  const iBulan = h.indexOf('bulan');
+  const iHK    = h.findIndex(x => x.includes('hasil kerja'));
+  const iPeril = h.findIndex(x => x.includes('perilaku'));
+  const iRata  = h.findIndex(x => x.includes('nilai rata') || x === 'nilai rata-rata');
+  const iPred  = h.findIndex(x => x.includes('predikat'));
 
   const data = [];
-  for (let i = headerIdx + 1; i < rows.length; i++) {
+  for (let i = hi + 1; i < rows.length; i++) {
     const r = rows[i];
-    const nip  = String(r[iNip]  || '').trim();
-    const nama = String(r[iNama] || '').trim();
+    if (r.length < 4) continue;
+    const nip  = (r[iNip]  || '').replace(/"/g,'').trim();
+    const nama = (r[iNama] || '').replace(/"/g,'').trim();
     if (!nip || !nama || nip.toLowerCase() === 'nip' || nip.toLowerCase() === 'niplama') continue;
 
-    let bulan = bulanFromFile;
-    if (iBulan >= 0 && r[iBulan]) bulan = normBulanNilai(String(r[iBulan]));
+    const bulan    = iBulan >= 0 ? normBulan((r[iBulan] || '').replace(/"/g,'').trim()) : '';
+    const jabatan  = iJab   >= 0 ? (r[iJab]  || '').replace(/"/g,'').trim() : '';
+    const hasilKerja = iHK  >= 0 ? parseFloat(r[iHK])   || 0 : 0;
+    const perilaku   = iPeril >= 0 ? parseFloat(r[iPeril]) || 0 : 0;
+    const rataRata   = iRata >= 0 ? parseFloat(r[iRata])  || 0 : 0;
+    const predikat   = iPred >= 0 ? (r[iPred] || '').replace(/"/g,'').trim() : '';
 
-    data.push({
-      nip,
-      nama,
-      jabatan    : iJab   >= 0 ? String(r[iJab]  || '').trim() : '',
-      hasilKerja : iHK    >= 0 ? parseFloat(r[iHK])   || 0 : 0,
-      perilaku   : iPeril >= 0 ? parseFloat(r[iPeril]) || 0 : 0,
-      rataRata   : iRata  >= 0 ? parseFloat(r[iRata])  || 0 : 0,
-      predikat   : iPred  >= 0 ? String(r[iPred] || '').trim() : '',
-      bulan
-    });
+    data.push({ nip, nama, jabatan, bulan, hasilKerja, perilaku, rataRata, predikat });
   }
-  return { bulan: bulanFromFile, data };
+  return data;
 }
-
-/* ── Deteksi nama bulan dari nama file ── */
-function getBulanFromFileName(name) {
-  const n = name.toLowerCase();
-  if (n.includes('januari') || n.includes('january'))   return 'Januari';
-  if (n.includes('februari') || n.includes('february')) return 'Februari';
-  if (n.includes('maret')    || n.includes('march'))    return 'Maret';
-  if (n.includes('april'))                               return 'April';
-  if (n.includes('mei')      || n.includes('may'))      return 'Mei';
-  if (n.includes('juni')     || n.includes('june'))     return 'Juni';
-  if (n.includes('juli')     || n.includes('july'))     return 'Juli';
-  if (n.includes('agustus')  || n.includes('august'))   return 'Agustus';
-  if (n.includes('september'))                           return 'September';
-  if (n.includes('oktober')  || n.includes('october'))  return 'Oktober';
-  if (n.includes('november'))                            return 'November';
-  if (n.includes('desember') || n.includes('december')) return 'Desember';
-  return 'Tidak Diketahui';
-}
-
-/* ── Normalisasi nama bulan dari kolom bulan (presensi) ── */
-function normBulan(raw) {
-  const r = raw.toLowerCase();
-  if (r.includes('jan')) return r.includes('2026') ? 'Januari 2026' : r.includes('2025') ? 'Januari 2025' : 'Januari 2026';
-  if (r.includes('feb')) return r.includes('2025') ? 'Februari 2025' : 'Februari 2026';
-  if (r.includes('mar')) return r.includes('2025') ? 'Maret 2025' : 'Maret 2026';
-  if (r.includes('apr')) return 'April 2026';
-  if (r.includes('mei') || r.includes('may')) return 'Mei 2026';
-  if (r.includes('jun')) return 'Juni 2026';
-  if (r.includes('jul')) return 'Juli 2026';
-  if (r.includes('agu') || r.includes('aug')) return 'Agustus 2026';
-  if (r.includes('sep')) return 'September 2026';
-  if (r.includes('okt') || r.includes('oct')) return r.includes('2025') ? 'Oktober 2025' : 'Oktober 2026';
-  if (r.includes('nov')) return r.includes('2025') ? 'November 2025' : 'November 2026';
-  if (r.includes('des') || r.includes('dec')) return r.includes('2025') ? 'Desember 2025' : 'Desember 2026';
-  // fallback: kembalikan apa adanya (bersih)
-  return raw.replace(/\s+/g,' ').trim();
-}
-function normBulanNilai(raw) { return normBulan(raw); }
 
 /* ══════════════════════════════════════════════════════
-   STEP 2 — HANDLER FILE INPUT
+   LOAD SEMUA DATA
 ══════════════════════════════════════════════════════ */
+async function loadAllData() {
+  // Reset state
+  PRESENSI = {}; NILAI = {};
+  showLoading(true);
+  setBtnLoading(true);
 
-let nilaiFiles = [];  // array {nama, wb}
-
-async function handlePresensi(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const badge   = document.getElementById('badgePresensi');
-  const card    = document.getElementById('cardPresensi');
-  const icon    = document.getElementById('iconPresensi');
-  badge.className = 'uc-badge uc-badge-wait';
-  badge.textContent = '⏳ Membaca file...';
   try {
-    const wb = await readExcel(file);
-    PRESENSI = parsePresensi(wb);
-    const bulanList = Object.keys(PRESENSI);
-    card.className  = 'upload-card has-file';
-    icon.style.background = 'var(--g0)'; icon.style.color = 'var(--g6)';
-    badge.className = 'uc-badge uc-badge-ok';
-    badge.innerHTML = `✓ ${file.name} &nbsp;(${bulanList.length} bulan)`;
-  } catch(e) {
-    card.className  = 'upload-card';
-    badge.className = 'uc-badge uc-badge-err';
-    badge.textContent = '✗ ' + e.message;
+    // Presensi
+    const csvPresensi = await fetchCSV(SHEETS.presensi);
+    PRESENSI = parsePresensi(csvPresensi);
+
+    // Nilai SKP (parallel)
+    const nilaiResults = await Promise.allSettled(SHEETS.nilai.map(id => fetchCSV(id)));
+    nilaiResults.forEach(res => {
+      if (res.status === 'fulfilled') {
+        const rows = parseNilai(res.value);
+        rows.forEach(row => {
+          if (!row.bulan) return;
+          if (!NILAI[row.bulan]) NILAI[row.bulan] = [];
+          if (!NILAI[row.bulan].find(x => x.nip === row.nip)) NILAI[row.bulan].push(row);
+        });
+      }
+    });
+
+    showLoading(false);
+    initDashboard();
+    updateFooterTime();
+
+  } catch (e) {
+    showError(e.message);
+  } finally {
+    setBtnLoading(false);
   }
-  checkReady();
 }
 
-async function handleNilai(input) {
-  const files = Array.from(input.files);
-  if (!files.length) return;
-  const listEl = document.getElementById('nilaiFileList');
-  const card   = document.getElementById('cardNilai');
-  listEl.innerHTML = '<span style="font-size:12px;color:var(--gy4)">⏳ Membaca file...</span>';
-
-  const newEntries = [];
-  for (const file of files) {
-    try {
-      const wb  = await readExcel(file);
-      const res = parseNilai(wb, file.name);
-      newEntries.push({ nama: file.name, bulan: res.bulan, data: res.data });
-    } catch(e) {
-      newEntries.push({ nama: file.name, error: e.message });
-    }
-  }
-
-  // Merge ke NILAI
-  newEntries.forEach(e => {
-    if (!e.error) {
-      // group by bulan dari data (kalau di kolom) atau dari nama file
-      e.data.forEach(row => {
-        const key = row.bulan || e.bulan;
-        if (!NILAI[key]) NILAI[key] = [];
-        // hindari duplikat NIP per bulan
-        if (!NILAI[key].find(x => x.nip === row.nip)) NILAI[key].push(row);
-      });
-    }
-  });
-
-  nilaiFiles = [...nilaiFiles, ...newEntries];
-
-  // Tampilkan chip per file
-  listEl.innerHTML = '';
-  nilaiFiles.forEach(f => {
-    const chip = document.createElement('div');
-    chip.className = f.error ? 'uc-badge uc-badge-err' : 'uc-badge uc-badge-ok';
-    chip.style.cssText = 'font-size:11px;padding:3px 9px;border-radius:20px';
-    chip.textContent = f.error ? `✗ ${f.nama}` : `✓ ${f.bulan}`;
-    chip.title = f.error || f.nama;
-    listEl.appendChild(chip);
-  });
-
-  if (nilaiFiles.some(f => !f.error)) {
-    card.className = 'upload-card has-file';
-    document.getElementById('iconNilai').style.background = 'var(--g0)';
-    document.getElementById('iconNilai').style.color = 'var(--g6)';
-  }
-  checkReady();
+function showLoading(v) {
+  document.getElementById('loadingOverlay').classList.toggle('hidden', !v);
+  document.getElementById('errorOverlay').classList.add('hidden');
 }
-
-function checkReady() {
-  const hasPresensi = Object.keys(PRESENSI).length > 0;
-  const btn  = document.getElementById('btnProses');
-  const note = document.getElementById('uploadNote');
-  btn.disabled = !hasPresensi;
-  if (hasPresensi && Object.keys(NILAI).length > 0)
-    note.textContent = `✓ Siap! Presensi (${Object.keys(PRESENSI).length} bulan) + Nilai SKP (${Object.keys(NILAI).length} bulan) sudah terupload.`;
-  else if (hasPresensi)
-    note.textContent = `File presensi sudah diupload. Nilai SKP opsional (jika ada akan dimasukkan ke formula).`;
-  else
-    note.textContent = 'Upload minimal file Presensi untuk mulai memproses.';
+function showError(msg) {
+  document.getElementById('loadingOverlay').classList.add('hidden');
+  const eo = document.getElementById('errorOverlay');
+  eo.classList.remove('hidden');
+  document.getElementById('errorMsg').textContent = msg || 'Terjadi kesalahan saat memuat data.';
+}
+function setBtnLoading(v) {
+  document.getElementById('btnRefresh').classList.toggle('loading', v);
+}
+function updateFooterTime() {
+  const now = new Date();
+  document.getElementById('footerUpdate').textContent =
+    `Diperbarui: ${now.toLocaleDateString('id-ID', {day:'2-digit',month:'long',year:'numeric'})} ${now.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'})}`;
 }
 
 /* ══════════════════════════════════════════════════════
-   STEP 3 — PROSES DATA & HITUNG NILAI AKHIR
+   INIT DASHBOARD
 ══════════════════════════════════════════════════════ */
-
-function prosesData() {
+function initDashboard() {
   const bulanList = Object.keys(PRESENSI).sort(sortBulan);
-  if (!bulanList.length) return;
+  if (!bulanList.length) { showError('Data presensi kosong atau format tidak dikenali.'); return; }
 
-  // Tambahkan opsi Kumulatif
   const periods = [...bulanList];
   if (bulanList.length > 1) periods.push('Kumulatif');
 
-  // Set badge header
-  const tahunSet = new Set(bulanList.map(b => b.split(' ')[1]));
-  document.getElementById('headerBadgeTahun').textContent = [...tahunSet].join(' / ');
-  document.getElementById('headerBadgePeriode').textContent = bulanList.length > 1 ? `${bulanList.length} Bulan` : bulanList[0];
+  const tahunSet = new Set(bulanList.map(b => b.split(' ')[1]).filter(Boolean));
+  document.getElementById('headerTahun').textContent = [...tahunSet].join(' / ');
+  document.getElementById('headerPeriode').textContent = bulanList.length > 1 ? `${bulanList.length} Bulan` : bulanList[0];
 
-  // Tampilkan dashboard
-  document.getElementById('uploadScreen').style.display = 'none';
-  document.getElementById('mainScreen').style.display  = 'block';
-  document.getElementById('tabsBar').style.display     = 'flex';
-
-  // Render period pills
+  // Period pills
   const pillsEl = document.getElementById('periodPills');
   pillsEl.innerHTML = '';
   periods.forEach((p, i) => {
     const btn = document.createElement('button');
     btn.className = 'pill' + (i === periods.length - 1 ? ' active' : '');
     btn.textContent = p;
-    btn.onclick = () => { setPeriod(p, btn); };
+    btn.onclick = () => setPeriod(p, btn);
     pillsEl.appendChild(btn);
   });
 
@@ -706,21 +1158,21 @@ function prosesData() {
   render();
 }
 
-/* ── Rata-rata nilai SKP semua bulan yang diupload ── */
-function avgNilai(nip) {
-  const months = Object.keys(NILAI);
+/* ══════════════════════════════════════════════════════
+   HITUNG DATA
+══════════════════════════════════════════════════════ */
+function avgNilaiSKP(nip) {
   let sum = 0, cnt = 0;
-  months.forEach(m => {
-    const row = NILAI[m].find(r => r.nip === nip);
+  Object.values(NILAI).forEach(arr => {
+    const row = arr.find(r => r.nip === nip);
     if (row && row.rataRata > 0) { sum += row.rataRata; cnt++; }
   });
   return cnt > 0 ? sum / cnt : null;
 }
 
-/* ── Cari jabatan pegawai dari data nilai ── */
 function getJabatan(nip) {
-  for (const m of Object.keys(NILAI)) {
-    const row = NILAI[m].find(r => r.nip === nip);
+  for (const arr of Object.values(NILAI)) {
+    const row = arr.find(r => r.nip === nip);
     if (row && row.jabatan) return row.jabatan;
   }
   return '';
@@ -729,7 +1181,7 @@ function getJabatan(nip) {
 function katJabatan(j) {
   if (!j) return 'Lainnya';
   if (j.includes('Kepala BPS') || j.includes('Subbagian')) return 'Struktural';
-  if (j.includes('Pelaksana') && !j.includes('Statistisi') && !j.includes('Pranata') && !j.includes('Analis')) return 'Pelaksana';
+  if (j.includes('Pelaksana') && !j.includes('Statistisi') && !j.includes('Pranata') && !j.includes('Analis') && !j.includes('Keuangan')) return 'Pelaksana';
   return 'Fungsional';
 }
 
@@ -749,10 +1201,10 @@ function buildData(period) {
   }
 
   return presList.map(p => {
-    const pctHadir   = p.hk > 0 ? (p.hd / p.hk) * 100 : 0;
-    const skorHadir  = Math.min(100, Math.max(0, pctHadir - p.tk * 2));
-    const nilaiSKP   = avgNilai(p.nip);
-    const jabatan    = getJabatan(p.nip);
+    const pctHadir  = p.hk > 0 ? (p.hd / p.hk) * 100 : 0;
+    const skorHadir = Math.min(100, Math.max(0, pctHadir - p.tk * 2));
+    const nilaiSKP  = avgNilaiSKP(p.nip);
+    const jabatan   = getJabatan(p.nip);
     const nilaiAkhir = nilaiSKP != null
       ? Math.round((skorHadir * 0.4 + nilaiSKP * 0.6) * 100) / 100
       : Math.round(skorHadir * 100) / 100;
@@ -770,153 +1222,217 @@ function buildData(period) {
 }
 
 /* ══════════════════════════════════════════════════════
-   STEP 4 — RENDER DASHBOARD
+   RENDER DASHBOARD
 ══════════════════════════════════════════════════════ */
-
-const AV_COLORS = ['#1a4fa0','#f47920','#16a34a','#8b5cf6','#ec4899','#06b6d4','#f59e0b','#6366f1','#14b8a6','#d97706','#0d2f6e','#dc2626','#2e6cc7'];
-function avColor(nip) { const h = nip.split('').reduce((a,c) => a+c.charCodeAt(0), 0); return AV_COLORS[h % AV_COLORS.length]; }
-function initials(nama) { return nama.replace(/[^a-zA-Z\s]/g,'').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+const AV_COLORS = ['#1e4080','#d97706','#15803d','#7c3aed','#db2777','#0891b2','#ea580c','#4f46e5','#0f766e','#b45309'];
+function avColor(nip) {
+  const h = nip.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  return AV_COLORS[h % AV_COLORS.length];
+}
+function initials(nama) {
+  return nama.replace(/[^a-zA-Z\s]/g,'').trim().split(/\s+/).slice(0,2).map(w => w[0]).join('').toUpperCase();
+}
 
 function render() {
   const data     = buildData(currentPeriod);
   const filtered = currentFilter === 'Semua' ? data : data.filter(p => p.kat === currentFilter);
 
-  // ── Stat cards ──
-  const avgHadir      = data.length ? Math.round(data.reduce((s,p)=>s+p.pctHadir,0)/data.length*10)/10 : 0;
-  const avgNA         = data.length ? Math.round(data.reduce((s,p)=>s+p.nilaiAkhir,0)/data.length*100)/100 : 0;
-  const totalTK       = data.reduce((s,p)=>s+p.tk,0);
-  document.getElementById('statGrid').innerHTML = `
-    <div class="stat-card fade-in"><div class="stat-glow" style="background:var(--b8)"></div>
-      <div class="stat-icon" style="background:var(--b0);color:var(--b8)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6"/><path d="M16 11l2 2 4-4"/></svg>
-      </div>
-      <div class="stat-val" style="color:var(--b8)">${data.length}</div>
-      <div class="stat-lbl">Total Pegawai</div>
-      <div class="stat-delta neu">${currentPeriod}</div>
-    </div>
-    <div class="stat-card fade-in" style="animation-delay:.07s"><div class="stat-glow" style="background:var(--o6)"></div>
-      <div class="stat-icon" style="background:var(--o0);color:var(--o7)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><path d="M9 14l2 2 4-4"/></svg>
-      </div>
-      <div class="stat-val" style="color:var(--o7)">${avgHadir}%</div>
-      <div class="stat-lbl">Rata-rata Kehadiran</div>
-      <div class="stat-delta ${avgHadir>=95?'up':avgHadir>=90?'neu':'dn'}">${avgHadir>=95?'↑ Sangat Baik':avgHadir>=90?'→ Baik':'↓ Perlu Perhatian'}</div>
-    </div>
-    <div class="stat-card fade-in" style="animation-delay:.14s"><div class="stat-glow" style="background:var(--g6)"></div>
-      <div class="stat-icon" style="background:var(--g0);color:var(--g6)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
-      </div>
-      <div class="stat-val" style="color:var(--g6)">${avgNA}</div>
-      <div class="stat-lbl">Rata-rata Nilai Akhir</div>
-      <div class="stat-delta up">↑ Presensi + SKP</div>
-    </div>
-    <div class="stat-card fade-in" style="animation-delay:.21s"><div class="stat-glow" style="background:var(--r6)"></div>
-      <div class="stat-icon" style="background:var(--r0);color:var(--r6)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
-      <div class="stat-val" style="color:var(--r6)">${totalTK}</div>
-      <div class="stat-lbl">Total Hari TK</div>
-      <div class="stat-delta ${totalTK===0?'up':'dn'}">${totalTK===0?'✓ Tidak ada TK':'Absen tanpa keterangan'}</div>
-    </div>`;
+  // Stat cards
+  const avgHadir = data.length ? Math.round(data.reduce((s,p) => s + p.pctHadir, 0) / data.length * 10) / 10 : 0;
+  const avgNA    = data.length ? Math.round(data.reduce((s,p) => s + p.nilaiAkhir, 0) / data.length * 100) / 100 : 0;
+  const totalTK  = data.reduce((s,p) => s + p.tk, 0);
 
-  // ── Panel title ──
+  const statGrid = document.getElementById('statGrid');
+  statGrid.innerHTML = '';
+  [
+    { accent: 'var(--navy-600)', iconBg: 'var(--navy-50)', iconColor: 'var(--navy-700)',
+      icon: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6"/><path d="M16 11l2 2 4-4"/></svg>`,
+      val: data.length, valColor: 'var(--navy-700)', lbl: 'Total Pegawai', delta: currentPeriod, deltaClass: '' },
+    { accent: 'var(--gold-400)', iconBg: 'var(--gold-50)', iconColor: 'var(--gold-600)',
+      icon: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><path d="M9 14l2 2 4-4"/></svg>`,
+      val: avgHadir + '%', valColor: 'var(--gold-600)', lbl: 'Rata-rata Kehadiran',
+      delta: avgHadir >= 95 ? '↑ Sangat Baik' : avgHadir >= 90 ? '→ Baik' : '↓ Perlu Perhatian',
+      deltaClass: avgHadir >= 95 ? 'color:var(--green-600)' : avgHadir >= 90 ? 'color:var(--gold-500)' : 'color:var(--red-600)' },
+    { accent: 'var(--green-600)', iconBg: 'var(--green-50)', iconColor: 'var(--green-700)',
+      icon: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>`,
+      val: avgNA, valColor: 'var(--green-700)', lbl: 'Rata-rata Nilai Akhir',
+      delta: '↑ Presensi + SKP', deltaClass: 'color:var(--green-600)' },
+    { accent: totalTK === 0 ? 'var(--green-600)' : 'var(--red-600)',
+      iconBg: totalTK === 0 ? 'var(--green-50)' : 'var(--red-50)',
+      iconColor: totalTK === 0 ? 'var(--green-700)' : 'var(--red-600)',
+      icon: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+      val: totalTK, valColor: totalTK === 0 ? 'var(--green-700)' : 'var(--red-600)',
+      lbl: 'Total Hari TK',
+      delta: totalTK === 0 ? '✓ Tidak ada TK' : 'Absen tanpa keterangan',
+      deltaClass: totalTK === 0 ? 'color:var(--green-600)' : 'color:var(--red-600)' }
+  ].forEach((s, i) => {
+    const d = document.createElement('div');
+    d.className = `stat-card fade-in`;
+    d.style.animationDelay = (i * 0.07) + 's';
+    d.innerHTML = `
+      <div class="stat-card-accent" style="background:${s.accent}"></div>
+      <div class="stat-icon" style="background:${s.iconBg};color:${s.iconColor}">${s.icon}</div>
+      <div class="stat-val" style="color:${s.valColor}">${s.val}</div>
+      <div class="stat-lbl">${s.lbl}</div>
+      <div class="stat-delta" style="${s.deltaClass}">${s.delta}</div>`;
+    statGrid.appendChild(d);
+  });
+
+  // Panel title
   document.getElementById('panelTitle').textContent = `Peringkat Pegawai — ${currentPeriod}`;
   document.getElementById('absSubtitle').textContent = `Periode: ${currentPeriod}`;
 
-  // ── Filter buttons ──
+  // Filter buttons
   const kats = ['Semua', ...new Set(data.map(p => p.kat).filter(Boolean))];
   document.getElementById('filterRow').innerHTML = kats.map(k =>
-    `<button class="fbtn${k===currentFilter?' active':''}" onclick="filterJab(this,'${k}')">${k}</button>`
+    `<button class="fbtn${k === currentFilter ? ' active' : ''}" onclick="filterJab(this,'${k}')">${k}</button>`
   ).join('');
 
-  // ── Tabel peringkat ──
+  // Tabel
   const tbody = document.getElementById('rankBody');
   tbody.innerHTML = '';
   filtered.forEach((p, i) => {
     const rank = i + 1;
-    const rnHtml = rank===1?`<div class="rn rn1">1</div>`:rank===2?`<div class="rn rn2">2</div>`:rank===3?`<div class="rn rn3">3</div>`:`<span class="rnn">${rank}</span>`;
-    const hBdg   = p.pctHadir===100?`<span class="bdg bdg-g">100%</span>`:p.pctHadir>=90?`<span class="bdg bdg-o">${p.pctHadir}%</span>`:`<span class="bdg bdg-r">${p.pctHadir}%</span>`;
-    const tkBdg  = p.tk===0?`<span class="bdg bdg-g">0</span>`:`<span class="bdg bdg-r">${p.tk}×</span>`;
-    const bColor = p.skorHadir>=95?'var(--b8)':p.skorHadir>=90?'var(--o6)':'var(--gy4)';
-    const sColor = p.nilaiSKP>=95?'var(--g6)':p.nilaiSKP>=90?'var(--b8)':'var(--o7)';
+    let rnHtml;
+    if (rank === 1) rnHtml = `<div class="rank-num rn-1">1</div>`;
+    else if (rank === 2) rnHtml = `<div class="rank-num rn-2">2</div>`;
+    else if (rank === 3) rnHtml = `<div class="rank-num rn-3">3</div>`;
+    else rnHtml = `<span class="rn-n">${rank}</span>`;
+
+    const hChip = p.pctHadir === 100
+      ? `<span class="chip chip-green">100%</span>`
+      : p.pctHadir >= 90
+        ? `<span class="chip chip-gold">${p.pctHadir}%</span>`
+        : `<span class="chip chip-red">${p.pctHadir}%</span>`;
+
+    const tkChip = p.tk === 0
+      ? `<span class="chip chip-green">0</span>`
+      : `<span class="chip chip-red">${p.tk}×</span>`;
+
+    const bColor = p.skorHadir >= 95 ? 'var(--navy-600)' : p.skorHadir >= 90 ? 'var(--gold-500)' : 'var(--gray-400)';
+    const sColor = !p.nilaiSKP ? 'var(--gray-300)' : p.nilaiSKP >= 95 ? 'var(--green-600)' : p.nilaiSKP >= 90 ? 'var(--navy-600)' : 'var(--gold-500)';
+
     const tr = document.createElement('tr');
-    if (rank<=3) tr.className='gold-row';
-    tr.innerHTML=`
+    if (rank <= 3) tr.className = 'top3';
+    tr.innerHTML = `
       <td>${rnHtml}</td>
-      <td><div class="emp-row">
-        <div class="av" style="background:${avColor(p.nip)}">${initials(p.nama)}</div>
-        <div>
-          <div class="emp-name">${p.nama}</div>
-          <div class="emp-nip">NIP ${p.nip}</div>
-          <div class="emp-job">${p.jabatan||'—'}</div>
+      <td>
+        <div class="emp-row">
+          <div class="av" style="background:${avColor(p.nip)}">${initials(p.nama)}</div>
+          <div>
+            <div class="emp-name">${p.nama}</div>
+            <div class="emp-nip">NIP ${p.nip}</div>
+            <div class="emp-job">${p.jabatan || '—'}</div>
+          </div>
         </div>
-      </div></td>
-      <td style="text-align:center">${hBdg}</td>
-      <td style="text-align:center">${tkBdg}</td>
-      <td><div class="sbar-wrap"><div class="sbar-bg"><div class="sbar-fill" style="width:${p.skorHadir}%;background:${bColor}"></div></div><span class="sval" style="color:${bColor}">${p.skorHadir}</span></div></td>
-      <td><div class="sbar-wrap"><div class="sbar-bg"><div class="sbar-fill" style="width:${p.nilaiSKP||0}%;background:${sColor}"></div></div><span class="sval" style="color:${sColor}">${p.nilaiSKP!=null?p.nilaiSKP:'—'}</span></div></td>
-      <td style="text-align:center"><span class="tv tv${p.grade}">${p.nilaiAkhir.toFixed(2)}</span></td>
-      <td style="text-align:center"><span class="grade-bdg g${p.grade}">${p.grade}</span></td>`;
+      </td>
+      <td style="text-align:center">${hChip}</td>
+      <td style="text-align:center">${tkChip}</td>
+      <td>
+        <div class="sbar-wrap">
+          <div class="sbar-bg"><div class="sbar-fill" style="width:${p.skorHadir}%;background:${bColor}"></div></div>
+          <span class="sval" style="color:${bColor}">${p.skorHadir}</span>
+        </div>
+      </td>
+      <td>
+        <div class="sbar-wrap">
+          <div class="sbar-bg"><div class="sbar-fill" style="width:${p.nilaiSKP || 0}%;background:${sColor}"></div></div>
+          <span class="sval" style="color:${sColor}">${p.nilaiSKP != null ? p.nilaiSKP : '—'}</span>
+        </div>
+      </td>
+      <td style="text-align:center"><span class="na-val na-${p.grade}">${p.nilaiAkhir.toFixed(2)}</span></td>
+      <td style="text-align:center"><span class="grade-chip g-${p.grade}">${p.grade}</span></td>`;
     tbody.appendChild(tr);
   });
 
-  // ── Podium ──
+  // Podium
   const podEl = document.getElementById('podiumList');
   podEl.innerHTML = '';
   ['🥇','🥈','🥉'].forEach((medal, i) => {
     if (!filtered[i]) return;
     const p = filtered[i];
     const div = document.createElement('div');
-    div.className = 'pod-item' + (i===0?' gold':'');
-    div.innerHTML = `<span class="medal">${medal}</span><div class="pod-info"><div class="pod-name">${p.nama.split(',')[0].split(' ').slice(0,3).join(' ')}</div><div class="pod-detail">${(p.jabatan||'').split(' ').slice(0,4).join(' ')||'—'} · Grade ${p.grade}</div></div><div class="pod-pts">${p.nilaiAkhir.toFixed(1)}</div>`;
+    div.className = 'pod-item' + (i === 0 ? ' gold' : '');
+    div.innerHTML = `
+      <span class="medal">${medal}</span>
+      <div class="pod-info">
+        <div class="pod-name">${p.nama.split(',')[0].split(' ').slice(0,3).join(' ')}</div>
+        <div class="pod-detail">${(p.jabatan || '').split(' ').slice(0,4).join(' ') || '—'} · Grade ${p.grade}</div>
+      </div>
+      <div class="pod-score">${p.nilaiAkhir.toFixed(1)}</div>`;
     podEl.appendChild(div);
   });
 
-  // ── Att rekap ──
-  const avgHD = data.length ? Math.round(data.reduce((s,p)=>s+p.hd,0)/data.length*10)/10 : 0;
+  // Att grid
+  const avgHD = data.length ? Math.round(data.reduce((s,p) => s + p.hd, 0) / data.length * 10) / 10 : 0;
   document.getElementById('attGrid').innerHTML = `
-    <div class="att-cell"><div class="att-val" style="color:var(--g6)">${avgHadir}%</div><div class="att-lbl">Rata-rata Kehadiran</div></div>
-    <div class="att-cell"><div class="att-val" style="color:var(--r6)">${totalTK}</div><div class="att-lbl">Total Hari TK</div></div>
-    <div class="att-cell"><div class="att-val" style="color:var(--b8)">${avgHD}</div><div class="att-lbl">Rata-rata Hari Hadir</div></div>
-    <div class="att-cell"><div class="att-val" style="color:var(--o7)">${data.filter(p=>p.pctHadir<100).length}</div><div class="att-lbl">Tidak Hadir Penuh</div></div>`;
+    <div class="att-cell"><div class="att-val" style="color:var(--green-600)">${avgHadir}%</div><div class="att-lbl">Rata-rata Kehadiran</div></div>
+    <div class="att-cell"><div class="att-val" style="color:${totalTK === 0 ? 'var(--green-600)' : 'var(--red-600)'}">${totalTK}</div><div class="att-lbl">Total Hari TK</div></div>
+    <div class="att-cell"><div class="att-val" style="color:var(--navy-600)">${avgHD}</div><div class="att-lbl">Rata-rata Hari Hadir</div></div>
+    <div class="att-cell"><div class="att-val" style="color:var(--gold-500)">${data.filter(p => p.pctHadir < 100).length}</div><div class="att-lbl">Tidak Hadir Penuh</div></div>`;
 
-  // ── Chart ──
-  const grades = {A:0,B:0,C:0,D:0};
+  // Chart
+  const grades = { A: 0, B: 0, C: 0, D: 0 };
   data.forEach(p => grades[p.grade]++);
-  if (distChartInst) { distChartInst.destroy(); distChartInst=null; }
+  if (distChartInst) { distChartInst.destroy(); distChartInst = null; }
   distChartInst = new Chart(document.getElementById('distChart'), {
     type: 'doughnut',
-    data: { labels:['A (≥95)','B (90–94)','C (80–89)','D (<80)'],
-      datasets:[{ data:[grades.A,grades.B,grades.C,grades.D],
-        backgroundColor:['#16a34a','#1a4fa0','#f47920','#dc2626'],
-        borderWidth:3, borderColor:'#ffffff', hoverOffset:5 }]
+    data: {
+      labels: ['A (≥95)', 'B (90–94)', 'C (80–89)', 'D (<80)'],
+      datasets: [{
+        data: [grades.A, grades.B, grades.C, grades.D],
+        backgroundColor: ['#16a34a', '#2452a0', '#f59e0b', '#dc2626'],
+        borderWidth: 3,
+        borderColor: '#ffffff',
+        hoverOffset: 6
+      }]
     },
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'66%', plugins:{legend:{display:false}} }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: { legend: { display: false } }
+    }
   });
 }
 
-/* ── Render tab absensi ── */
+/* ══════════════════════════════════════════════════════
+   TAB ABSENSI
+══════════════════════════════════════════════════════ */
+const MONTH_COLORS = [
+  'linear-gradient(90deg,#163060,#2452a0)',
+  'linear-gradient(90deg,#b45309,#d97706)',
+  'linear-gradient(90deg,#0f2044,#163060)',
+  'linear-gradient(90deg,#15803d,#16a34a)',
+  'linear-gradient(90deg,#6d28d9,#7c3aed)',
+  'linear-gradient(90deg,#0369a1,#0284c7)',
+];
+
 function renderAbsensiTab() {
   const bulanList = Object.keys(PRESENSI).sort(sortBulan);
   const container = document.getElementById('absMonthGrid');
   container.innerHTML = '';
-  const colors = ['linear-gradient(90deg,#1a4fa0,#2e6cc7)','linear-gradient(90deg,#f47920,#c45f0a)','linear-gradient(90deg,#0d2f6e,#1a4fa0)','linear-gradient(90deg,#16a34a,#15803d)','linear-gradient(90deg,#d97706,#b45309)','linear-gradient(90deg,#7c3aed,#5b21b6)'];
   bulanList.forEach((bulan, idx) => {
-    const rows = [...PRESENSI[bulan]].sort((a,b)=>(b.hd/b.hk)-(a.hd/a.hk));
-    const hkRef = rows[0]?.hk || '?';
+    const rows = [...PRESENSI[bulan]].sort((a, b) => (b.hd / b.hk) - (a.hd / a.hk));
     const card = document.createElement('div');
-    card.className = 'month-card';
+    card.className = 'month-card fade-in';
+    card.style.animationDelay = (idx * 0.05) + 's';
     card.innerHTML = `
-      <div class="month-head" style="background:${colors[idx%colors.length]}">
-        <span>${bulan}</span><span style="font-size:11px;opacity:.8">${hkRef} Hari Kerja</span>
+      <div class="month-head" style="background:${MONTH_COLORS[idx % MONTH_COLORS.length]}">
+        <span>${bulan}</span><span>${rows[0]?.hk || '?'} Hari Kerja</span>
       </div>
       <div class="month-scroll">
         <table class="mini-table">
-          <thead><tr><th>Nama</th><th>HK</th><th>HD</th><th>TK</th><th>%</th></tr></thead>
-          <tbody>${rows.map(p=>{
-            const pct = p.hk>0?Math.round(p.hd/p.hk*100):0;
-            const cl  = pct===100?'color:var(--g6)':pct>=90?'color:var(--o7)':'color:var(--r6)';
-            return `<tr><td>${p.nama.split(',')[0].split(' ').slice(0,3).join(' ')}</td><td>${p.hk}</td><td>${p.hd}</td><td>${p.tk}</td><td style="${cl};font-weight:700">${pct}%</td></tr>`;
+          <thead><tr><th>Nama Pegawai</th><th>HK</th><th>HD</th><th>TK</th><th>%</th></tr></thead>
+          <tbody>${rows.map(p => {
+            const pct = p.hk > 0 ? Math.round(p.hd / p.hk * 100) : 0;
+            const cl = pct === 100 ? 'color:var(--green-600)' : pct >= 90 ? 'color:var(--gold-500)' : 'color:var(--red-600)';
+            return `<tr>
+              <td>${p.nama.split(',')[0].split(' ').slice(0,4).join(' ')}</td>
+              <td>${p.hk}</td><td>${p.hd}</td>
+              <td style="${p.tk > 0 ? 'color:var(--red-600);font-weight:700' : ''}">${p.tk}</td>
+              <td style="${cl};font-weight:700">${pct}%</td>
+            </tr>`;
           }).join('')}</tbody>
         </table>
       </div>`;
@@ -924,33 +1440,49 @@ function renderAbsensiTab() {
   });
 }
 
-/* ── Render tab kinerja ── */
+/* ══════════════════════════════════════════════════════
+   TAB KINERJA
+══════════════════════════════════════════════════════ */
 function renderKinerjaTab() {
   const bulanList = Object.keys(NILAI).sort(sortBulan);
   const container = document.getElementById('kinMonthGrid');
   container.innerHTML = '';
   if (!bulanList.length) {
-    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      <p>Belum ada file nilai SKP yang diupload.<br>Upload file Rekap Nilai untuk melihat data ini.</p>
+    container.innerHTML = `<div class="empty-state">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <p>Data nilai SKP belum tersedia.</p>
     </div>`;
     return;
   }
-  const colors = ['linear-gradient(90deg,#16a34a,#15803d)','linear-gradient(90deg,#d97706,#b45309)','linear-gradient(90deg,#7c3aed,#5b21b6)','linear-gradient(90deg,#0891b2,#0e7490)','linear-gradient(90deg,#db2777,#be185d)','linear-gradient(90deg,#1a4fa0,#0d2f6e)'];
+  const kinColors = [
+    'linear-gradient(90deg,#15803d,#16a34a)',
+    'linear-gradient(90deg,#b45309,#d97706)',
+    'linear-gradient(90deg,#6d28d9,#7c3aed)',
+    'linear-gradient(90deg,#0369a1,#0284c7)',
+    'linear-gradient(90deg,#be185d,#db2777)',
+    'linear-gradient(90deg,#163060,#2452a0)',
+  ];
   bulanList.forEach((bulan, idx) => {
-    const rows = [...NILAI[bulan]].sort((a,b)=>b.rataRata-a.rataRata);
+    const rows = [...NILAI[bulan]].sort((a, b) => b.rataRata - a.rataRata);
     const card = document.createElement('div');
-    card.className = 'month-card';
+    card.className = 'month-card fade-in';
+    card.style.animationDelay = (idx * 0.05) + 's';
     card.innerHTML = `
-      <div class="month-head" style="background:${colors[idx%colors.length]}">
-        <span>${bulan}</span><span style="font-size:11px;opacity:.8">${rows.length} Pegawai</span>
+      <div class="month-head" style="background:${kinColors[idx % kinColors.length]}">
+        <span>${bulan}</span><span>${rows.length} Pegawai</span>
       </div>
       <div class="month-scroll">
         <table class="mini-table">
-          <thead><tr><th>Nama</th><th>H.Kerja</th><th>Perilaku</th><th>Rata-rata</th><th>Predikat</th></tr></thead>
-          <tbody>${rows.map(p=>{
-            const cl = p.predikat==='Sangat Baik'?'color:var(--g6);':'color:var(--o7);';
-            return `<tr><td>${p.nama.split(',')[0].split(' ').slice(0,3).join(' ')}</td><td style="font-weight:700">${p.hasilKerja.toFixed(2)}</td><td>${p.perilaku.toFixed(2)}</td><td style="font-weight:700;color:var(--b8)">${p.rataRata.toFixed(2)}</td><td style="${cl}font-size:10.5px;font-weight:700">${p.predikat}</td></tr>`;
+          <thead><tr><th>Nama Pegawai</th><th>H.Kerja</th><th>Perilaku</th><th>Rata-rata</th><th>Predikat</th></tr></thead>
+          <tbody>${rows.map(p => {
+            const isSB = p.predikat === 'Sangat Baik';
+            return `<tr>
+              <td>${p.nama.split(',')[0].split(' ').slice(0,3).join(' ')}</td>
+              <td style="font-weight:700">${p.hasilKerja.toFixed(2)}</td>
+              <td>${p.perilaku.toFixed(2)}</td>
+              <td style="font-weight:800;color:var(--navy-700)">${p.rataRata.toFixed(2)}</td>
+              <td style="font-size:10.5px;font-weight:700;${isSB ? 'color:var(--green-600)' : 'color:var(--gold-600)'}">${p.predikat}</td>
+            </tr>`;
           }).join('')}</tbody>
         </table>
       </div>`;
@@ -962,48 +1494,56 @@ function renderKinerjaTab() {
    HELPERS
 ══════════════════════════════════════════════════════ */
 const BULAN_ORDER = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+function normBulan(raw) {
+  const r = raw.toLowerCase().trim();
+  const y = r.match(/\d{4}/)?.[0] || '';
+  const hasYear = v => y ? `${v} ${y}` : v;
+  if (r.includes('jan')) return hasYear('Januari');
+  if (r.includes('feb')) return hasYear('Februari');
+  if (r.includes('mar')) return hasYear('Maret');
+  if (r.includes('apr')) return hasYear('April');
+  if (r.includes('mei') || r.includes('may')) return hasYear('Mei');
+  if (r.includes('jun')) return hasYear('Juni');
+  if (r.includes('jul')) return hasYear('Juli');
+  if (r.includes('agu') || r.includes('aug')) return hasYear('Agustus');
+  if (r.includes('sep')) return hasYear('September');
+  if (r.includes('okt') || r.includes('oct')) return hasYear('Oktober');
+  if (r.includes('nov')) return hasYear('November');
+  if (r.includes('des') || r.includes('dec')) return hasYear('Desember');
+  return raw.trim();
+}
+
 function sortBulan(a, b) {
-  const [bA,yA] = a.split(' '); const [bB,yB] = b.split(' ');
-  if (yA !== yB) return (parseInt(yA)||0) - (parseInt(yB)||0);
+  const [bA, yA] = a.split(' ');
+  const [bB, yB] = b.split(' ');
+  if (yA !== yB) return (parseInt(yA) || 0) - (parseInt(yB) || 0);
   return BULAN_ORDER.indexOf(bA) - BULAN_ORDER.indexOf(bB);
 }
+
 function setPeriod(p, btn) {
   currentPeriod = p;
   document.querySelectorAll('#periodPills .pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
+
 function filterJab(btn, f) {
   currentFilter = f;
   document.querySelectorAll('#filterRow .fbtn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
+
 function switchTab(name, btn) {
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   btn.classList.add('active');
 }
-function resetUpload() {
-  PRESENSI = {}; NILAI = {}; nilaiFiles = [];
-  currentPeriod = ''; currentFilter = 'Semua';
-  document.getElementById('uploadScreen').style.display = 'block';
-  document.getElementById('mainScreen').style.display  = 'none';
-  document.getElementById('tabsBar').style.display     = 'none';
-  document.getElementById('filePresensi').value = '';
-  document.getElementById('fileNilai').value    = '';
-  document.getElementById('cardPresensi').className = 'upload-card';
-  document.getElementById('cardNilai').className   = 'upload-card';
-  document.getElementById('badgePresensi').className = 'uc-badge uc-badge-wait';
-  document.getElementById('badgePresensi').textContent = 'Belum ada file';
-  document.getElementById('nilaiFileList').innerHTML = `<div class="uc-badge uc-badge-wait" id="badgeNilai"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Belum ada file</div>`;
-  document.getElementById('btnProses').disabled = true;
-  document.getElementById('uploadNote').textContent = 'Upload minimal file Presensi untuk mulai memproses.';
-  document.getElementById('headerBadgePeriode').textContent = '—';
-  document.getElementById('headerBadgeTahun').textContent   = '—';
-  if (distChartInst) { distChartInst.destroy(); distChartInst = null; }
-}
+
+/* ══ START ══ */
+loadAllData();
 </script>
 </body>
 </html>
