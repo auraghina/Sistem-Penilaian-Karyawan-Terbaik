@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -932,6 +934,30 @@
 
 <script>
 /* ══════════════════════════════════════════════════════
+   FIREBASE CONFIG (untuk override peringkat 3 besar oleh admin)
+══════════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyA3Mz21v-ag7rL0dnBZEqvXC71PPoPPSNo",
+  authDomain: "sistem-penilaian-pegawai.firebaseapp.com",
+  databaseURL: "https://sistem-penilaian-pegawai-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "sistem-penilaian-pegawai",
+  storageBucket: "sistem-penilaian-pegawai.firebasestorage.app",
+  messagingSenderId: "914274054765",
+  appId: "1:914274054765:web:b38baf00bce1275bec0564"
+};
+firebase.initializeApp(firebaseConfig);
+const fbDB = firebase.database();
+
+// Override peringkat 3 besar: { period: { nipOrder: ['nip1','nip2','nip3'] } }
+let OVERRIDES = {};
+
+function loadOverrides() {
+  return fbDB.ref('overrides').once('value').then(snap => {
+    OVERRIDES = snap.val() || {};
+  }).catch(() => { OVERRIDES = {}; });
+}
+
+/* ══════════════════════════════════════════════════════
    KONFIGURASI SPREADSHEET
    Ganti Sheet ID di sini jika ada perubahan file
 ══════════════════════════════════════════════════════ */
@@ -1095,8 +1121,10 @@ async function loadAllData() {
       }
     });
 
+    // Override peringkat 3 besar dari admin
+    await loadOverrides();
+
     showLoading(false);
-    initDashboard();
     updateFooterTime();
 
   } catch (e) {
@@ -1200,7 +1228,7 @@ function buildData(period) {
     presList = PRESENSI[period] || [];
   }
 
-  return presList.map(p => {
+  const sorted = presList.map(p => {
     const pctHadir  = p.hk > 0 ? (p.hd / p.hk) * 100 : 0;
     const skorHadir = Math.min(100, Math.max(0, pctHadir - p.tk * 2));
     const nilaiSKP  = avgNilaiSKP(p.nip);
@@ -1219,6 +1247,30 @@ function buildData(period) {
       kat: katJabatan(jabatan)
     };
   }).sort((a, b) => b.nilaiAkhir - a.nilaiAkhir);
+
+  return applyOverride(sorted, period);
+}
+
+/* Terapkan urutan manual dari admin (jika ada) untuk 3 besar yang nilainya sama */
+function applyOverride(sorted, period) {
+  const order = OVERRIDES[period.replace(/[.#$\[\]\/]/g, '_')];
+  if (!order || !order.length) return sorted;
+
+  const top3 = sorted.slice(0, 3);
+  // hanya berlaku jika minimal 2 dari top3 punya nilai akhir sama (ada tie)
+  const vals = top3.map(p => p.nilaiAkhir);
+  const hasTie = new Set(vals).size < vals.length;
+  if (!hasTie) return sorted;
+
+  // urutkan ulang top3 berdasarkan urutan NIP dari override,
+  // sisanya (yang tidak ada di override) tetap di posisi belakang sesuai nilai
+  const byNip = {};
+  top3.forEach(p => byNip[p.nip] = p);
+  const reordered = [];
+  order.forEach(nip => { if (byNip[nip]) { reordered.push(byNip[nip]); delete byNip[nip]; } });
+  Object.values(byNip).forEach(p => reordered.push(p));
+
+  return [...reordered, ...sorted.slice(3)];
 }
 
 /* ══════════════════════════════════════════════════════
