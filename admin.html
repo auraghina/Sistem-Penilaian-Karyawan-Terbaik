@@ -12,225 +12,201 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --navy-950: #0a1628;
-      --navy-900: #0f2044;
-      --navy-800: #163060;
-      --navy-700: #1e4080;
-      --navy-600: #2452a0;
-      --navy-100: #dce8f9;
-      --navy-50:  #eef4fd;
-      --gold-600: #b45309;
-      --gold-500: #d97706;
-      --gold-400: #f59e0b;
-      --gold-100: #fef3c7;
-      --green-600: #16a34a;
-      --green-100: #dcfce7;
-      --red-600:  #dc2626;
-      --red-100:  #fee2e2;
-      --gray-900: #1a1f2e;
-      --gray-700: #374151;
-      --gray-500: #6b7280;
-      --gray-400: #9ca3af;
-      --gray-300: #d1d5db;
-      --gray-200: #e5e7eb;
-      --gray-100: #f3f4f6;
-      --gray-50:  #f9fafb;
-      --white:    #ffffff;
-      --radius-md: 10px;
-      --radius-lg: 14px;
-      --radius-xl: 18px;
-      --radius-full: 9999px;
+      --navy-950: #0a1628; --navy-900: #0f2044; --navy-800: #163060;
+      --navy-700: #1e4080; --navy-600: #2452a0; --navy-100: #dce8f9; --navy-50: #eef4fd;
+      --gold-600: #b45309; --gold-500: #d97706; --gold-400: #f59e0b;
+      --gold-100: #fef3c7; --gold-50: #fffbeb;
+      --green-700: #15803d; --green-600: #16a34a; --green-100: #dcfce7; --green-50: #f0fdf4;
+      --red-700: #b91c1c; --red-600: #dc2626; --red-100: #fee2e2; --red-50: #fef2f2;
+      --gray-900: #1a1f2e; --gray-700: #374151; --gray-600: #4b5563;
+      --gray-500: #6b7280; --gray-400: #9ca3af; --gray-300: #d1d5db;
+      --gray-200: #e5e7eb; --gray-100: #f3f4f6; --gray-50: #f9fafb; --white: #ffffff;
+      --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
+      --radius-xl: 18px; --radius-full: 9999px;
       --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
       --shadow-md: 0 4px 16px rgba(0,0,0,.10);
       --shadow-lg: 0 8px 32px rgba(0,0,0,.13);
     }
     html { font-size: 14px; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--gray-100);
-      color: var(--gray-900);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--gray-100); color: var(--gray-900); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-    /* ══ TOPBAR ══ */
-    .topbar {
-      background: var(--navy-900);
-      border-bottom: 3px solid var(--gold-400);
-      box-shadow: var(--shadow-lg);
-    }
-    .topbar-inner {
-      display: flex; align-items: center; gap: 16px;
-      padding: 14px 32px; max-width: 1100px; margin: 0 auto;
-    }
-    .logo-box {
-      width: 48px; height: 48px; background: var(--white);
-      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
-      overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,.25); padding: 4px;
-    }
+    /* ── TOPBAR ── */
+    .topbar { background: var(--navy-900); border-bottom: 3px solid var(--gold-400); box-shadow: var(--shadow-lg); }
+    .topbar-inner { display: flex; align-items: center; gap: 16px; padding: 14px 32px; max-width: 1100px; margin: 0 auto; }
+    .logo-box { width: 48px; height: 48px; background: var(--white); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,.25); padding: 4px; }
     .logo-box img { width: 100%; height: 100%; object-fit: contain; }
-    .logo-fallback {
-      display:none; align-items:center; justify-content:center; width:100%; height:100%;
-      background: var(--navy-800); border-radius: 6px; color: white; font-weight: 800; font-size: 13px;
-    }
+    .logo-fallback { display:none; align-items:center; justify-content:center; width:100%; height:100%; background: var(--navy-800); border-radius: 6px; color: white; font-weight: 800; font-size: 13px; }
     .topbar-text { flex: 1; }
     .topbar-title { font-size: 15px; font-weight: 800; color: var(--white); }
     .topbar-sub { font-size: 11.5px; color: rgba(255,255,255,.5); margin-top: 2px; }
-    .admin-badge {
-      background: var(--gold-400); color: var(--navy-950);
-      font-size: 11.5px; font-weight: 700; padding: 5px 14px; border-radius: var(--radius-full);
-    }
-    .link-back {
-      color: rgba(255,255,255,.6); font-size: 12.5px; text-decoration: none;
-      display: flex; align-items: center; gap: 5px;
-    }
+    .admin-badge { background: var(--gold-400); color: var(--navy-950); font-size: 11.5px; font-weight: 700; padding: 5px 14px; border-radius: var(--radius-full); }
+    .link-back { color: rgba(255,255,255,.6); font-size: 12.5px; text-decoration: none; display: flex; align-items: center; gap: 5px; }
     .link-back:hover { color: var(--white); }
 
-    /* ══ PAGE ══ */
+    /* ── PAGE ── */
     .page { max-width: 1100px; margin: 0 auto; padding: 32px; }
 
-    /* ══ LOGIN ══ */
-    .login-wrap {
-      min-height: 70vh; display: flex; align-items: center; justify-content: center;
-    }
-    .login-card {
-      background: var(--white); border: 1px solid var(--gray-200);
-      border-radius: var(--radius-xl); padding: 36px;
-      box-shadow: var(--shadow-md); width: 100%; max-width: 380px; text-align: center;
-    }
-    .login-icon {
-      width: 56px; height: 56px; background: var(--navy-50); color: var(--navy-700);
-      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px;
-    }
+    /* ── LOGIN ── */
+    .login-wrap { min-height: 70vh; display: flex; align-items: center; justify-content: center; }
+    .login-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-xl); padding: 36px; box-shadow: var(--shadow-md); width: 100%; max-width: 380px; text-align: center; }
+    .login-icon { width: 56px; height: 56px; background: var(--navy-50); color: var(--navy-700); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
     .login-card h2 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
     .login-card p { font-size: 12.5px; color: var(--gray-500); line-height: 1.7; margin-bottom: 22px; }
-    .login-input {
-      width: 100%; padding: 12px 16px; border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md); font-size: 14px; font-family: inherit;
-      margin-bottom: 14px; transition: border-color .15s;
-    }
+    .login-input { width: 100%; padding: 12px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-md); font-size: 14px; font-family: inherit; margin-bottom: 14px; transition: border-color .15s; }
     .login-input:focus { outline: none; border-color: var(--navy-500); }
-    .login-error {
-      color: var(--red-600); font-size: 12px; font-weight: 600; margin-bottom: 12px;
-      display: none;
-    }
+    .login-error { color: var(--red-600); font-size: 12px; font-weight: 600; margin-bottom: 12px; display: none; }
     .login-error.show { display: block; }
-    .btn-primary {
-      width: 100%; background: var(--navy-700); color: var(--white);
-      border: none; font-size: 14px; font-weight: 700;
-      padding: 12px; border-radius: var(--radius-full);
-      cursor: pointer; font-family: inherit; transition: background .2s;
-    }
+    .btn-primary { width: 100%; background: var(--navy-700); color: var(--white); border: none; font-size: 14px; font-weight: 700; padding: 12px; border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: background .2s; }
     .btn-primary:hover { background: var(--navy-600); }
 
-    /* ══ ADMIN CONTENT ══ */
+    /* ── ADMIN CONTENT ── */
     .admin-content { display: none; }
     .admin-content.show { display: block; }
 
-    .intro-card {
-      background: var(--white); border: 1px solid var(--gray-200);
-      border-radius: var(--radius-lg); padding: 20px 24px;
-      box-shadow: var(--shadow-sm); margin-bottom: 20px;
-    }
-    .intro-card h1 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    /* ── TABS ── */
+    .admin-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--gray-200); margin-bottom: 24px; }
+    .admin-tab { padding: 12px 22px; font-size: 13px; font-weight: 600; color: var(--gray-400); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .2s; background: none; border-top: none; border-left: none; border-right: none; font-family: inherit; }
+    .admin-tab:hover { color: var(--gray-700); }
+    .admin-tab.active { color: var(--navy-700); border-bottom-color: var(--navy-700); }
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+
+    /* ── INTRO CARD ── */
+    .intro-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 20px 24px; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
+    .intro-card h1 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
     .intro-card p { font-size: 13px; color: var(--gray-500); line-height: 1.8; }
     .intro-card p b { color: var(--gray-700); }
 
-    .period-select-wrap {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
-    }
+    /* ── PERIOD SELECT ── */
+    .period-select-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
     .period-select-wrap label { font-size: 12.5px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; }
-    .period-select {
-      padding: 9px 16px; border: 1px solid var(--gray-200);
-      border-radius: var(--radius-full); font-size: 13px; font-weight: 600;
-      font-family: inherit; background: var(--white); color: var(--gray-900);
-      cursor: pointer;
-    }
+    .period-select { padding: 9px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-full); font-size: 13px; font-weight: 600; font-family: inherit; background: var(--white); color: var(--gray-900); cursor: pointer; }
 
-    /* ══ STATUS ══ */
-    .status-banner {
-      padding: 12px 18px; border-radius: var(--radius-md);
-      font-size: 12.5px; font-weight: 600; margin-bottom: 18px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .status-tie { background: var(--gold-100); color: var(--gold-600); }
-    .status-notie { background: var(--gray-100); color: var(--gray-500); }
-    .status-saved { background: var(--green-100); color: #15803d; }
+    /* ── STATUS BANNER ── */
+    .status-banner { padding: 12px 18px; border-radius: var(--radius-md); font-size: 12.5px; font-weight: 600; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .status-tie    { background: var(--gold-100); color: var(--gold-600); }
+    .status-notie  { background: var(--gray-100); color: var(--gray-500); }
+    .status-saved  { background: var(--green-100); color: var(--green-700); }
+    .status-error  { background: var(--red-100); color: var(--red-600); }
 
-    /* ══ RANK CARDS ══ */
+    /* ── RANK CARDS (urutan) ── */
     .rank-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-    .rank-card {
-      background: var(--white); border: 1px solid var(--gray-200);
-      border-radius: var(--radius-lg); padding: 14px 18px;
-      display: flex; align-items: center; gap: 14px;
-      box-shadow: var(--shadow-sm);
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .rank-card.tied { border-color: var(--gold-400); background: var(--gold-100)0a; }
+    .rank-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-sm); transition: border-color .2s; }
+    .rank-card.tied { border-color: var(--gold-400); background: #fffbf0; }
     .rank-card.dragging { opacity: .5; }
-
-    .drag-handle {
-      cursor: grab; color: var(--gray-300); flex-shrink: 0;
-      display: flex; align-items: center;
-    }
+    .drag-handle { cursor: grab; color: var(--gray-300); flex-shrink: 0; display: flex; align-items: center; }
     .drag-handle:active { cursor: grabbing; }
-
-    .rank-pos {
-      width: 38px; height: 38px; border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 800; flex-shrink: 0;
-    }
+    .rank-pos { width: 38px; height: 38px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; }
     .rp-1 { background: #fef9c3; color: #713f12; }
     .rp-2 { background: var(--gray-200); color: var(--gray-600); }
     .rp-3 { background: var(--gold-100); color: var(--gold-600); }
-    .rp-n { background: var(--gray-50); color: var(--gray-400); }
-
     .rank-info { flex: 1; min-width: 0; }
     .rank-name { font-size: 14px; font-weight: 700; color: var(--gray-900); }
     .rank-detail { font-size: 11.5px; color: var(--gray-400); margin-top: 2px; }
     .rank-job { font-size: 11.5px; color: var(--navy-600); margin-top: 1px; font-weight: 500; }
-
     .rank-score { text-align: right; flex-shrink: 0; }
     .rank-score-val { font-size: 20px; font-weight: 800; color: var(--navy-700); }
     .rank-score-lbl { font-size: 10.5px; color: var(--gray-400); margin-top: 2px; }
+    .tie-tag { background: var(--gold-400); color: var(--navy-950); font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: var(--radius-full); flex-shrink: 0; text-transform: uppercase; letter-spacing: .4px; }
 
-    .tie-tag {
-      background: var(--gold-400); color: var(--navy-950);
-      font-size: 10px; font-weight: 800; padding: 3px 9px;
-      border-radius: var(--radius-full); flex-shrink: 0; text-transform: uppercase; letter-spacing: .4px;
-    }
-
-    /* ══ ACTIONS ══ */
-    .action-bar {
-      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-      padding-top: 16px; border-top: 1px solid var(--gray-200);
-    }
-    .btn-save {
-      background: var(--navy-700); color: var(--white); border: none;
-      font-size: 13.5px; font-weight: 700; padding: 11px 28px;
-      border-radius: var(--radius-full); cursor: pointer; font-family: inherit;
-      transition: background .2s; display: flex; align-items: center; gap: 8px;
-    }
+    /* ── ACTION BAR ── */
+    .action-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding-top: 16px; border-top: 1px solid var(--gray-200); }
+    .btn-save { background: var(--navy-700); color: var(--white); border: none; font-size: 13.5px; font-weight: 700; padding: 11px 28px; border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: background .2s; display: flex; align-items: center; gap: 8px; }
     .btn-save:hover { background: var(--navy-600); }
     .btn-save:disabled { opacity: .5; cursor: not-allowed; }
-    .btn-reset-order {
-      background: var(--white); color: var(--gray-600); border: 1px solid var(--gray-200);
-      font-size: 13px; font-weight: 600; padding: 10px 22px;
-      border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: all .2s;
-    }
-    .btn-reset-order:hover { border-color: var(--red-600); color: var(--red-600); }
+    .btn-outline { background: var(--white); color: var(--gray-600); border: 1px solid var(--gray-200); font-size: 13px; font-weight: 600; padding: 10px 22px; border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: all .2s; }
+    .btn-outline:hover { border-color: var(--red-600); color: var(--red-600); }
 
-    .empty-state {
-      text-align: center; padding: 60px 20px; color: var(--gray-400);
+    /* ══════════════════════════════════════════
+       PANEL KOREKSI NILAI
+    ══════════════════════════════════════════ */
+    .koreksi-toolbar {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px; flex-wrap: wrap;
     }
-    .empty-state svg { margin: 0 auto 14px; display: block; }
-    .empty-state p { font-size: 13px; line-height: 1.8; }
+    .search-input {
+      flex: 1; min-width: 200px;
+      padding: 9px 14px; border: 1px solid var(--gray-200);
+      border-radius: var(--radius-full); font-size: 13px;
+      font-family: inherit; transition: border-color .15s;
+    }
+    .search-input:focus { outline: none; border-color: var(--navy-500); }
+    .btn-save-all {
+      background: var(--green-600); color: var(--white); border: none;
+      font-size: 13px; font-weight: 700; padding: 9px 22px;
+      border-radius: var(--radius-full); cursor: pointer; font-family: inherit;
+      transition: background .2s; display: flex; align-items: center; gap: 7px;
+      flex-shrink: 0;
+    }
+    .btn-save-all:hover { background: var(--green-700); }
+    .btn-save-all:disabled { opacity: .5; cursor: not-allowed; }
 
-    @media (max-width: 600px) {
-      .page { padding: 18px; }
-      .rank-card { padding: 12px 14px; gap: 10px; }
-      .rank-name { font-size: 13px; }
+    /* Tabel koreksi */
+    .koreksi-table-wrap { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .koreksi-table { width: 100%; border-collapse: collapse; }
+    .koreksi-table thead tr { background: var(--gray-50); border-bottom: 2px solid var(--gray-200); }
+    .koreksi-table th { padding: 10px 16px; font-size: 10.5px; font-weight: 700; color: var(--gray-400); text-align: left; text-transform: uppercase; letter-spacing: .6px; white-space: nowrap; }
+    .koreksi-table th.tc { text-align: center; }
+    .koreksi-table tbody tr { border-bottom: 1px solid var(--gray-100); transition: background .1s; }
+    .koreksi-table tbody tr:hover { background: var(--navy-50); }
+    .koreksi-table td { padding: 11px 16px; font-size: 13px; color: var(--gray-700); vertical-align: middle; }
+
+    .emp-row-sm { display: flex; align-items: center; gap: 9px; }
+    .av-sm { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: var(--white); flex-shrink: 0; }
+    .emp-name-sm { font-size: 12.5px; font-weight: 700; color: var(--gray-900); }
+    .emp-nip-sm { font-size: 10.5px; color: var(--gray-400); }
+
+    /* Nilai display */
+    .nilai-orig { font-size: 13px; font-weight: 700; color: var(--gray-500); text-decoration: line-through; display: none; }
+    .nilai-orig.show { display: block; }
+    .nilai-final { font-size: 14px; font-weight: 800; }
+    .nilai-final.modified { color: var(--red-600); }
+    .nilai-final.normal   { color: var(--navy-700); }
+
+    /* Input koreksi */
+    .koreksi-wrap { display: flex; align-items: center; gap: 6px; }
+    .koreksi-input {
+      width: 70px; padding: 6px 10px;
+      border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+      font-size: 13px; font-weight: 700; font-family: inherit;
+      text-align: center; transition: border-color .15s;
+    }
+    .koreksi-input:focus { outline: none; border-color: var(--red-600); }
+    .koreksi-input.has-val { border-color: var(--red-400); background: var(--red-50); color: var(--red-700); }
+    .koreksi-lbl { font-size: 11px; color: var(--gray-400); white-space: nowrap; }
+    .btn-clear-koreksi {
+      background: none; border: none; cursor: pointer; padding: 4px;
+      color: var(--gray-300); transition: color .15s; line-height: 0;
+    }
+    .btn-clear-koreksi:hover { color: var(--red-600); }
+
+    /* Alasan koreksi */
+    .alasan-input {
+      width: 100%; padding: 6px 10px;
+      border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+      font-size: 12px; font-family: inherit; color: var(--gray-700);
+      transition: border-color .15s; min-width: 120px;
+    }
+    .alasan-input:focus { outline: none; border-color: var(--navy-400); }
+
+    /* Riwayat */
+    .riwayat-list { display: flex; flex-direction: column; gap: 8px; }
+    .riwayat-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 14px 18px; box-shadow: var(--shadow-sm); }
+    .riwayat-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+    .riwayat-nama { font-size: 13px; font-weight: 700; color: var(--gray-900); }
+    .riwayat-time { font-size: 11px; color: var(--gray-400); flex-shrink: 0; }
+    .riwayat-detail { font-size: 12.5px; color: var(--gray-600); line-height: 1.7; }
+    .riwayat-detail b { color: var(--gray-900); }
+    .badge-koreksi { display: inline-flex; align-items: center; gap: 4px; background: var(--red-100); color: var(--red-600); font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: var(--radius-full); margin-top: 6px; }
+    .riwayat-alasan { margin-top: 5px; font-size: 11.5px; color: var(--gray-500); font-style: italic; }
+
+    .empty-state { text-align: center; padding: 56px 20px; color: var(--gray-400); grid-column: 1/-1; }
+    .empty-state p { font-size: 13px; line-height: 1.8; margin-top: 12px; }
+
+    @media (max-width: 700px) {
+      .page { padding: 16px; }
+      .topbar-inner { padding: 12px 16px; }
+      .koreksi-table th:nth-child(5), .koreksi-table td:nth-child(5) { display: none; }
     }
   </style>
 </head>
@@ -250,7 +226,7 @@
     <span class="admin-badge">Khusus Admin</span>
     <a class="link-back" href="index.html">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-      Kembali ke Dashboard
+      Kembali
     </a>
   </div>
 </header>
@@ -264,9 +240,10 @@
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
       <h2>Masuk sebagai Admin</h2>
-      <p>Masukkan password untuk mengatur urutan peringkat pegawai yang memiliki nilai sama.</p>
+      <p>Masukkan password untuk mengelola peringkat dan koreksi nilai pegawai.</p>
       <div class="login-error" id="loginError">Password salah. Coba lagi.</div>
-      <input type="password" class="login-input" id="loginInput" placeholder="Password admin" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <input type="password" class="login-input" id="loginInput" placeholder="Password admin"
+             onkeydown="if(event.key==='Enter')doLogin()"/>
       <button class="btn-primary" onclick="doLogin()">Masuk</button>
     </div>
   </div>
@@ -274,37 +251,89 @@
   <!-- ══ ADMIN CONTENT ══ -->
   <div class="admin-content" id="adminContent">
 
-    <div class="intro-card">
-      <h1>Atur Peringkat Pegawai Terbaik</h1>
-      <p>
-        Jika ada <b>2 atau lebih pegawai dengan nilai akhir yang sama</b> di posisi 3 besar,
-        Anda dapat mengatur urutan tampilannya di dashboard dengan cara <b>drag &amp; drop</b> kartu di bawah.
-        Perubahan akan langsung tersinkron dan terlihat oleh semua pengguna.
-      </p>
+    <!-- TABS -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchAdminTab('urutan',this)">🏆 Atur Urutan Peringkat</button>
+      <button class="admin-tab" onclick="switchAdminTab('koreksi',this)">✏️ Koreksi Nilai</button>
+      <button class="admin-tab" onclick="switchAdminTab('riwayat',this)">📋 Riwayat Koreksi</button>
     </div>
 
-    <div class="period-select-wrap">
-      <label>Periode</label>
-      <select class="period-select" id="periodSelect" onchange="onPeriodChange()"></select>
+    <!-- ══ PANEL 1: URUTAN PERINGKAT ══ -->
+    <div class="admin-panel active" id="panel-urutan">
+      <div class="intro-card">
+        <h1>Atur Urutan Peringkat</h1>
+        <p>Jika ada <b>2 atau lebih pegawai dengan nilai akhir yang sama</b> di posisi 3 besar,
+        geser kartu untuk mengatur urutan tampilan di dashboard.</p>
+      </div>
+      <div class="period-select-wrap">
+        <label>Periode</label>
+        <select class="period-select" id="periodSelectUrutan" onchange="onPeriodUrutanChange()"></select>
+      </div>
+      <div id="statusBannerUrutan"></div>
+      <div class="rank-list" id="rankList"></div>
+      <div class="action-bar" id="actionBarUrutan" style="display:none">
+        <button class="btn-save" id="btnSaveUrutan" onclick="saveOverride()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Simpan Urutan
+        </button>
+        <button class="btn-outline" onclick="resetOrder()">Reset ke Urutan Asli</button>
+      </div>
     </div>
 
-    <div id="statusBanner"></div>
-    <div class="rank-list" id="rankList"></div>
-
-    <div class="action-bar" id="actionBar" style="display:none">
-      <button class="btn-save" id="btnSave" onclick="saveOverride()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Simpan Urutan
-      </button>
-      <button class="btn-reset-order" onclick="resetOrder()">Reset ke Urutan Asli</button>
+    <!-- ══ PANEL 2: KOREKSI NILAI ══ -->
+    <div class="admin-panel" id="panel-koreksi">
+      <div class="intro-card">
+        <h1>Koreksi Nilai Pegawai</h1>
+        <p>Masukkan <b>jumlah pengurangan</b> pada kolom "Kurangi" untuk setiap pegawai yang perlu dikoreksi.
+        Nilai akhir baru akan langsung terhitung otomatis.
+        Klik <b>Simpan Semua Koreksi</b> jika sudah sesuai.</p>
+      </div>
+      <div class="period-select-wrap">
+        <label>Periode</label>
+        <select class="period-select" id="periodSelectKoreksi" onchange="onPeriodKoreksiChange()"></select>
+      </div>
+      <div class="koreksi-toolbar">
+        <input type="text" class="search-input" id="searchKoreksi" placeholder="🔍 Cari nama pegawai..." oninput="filterKoreksi()"/>
+        <button class="btn-save-all" id="btnSaveKoreksi" onclick="saveKoreksi()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Simpan Semua Koreksi
+        </button>
+      </div>
+      <div id="statusBannerKoreksi"></div>
+      <div class="koreksi-table-wrap">
+        <table class="koreksi-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nama Pegawai</th>
+              <th class="tc">Nilai Akhir Asli</th>
+              <th class="tc">Kurangi (−)</th>
+              <th>Alasan Koreksi</th>
+              <th class="tc">Nilai Setelah Koreksi</th>
+            </tr>
+          </thead>
+          <tbody id="koreksiBody"></tbody>
+        </table>
+      </div>
     </div>
 
-  </div>
+    <!-- ══ PANEL 3: RIWAYAT ══ -->
+    <div class="admin-panel" id="panel-riwayat">
+      <div class="intro-card">
+        <h1>Riwayat Koreksi Nilai</h1>
+        <p>Semua koreksi nilai yang pernah disimpan akan muncul di sini beserta alasan dan waktu penyimpanannya.</p>
+      </div>
+      <div id="riwayatList">
+        <div class="empty-state"><p>Belum ada riwayat koreksi.</p></div>
+      </div>
+    </div>
+
+  </div><!-- /admin-content -->
 </div>
 
 <script>
 /* ══════════════════════════════════════════════════════
-   AUTH SEDERHANA
+   AUTH
 ══════════════════════════════════════════════════════ */
 const ADMIN_PASSWORD = 'bps7271';
 
@@ -319,15 +348,13 @@ function doLogin() {
     document.getElementById('loginError').classList.add('show');
   }
 }
-
-// Auto-login jika sudah pernah login di tab ini
 if (sessionStorage.getItem('bps_admin_auth') === '1') {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('adminContent').classList.add('show');
 }
 
 /* ══════════════════════════════════════════════════════
-   FIREBASE CONFIG
+   FIREBASE
 ══════════════════════════════════════════════════════ */
 const firebaseConfig = {
   apiKey: "AIzaSyA3Mz21v-ag7rL0dnBZEqvXC71PPoPPSNo",
@@ -342,7 +369,7 @@ firebase.initializeApp(firebaseConfig);
 const fbDB = firebase.database();
 
 /* ══════════════════════════════════════════════════════
-   KONFIGURASI SPREADSHEET — sama seperti index.html
+   KONFIGURASI SPREADSHEET
 ══════════════════════════════════════════════════════ */
 const SHEETS = {
   presensi: '1KxFyDzl9RJMePt7eLqAP3sPKfFZ-KqeH',
@@ -353,15 +380,24 @@ const SHEETS = {
   ]
 };
 
+/* ══════════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════════ */
 let PRESENSI = {};
-let NILAI = {};
-let OVERRIDES = {};
-let currentPeriod = '';
-let currentTop3 = [];   // urutan kerja saat ini (bisa diubah drag)
-let originalTop3 = [];  // urutan asli berdasarkan nilai
+let NILAI    = {};
+let OVERRIDES   = {};   // urutan 3 besar
+let KOREKSI_DB  = {};   // { nip: { pengurangan, alasan, savedAt } }
+let RIWAYAT_DB  = [];   // array log riwayat
+
+let currentPeriodUrutan  = '';
+let currentPeriodKoreksi = '';
+let currentTop3     = [];
+let originalTop3    = [];
+let allDataKoreksi  = [];   // semua pegawai periode aktif untuk tabel koreksi
+let filteredKoreksi = [];
 
 /* ══════════════════════════════════════════════════════
-   FETCH & PARSE (sama seperti index.html)
+   FETCH & PARSE
 ══════════════════════════════════════════════════════ */
 async function fetchCSV(sheetId) {
   const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
@@ -377,310 +413,473 @@ function parseCSVLine(line) {
     else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
     else cur += c;
   }
-  result.push(cur.trim());
-  return result;
+  result.push(cur.trim()); return result;
 }
-function csvToRows(text) { return text.split('\n').filter(l => l.trim()).map(parseCSVLine); }
+function csvToRows(text) { return text.split('\n').filter(l=>l.trim()).map(parseCSVLine); }
 
 function parsePresensi(text) {
-  const rows = csvToRows(text);
-  let hi = -1;
-  rows.forEach((r, i) => {
-    const f = r.map(c => c.toLowerCase().replace(/"/g,''));
-    if (f.includes('nip') && f.includes('nama') && f.includes('hk') && f.includes('hd')) hi = i;
-  });
-  if (hi === -1) throw new Error('Header presensi tidak ditemukan.');
-  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
-  const iNip = h.indexOf('nip'), iNama = h.indexOf('nama'), iHK = h.indexOf('hk'), iHD = h.indexOf('hd'), iTK = h.indexOf('tk');
-  const iBulan = h.findIndex(x => x.includes('bulan') || x === 'month');
-  const result = {};
-  for (let i = hi + 1; i < rows.length; i++) {
-    const r = rows[i]; if (r.length < 4) continue;
-    const nip = (r[iNip]||'').replace(/"/g,'').trim();
-    const nama = (r[iNama]||'').replace(/"/g,'').trim();
-    if (!nip || !nama || nip.toLowerCase() === 'nip') continue;
-    const hk = parseFloat(r[iHK]) || 0;
-    const hd = parseFloat(r[iHD]) || 0;
-    const tk = iTK >= 0 ? parseFloat(r[iTK]) || 0 : 0;
-    const bulanRaw = iBulan >= 0 ? (r[iBulan]||'') : (r[0]||'');
-    const bulan = normBulan(bulanRaw.replace(/"/g,'').trim());
-    if (!bulan || hk === 0) continue;
-    if (!result[bulan]) result[bulan] = [];
-    if (!result[bulan].find(x => x.nip === nip)) result[bulan].push({ nip, nama, hk, hd, tk });
+  const rows = csvToRows(text); let hi = -1;
+  rows.forEach((r,i)=>{ const f=r.map(c=>c.toLowerCase().replace(/"/g,'')); if(f.includes('nip')&&f.includes('nama')&&f.includes('hk')&&f.includes('hd')) hi=i; });
+  if(hi===-1) throw new Error('Header presensi tidak ditemukan.');
+  const h=rows[hi].map(c=>c.toLowerCase().replace(/"/g,'').trim());
+  const iNip=h.indexOf('nip'),iNama=h.indexOf('nama'),iHK=h.indexOf('hk'),iHD=h.indexOf('hd'),iTK=h.indexOf('tk');
+  const iBulan=h.findIndex(x=>x.includes('bulan')||x==='month');
+  const result={};
+  for(let i=hi+1;i<rows.length;i++){
+    const r=rows[i]; if(r.length<4) continue;
+    const nip=(r[iNip]||'').replace(/"/g,'').trim();
+    const nama=(r[iNama]||'').replace(/"/g,'').trim();
+    if(!nip||!nama||nip.toLowerCase()==='nip') continue;
+    const hk=parseFloat(r[iHK])||0, hd=parseFloat(r[iHD])||0, tk=iTK>=0?parseFloat(r[iTK])||0:0;
+    const bulanRaw=iBulan>=0?(r[iBulan]||''):(r[0]||'');
+    const bulan=normBulan(bulanRaw.replace(/"/g,'').trim());
+    if(!bulan||hk===0) continue;
+    if(!result[bulan]) result[bulan]=[];
+    if(!result[bulan].find(x=>x.nip===nip)) result[bulan].push({nip,nama,hk,hd,tk});
   }
   return result;
 }
-
 function parseNilai(text) {
-  const rows = csvToRows(text);
-  let hi = -1;
-  rows.forEach((r, i) => {
-    const f = r.map(c => c.toLowerCase().replace(/"/g,''));
-    if ((f.some(x => x.includes('nip') || x.includes('niplama'))) && f.some(x => x.includes('nama')) && f.some(x => x.includes('rata'))) hi = i;
-  });
-  if (hi === -1) throw new Error('Header nilai SKP tidak ditemukan.');
-  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
-  const iNip = h.findIndex(x => x.includes('nip') || x.includes('niplama'));
-  const iNama = h.indexOf('nama');
-  const iJab = h.findIndex(x => x.includes('jabatan'));
-  const iBulan = h.indexOf('bulan');
-  const iRata = h.findIndex(x => x.includes('nilai rata') || x === 'nilai rata-rata');
-  const data = [];
-  for (let i = hi + 1; i < rows.length; i++) {
-    const r = rows[i]; if (r.length < 4) continue;
-    const nip = (r[iNip]||'').replace(/"/g,'').trim();
-    const nama = (r[iNama]||'').replace(/"/g,'').trim();
-    if (!nip || !nama || ['nip','niplama'].includes(nip.toLowerCase())) continue;
-    data.push({
-      nip, nama,
-      jabatan: iJab >= 0 ? (r[iJab]||'').replace(/"/g,'').trim() : '',
-      bulan: iBulan >= 0 ? normBulan((r[iBulan]||'').replace(/"/g,'').trim()) : '',
-      rataRata: iRata >= 0 ? parseFloat(r[iRata]) || 0 : 0,
-    });
+  const rows=csvToRows(text); let hi=-1;
+  rows.forEach((r,i)=>{ const f=r.map(c=>c.toLowerCase().replace(/"/g,'')); if((f.some(x=>x.includes('nip')||x.includes('niplama')))&&f.some(x=>x.includes('nama'))&&f.some(x=>x.includes('rata'))) hi=i; });
+  if(hi===-1) throw new Error('Header nilai tidak ditemukan.');
+  const h=rows[hi].map(c=>c.toLowerCase().replace(/"/g,'').trim());
+  const iNip=h.findIndex(x=>x.includes('nip')||x.includes('niplama'));
+  const iNama=h.indexOf('nama'), iJab=h.findIndex(x=>x.includes('jabatan'));
+  const iBulan=h.indexOf('bulan'), iRata=h.findIndex(x=>x.includes('nilai rata')||x==='nilai rata-rata');
+  const data=[];
+  for(let i=hi+1;i<rows.length;i++){
+    const r=rows[i]; if(r.length<4) continue;
+    const nip=(r[iNip]||'').replace(/"/g,'').trim();
+    const nama=(r[iNama]||'').replace(/"/g,'').trim();
+    if(!nip||!nama||['nip','niplama'].includes(nip.toLowerCase())) continue;
+    data.push({ nip, nama, jabatan:iJab>=0?(r[iJab]||'').replace(/"/g,'').trim():'', bulan:iBulan>=0?normBulan((r[iBulan]||'').replace(/"/g,'').trim()):'', rataRata:iRata>=0?parseFloat(r[iRata])||0:0 });
   }
   return data;
 }
 
-const BULAN_ORDER = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+/* ══════════════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════════════ */
+const BULAN_ORDER=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 function normBulan(raw) {
-  const r = raw.toLowerCase().trim();
-  const y = r.match(/\d{4}/)?.[0] || '';
-  const tag = v => y ? `${v} ${y}` : v;
-  if (r.includes('jan')) return tag('Januari');
-  if (r.includes('feb')) return tag('Februari');
-  if (r.includes('mar')) return tag('Maret');
-  if (r.includes('apr')) return tag('April');
-  if (r.includes('mei') || r.includes('may')) return tag('Mei');
-  if (r.includes('jun')) return tag('Juni');
-  if (r.includes('jul')) return tag('Juli');
-  if (r.includes('agu') || r.includes('aug')) return tag('Agustus');
-  if (r.includes('sep')) return tag('September');
-  if (r.includes('okt') || r.includes('oct')) return tag('Oktober');
-  if (r.includes('nov')) return tag('November');
-  if (r.includes('des') || r.includes('dec')) return tag('Desember');
+  const r=raw.toLowerCase().trim(), y=r.match(/\d{4}/)?.[0]||'';
+  const tag=v=>y?`${v} ${y}`:v;
+  if(r.includes('jan')) return tag('Januari'); if(r.includes('feb')) return tag('Februari');
+  if(r.includes('mar')) return tag('Maret');   if(r.includes('apr')) return tag('April');
+  if(r.includes('mei')||r.includes('may')) return tag('Mei');
+  if(r.includes('jun')) return tag('Juni');    if(r.includes('jul')) return tag('Juli');
+  if(r.includes('agu')||r.includes('aug')) return tag('Agustus');
+  if(r.includes('sep')) return tag('September');
+  if(r.includes('okt')||r.includes('oct')) return tag('Oktober');
+  if(r.includes('nov')) return tag('November');
+  if(r.includes('des')||r.includes('dec')) return tag('Desember');
   return raw.trim();
 }
-function sortBulan(a, b) {
-  const [bA,yA] = a.split(' '), [bB,yB] = b.split(' ');
-  if (yA !== yB) return (parseInt(yA)||0) - (parseInt(yB)||0);
-  return BULAN_ORDER.indexOf(bA) - BULAN_ORDER.indexOf(bB);
+function sortBulan(a,b){
+  const [bA,yA]=a.split(' '),[bB,yB]=b.split(' ');
+  if(yA!==yB) return (parseInt(yA)||0)-(parseInt(yB)||0);
+  return BULAN_ORDER.indexOf(bA)-BULAN_ORDER.indexOf(bB);
 }
+function encodeKey(s){ return s.replace(/[.#$\[\]\/\s]/g,'_'); }
 
-/* ══════════════════════════════════════════════════════
-   HITUNG DATA (sama seperti index.html, versi ringkas)
-══════════════════════════════════════════════════════ */
-function avgNilaiSKP(nip) {
-  let sum = 0, cnt = 0;
-  Object.values(NILAI).forEach(arr => {
-    const row = arr.find(r => r.nip === nip);
-    if (row && row.rataRata > 0) { sum += row.rataRata; cnt++; }
-  });
-  return cnt > 0 ? sum / cnt : null;
+function avgNilaiSKP(nip){
+  let sum=0,cnt=0;
+  Object.values(NILAI).forEach(arr=>{ const row=arr.find(r=>r.nip===nip); if(row&&row.rataRata>0){sum+=row.rataRata;cnt++;} });
+  return cnt>0?sum/cnt:null;
 }
-function getJabatan(nip) {
-  for (const arr of Object.values(NILAI)) {
-    const row = arr.find(r => r.nip === nip);
-    if (row && row.jabatan) return row.jabatan;
-  }
+function getJabatan(nip){
+  for(const arr of Object.values(NILAI)){ const row=arr.find(r=>r.nip===nip); if(row&&row.jabatan) return row.jabatan; }
   return '';
 }
-function buildData(period) {
+
+/* buildData: hitung nilai akhir ASLI (belum koreksi) */
+function buildData(period){
   let presList;
-  if (period === 'Kumulatif') {
-    const all = {};
-    Object.values(PRESENSI).flat().forEach(p => {
-      if (!all[p.nip]) all[p.nip] = { nip: p.nip, nama: p.nama, hk: 0, hd: 0, tk: 0 };
-      all[p.nip].hk += p.hk; all[p.nip].hd += p.hd; all[p.nip].tk += p.tk;
+  if(period==='Kumulatif'){
+    const all={};
+    Object.values(PRESENSI).flat().forEach(p=>{
+      if(!all[p.nip]) all[p.nip]={nip:p.nip,nama:p.nama,hk:0,hd:0,tk:0};
+      all[p.nip].hk+=p.hk; all[p.nip].hd+=p.hd; all[p.nip].tk+=p.tk;
     });
-    presList = Object.values(all);
-  } else {
-    presList = PRESENSI[period] || [];
-  }
-  return presList.map(p => {
-    const pctHadir = p.hk > 0 ? (p.hd / p.hk) * 100 : 0;
-    const skorHadir = Math.min(100, Math.max(0, pctHadir - p.tk * 2));
-    const nilaiSKP = avgNilaiSKP(p.nip);
-    const jabatan = getJabatan(p.nip);
-    const nilaiAkhir = nilaiSKP != null
-      ? Math.round((skorHadir * 0.4 + nilaiSKP * 0.6) * 100) / 100
-      : Math.round(skorHadir * 100) / 100;
-    return { nip: p.nip, nama: p.nama, jabatan, nilaiAkhir };
-  }).sort((a, b) => b.nilaiAkhir - a.nilaiAkhir);
+    presList=Object.values(all);
+  } else { presList=PRESENSI[period]||[]; }
+
+  return presList.map(p=>{
+    const pctHadir=p.hk>0?(p.hd/p.hk)*100:0;
+    const skorHadir=Math.min(100,Math.max(0,pctHadir-p.tk*2));
+    const nilaiSKP=avgNilaiSKP(p.nip);
+    const jabatan=getJabatan(p.nip);
+    const nilaiAkhirAsli=nilaiSKP!=null
+      ? Math.round((skorHadir*0.4+nilaiSKP*0.6)*100)/100
+      : Math.round(skorHadir*100)/100;
+    return {nip:p.nip, nama:p.nama, jabatan, nilaiAkhirAsli};
+  }).sort((a,b)=>b.nilaiAkhirAsli-a.nilaiAkhirAsli);
 }
+
+/* nilaiAkhir dengan koreksi sudah diterapkan */
+function getNilaiKoreksi(nip, nilaiAsli){
+  const k=KOREKSI_DB[nip];
+  if(!k||!k.pengurangan) return nilaiAsli;
+  return Math.max(0, Math.round((nilaiAsli - k.pengurangan)*100)/100);
+}
+
+const AV_COLORS=['#1e4080','#d97706','#15803d','#7c3aed','#db2777','#0891b2','#ea580c','#4f46e5','#0f766e','#b45309'];
+function avColor(nip){ return AV_COLORS[nip.split('').reduce((a,c)=>a+c.charCodeAt(0),0)%AV_COLORS.length]; }
+function initials(nama){ return nama.replace(/[^a-zA-Z\s]/g,'').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 
 /* ══════════════════════════════════════════════════════
    INIT
 ══════════════════════════════════════════════════════ */
-async function init() {
-  document.getElementById('rankList').innerHTML = `<div class="empty-state"><p>Memuat data...</p></div>`;
-  try {
-    const csvPresensi = await fetchCSV(SHEETS.presensi);
-    PRESENSI = parsePresensi(csvPresensi);
+async function init(){
+  if(!sessionStorage.getItem('bps_admin_auth')) return;
+  document.getElementById('rankList').innerHTML='<div class="empty-state"><p>Memuat data...</p></div>';
+  document.getElementById('koreksiBody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-400)">Memuat data...</td></tr>';
 
-    const nilaiResults = await Promise.allSettled(SHEETS.nilai.map(id => fetchCSV(id)));
-    nilaiResults.forEach(res => {
-      if (res.status !== 'fulfilled') return;
-      parseNilai(res.value).forEach(row => {
-        if (!row.bulan) return;
-        if (!NILAI[row.bulan]) NILAI[row.bulan] = [];
-        if (!NILAI[row.bulan].find(x => x.nip === row.nip)) NILAI[row.bulan].push(row);
+  try {
+    const csvP=await fetchCSV(SHEETS.presensi);
+    PRESENSI=parsePresensi(csvP);
+
+    const nilaiRes=await Promise.allSettled(SHEETS.nilai.map(id=>fetchCSV(id)));
+    nilaiRes.forEach(res=>{
+      if(res.status!=='fulfilled') return;
+      parseNilai(res.value).forEach(row=>{
+        if(!row.bulan) return;
+        if(!NILAI[row.bulan]) NILAI[row.bulan]=[];
+        if(!NILAI[row.bulan].find(x=>x.nip===row.nip)) NILAI[row.bulan].push(row);
       });
     });
 
-    const snap = await fbDB.ref('overrides').once('value');
-    OVERRIDES = snap.val() || {};
+    // Ambil data Firebase
+    const [snapOver, snapKoreksi, snapRiwayat] = await Promise.all([
+      fbDB.ref('overrides').once('value'),
+      fbDB.ref('koreksi_nilai').once('value'),
+      fbDB.ref('riwayat_koreksi').once('value'),
+    ]);
+    OVERRIDES  = snapOver.val()    || {};
+    KOREKSI_DB = snapKoreksi.val() || {};
+    const rawRiwayat = snapRiwayat.val() || {};
+    RIWAYAT_DB = Object.values(rawRiwayat).sort((a,b)=>b.savedAt-a.savedAt);
 
-    const bulanList = Object.keys(PRESENSI).sort(sortBulan);
-    const periods = [...bulanList];
-    if (bulanList.length > 1) periods.push('Kumulatif');
+    // Isi period select
+    const bulanList=Object.keys(PRESENSI).sort(sortBulan);
+    const periods=[...bulanList];
+    if(bulanList.length>1) periods.push('Kumulatif');
 
-    const sel = document.getElementById('periodSelect');
-    sel.innerHTML = periods.map(p => `<option value="${p}">${p}</option>`).join('');
-    currentPeriod = periods[periods.length - 1];
-    sel.value = currentPeriod;
+    ['periodSelectUrutan','periodSelectKoreksi'].forEach(id=>{
+      const el=document.getElementById(id);
+      el.innerHTML=periods.map(p=>`<option value="${p}">${p}</option>`).join('');
+      el.value=periods[periods.length-1];
+    });
 
-    onPeriodChange();
+    currentPeriodUrutan  = periods[periods.length-1];
+    currentPeriodKoreksi = periods[periods.length-1];
 
-  } catch (e) {
-    document.getElementById('rankList').innerHTML = `<div class="empty-state">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--red-600)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <p>Gagal memuat data: ${e.message}</p>
-    </div>`;
+    onPeriodUrutanChange();
+    onPeriodKoreksiChange();
+    renderRiwayat();
+
+  } catch(e){
+    showBanner('statusBannerUrutan','error',`Gagal memuat data: ${e.message}`);
   }
 }
 
-function onPeriodChange() {
-  currentPeriod = document.getElementById('periodSelect').value;
-  const data = buildData(currentPeriod);
-  originalTop3 = data.slice(0, 3);
+/* ══════════════════════════════════════════════════════
+   PANEL 1 — URUTAN
+══════════════════════════════════════════════════════ */
+function onPeriodUrutanChange(){
+  currentPeriodUrutan=document.getElementById('periodSelectUrutan').value;
+  const data=buildData(currentPeriodUrutan);
+  // terapkan koreksi sebelum sort
+  const withKoreksi=data.map(p=>({...p, nilaiAkhir:getNilaiKoreksi(p.nip,p.nilaiAkhirAsli)}))
+    .sort((a,b)=>b.nilaiAkhir-a.nilaiAkhir);
+  originalTop3=withKoreksi.slice(0,3);
 
-  // cek apakah ada override tersimpan untuk periode ini
-  const order = OVERRIDES[currentPeriod];
-  if (order && order.length) {
-    const byNip = {};
-    originalTop3.forEach(p => byNip[p.nip] = p);
-    const reordered = [];
-    order.forEach(nip => { if (byNip[nip]) { reordered.push(byNip[nip]); delete byNip[nip]; } });
-    Object.values(byNip).forEach(p => reordered.push(p));
-    currentTop3 = reordered;
-  } else {
-    currentTop3 = [...originalTop3];
-  }
+  const order=OVERRIDES[encodeKey(currentPeriodUrutan)];
+  if(order&&order.length){
+    const byNip={};
+    originalTop3.forEach(p=>byNip[p.nip]=p);
+    const reordered=[];
+    order.forEach(nip=>{ if(byNip[nip]){reordered.push(byNip[nip]);delete byNip[nip];} });
+    Object.values(byNip).forEach(p=>reordered.push(p));
+    currentTop3=reordered;
+  } else { currentTop3=[...originalTop3]; }
 
   renderRankList();
 }
 
-/* ══════════════════════════════════════════════════════
-   RENDER
-══════════════════════════════════════════════════════ */
-const RP_CLASS = ['rp-1', 'rp-2', 'rp-3'];
-const MEDALS = ['🥇', '🥈', '🥉'];
+const RP_CLASS=['rp-1','rp-2','rp-3'];
+const MEDALS=['🥇','🥈','🥉'];
 
-function renderRankList() {
-  const list = document.getElementById('rankList');
-  const banner = document.getElementById('statusBanner');
-  const actionBar = document.getElementById('actionBar');
+function renderRankList(){
+  const list=document.getElementById('rankList');
+  const banner=document.getElementById('statusBannerUrutan');
+  const actionBar=document.getElementById('actionBarUrutan');
 
-  if (!currentTop3.length) {
-    list.innerHTML = `<div class="empty-state"><p>Tidak ada data pegawai untuk periode ini.</p></div>`;
-    actionBar.style.display = 'none';
-    banner.innerHTML = '';
-    return;
+  if(!currentTop3.length){
+    list.innerHTML='<div class="empty-state"><p>Tidak ada data pegawai untuk periode ini.</p></div>';
+    actionBar.style.display='none'; banner.innerHTML=''; return;
   }
+  const vals=currentTop3.map(p=>p.nilaiAkhir);
+  const hasTie=new Set(vals).size<vals.length;
 
-  const vals = currentTop3.map(p => p.nilaiAkhir);
-  const hasTie = new Set(vals).size < vals.length;
-
-  if (hasTie) {
-    banner.innerHTML = `<div class="status-banner status-tie">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Ada nilai yang sama di posisi 3 besar. Geser kartu untuk mengatur urutan, lalu klik <b>Simpan Urutan</b>.
-    </div>`;
+  if(hasTie){
+    showBanner('statusBannerUrutan','tie','Ada nilai yang sama di posisi 3 besar. Geser kartu untuk mengatur urutan, lalu klik <b>Simpan Urutan</b>.');
   } else {
-    banner.innerHTML = `<div class="status-banner status-notie">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-      Tidak ada nilai yang sama di posisi 3 besar — urutan ditentukan otomatis oleh nilai.
-    </div>`;
+    showBanner('statusBannerUrutan','notie','Tidak ada nilai yang sama di posisi 3 besar — urutan ditentukan otomatis.');
   }
 
-  list.innerHTML = '';
-  currentTop3.forEach((p, i) => {
-    const tied = vals.filter(v => v === p.nilaiAkhir).length > 1;
-    const card = document.createElement('div');
-    card.className = 'rank-card' + (tied ? ' tied' : '');
-    card.draggable = hasTie;
-    card.dataset.idx = i;
-    card.innerHTML = `
-      <div class="drag-handle">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
-      </div>
+  list.innerHTML='';
+  currentTop3.forEach((p,i)=>{
+    const tied=vals.filter(v=>v===p.nilaiAkhir).length>1;
+    const card=document.createElement('div');
+    card.className='rank-card'+(tied?' tied':'');
+    card.draggable=hasTie; card.dataset.idx=i;
+    card.innerHTML=`
+      <div class="drag-handle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg></div>
       <div class="rank-pos ${RP_CLASS[i]}">${MEDALS[i]}</div>
       <div class="rank-info">
         <div class="rank-name">${p.nama}</div>
         <div class="rank-detail">NIP ${p.nip}</div>
-        <div class="rank-job">${p.jabatan || '—'}</div>
+        <div class="rank-job">${p.jabatan||'—'}</div>
       </div>
-      ${tied ? '<span class="tie-tag">Seri</span>' : ''}
+      ${tied?'<span class="tie-tag">Seri</span>':''}
       <div class="rank-score">
         <div class="rank-score-val">${p.nilaiAkhir.toFixed(2)}</div>
         <div class="rank-score-lbl">Nilai Akhir</div>
       </div>`;
-
-    if (hasTie) {
-      card.addEventListener('dragstart', e => {
-        card.classList.add('dragging');
-        e.dataTransfer.setData('text/plain', i);
-      });
-      card.addEventListener('dragend', () => card.classList.remove('dragging'));
-      card.addEventListener('dragover', e => e.preventDefault());
-      card.addEventListener('drop', e => {
-        e.preventDefault();
-        const from = parseInt(e.dataTransfer.getData('text/plain'));
-        const to = parseInt(card.dataset.idx);
-        if (from === to) return;
-        const moved = currentTop3.splice(from, 1)[0];
-        currentTop3.splice(to, 0, moved);
-        renderRankList();
-      });
+    if(hasTie){
+      card.addEventListener('dragstart',e=>{ card.classList.add('dragging'); e.dataTransfer.setData('text/plain',i); });
+      card.addEventListener('dragend',()=>card.classList.remove('dragging'));
+      card.addEventListener('dragover',e=>e.preventDefault());
+      card.addEventListener('drop',e=>{ e.preventDefault(); const from=parseInt(e.dataTransfer.getData('text/plain')); const to=parseInt(card.dataset.idx); if(from===to) return; const moved=currentTop3.splice(from,1)[0]; currentTop3.splice(to,0,moved); renderRankList(); });
     }
-
     list.appendChild(card);
   });
-
-  actionBar.style.display = hasTie ? 'flex' : 'none';
+  actionBar.style.display=hasTie?'flex':'none';
 }
 
-/* ══════════════════════════════════════════════════════
-   SAVE / RESET
-══════════════════════════════════════════════════════ */
-function saveOverride() {
-  const btn = document.getElementById('btnSave');
-  btn.disabled = true;
-  const order = currentTop3.map(p => p.nip);
-  fbDB.ref('overrides/' + encodeKey(currentPeriod)).set(order)
-    .then(() => {
-      OVERRIDES[currentPeriod] = order;
-      document.getElementById('statusBanner').innerHTML = `<div class="status-banner status-saved">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-        Urutan berhasil disimpan dan langsung tampil untuk semua pengguna.
-      </div>`;
-    })
-    .catch(e => alert('Gagal menyimpan: ' + e.message))
-    .finally(() => { btn.disabled = false; });
+function saveOverride(){
+  const btn=document.getElementById('btnSaveUrutan'); btn.disabled=true;
+  const order=currentTop3.map(p=>p.nip);
+  fbDB.ref('overrides/'+encodeKey(currentPeriodUrutan)).set(order)
+    .then(()=>{ OVERRIDES[currentPeriodUrutan]=order; showBanner('statusBannerUrutan','saved','Urutan berhasil disimpan dan langsung tampil untuk semua pengguna.'); })
+    .catch(e=>alert('Gagal menyimpan: '+e.message))
+    .finally(()=>{ btn.disabled=false; });
 }
-
-function resetOrder() {
-  currentTop3 = [...originalTop3];
-  fbDB.ref('overrides/' + encodeKey(currentPeriod)).remove()
-    .then(() => { delete OVERRIDES[currentPeriod]; })
-    .catch(() => {});
+function resetOrder(){
+  currentTop3=[...originalTop3];
+  fbDB.ref('overrides/'+encodeKey(currentPeriodUrutan)).remove().catch(()=>{});
+  delete OVERRIDES[currentPeriodUrutan];
   renderRankList();
 }
 
-// Firebase key tidak boleh mengandung '.', '#', '$', '[', ']', '/'
-function encodeKey(period) {
-  return period.replace(/[.#$\[\]\/]/g, '_');
+/* ══════════════════════════════════════════════════════
+   PANEL 2 — KOREKSI NILAI
+══════════════════════════════════════════════════════ */
+function onPeriodKoreksiChange(){
+  currentPeriodKoreksi=document.getElementById('periodSelectKoreksi').value;
+  allDataKoreksi=buildData(currentPeriodKoreksi);
+  filteredKoreksi=[...allDataKoreksi];
+  document.getElementById('searchKoreksi').value='';
+  renderKoreksiTable();
 }
+
+function filterKoreksi(){
+  const q=document.getElementById('searchKoreksi').value.toLowerCase();
+  filteredKoreksi=q?allDataKoreksi.filter(p=>p.nama.toLowerCase().includes(q)):allDataKoreksi;
+  renderKoreksiTable();
+}
+
+function renderKoreksiTable(){
+  const tbody=document.getElementById('koreksiBody');
+  tbody.innerHTML='';
+  if(!filteredKoreksi.length){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--gray-400)">Tidak ada data.</td></tr>';
+    return;
+  }
+  filteredKoreksi.forEach((p,i)=>{
+    const existing=KOREKSI_DB[p.nip]||{};
+    const nilaiAsli=p.nilaiAkhirAsli;
+    const nilaiSetelah=getNilaiKoreksi(p.nip,nilaiAsli);
+    const hasKoreksi=existing.pengurangan>0;
+
+    const tr=document.createElement('tr');
+    tr.dataset.nip=p.nip;
+    tr.innerHTML=`
+      <td style="color:var(--gray-400);font-weight:500">${i+1}</td>
+      <td>
+        <div class="emp-row-sm">
+          <div class="av-sm" style="background:${avColor(p.nip)}">${initials(p.nama)}</div>
+          <div>
+            <div class="emp-name-sm">${p.nama}</div>
+            <div class="emp-nip-sm">NIP ${p.nip}</div>
+          </div>
+        </div>
+      </td>
+      <td style="text-align:center">
+        <span style="font-size:14px;font-weight:800;color:var(--navy-700)">${nilaiAsli.toFixed(2)}</span>
+      </td>
+      <td style="text-align:center">
+        <div class="koreksi-wrap">
+          <span class="koreksi-lbl" style="color:var(--red-600);font-weight:700">−</span>
+          <input type="number" class="koreksi-input ${hasKoreksi?'has-val':''}"
+                 id="inp_${p.nip}"
+                 min="0" max="${nilaiAsli}" step="0.01"
+                 value="${hasKoreksi?existing.pengurangan:''}"
+                 placeholder="0"
+                 oninput="onKoreksiInput('${p.nip}',${nilaiAsli})"/>
+          ${hasKoreksi?`<button class="btn-clear-koreksi" onclick="clearKoreksi('${p.nip}',${nilaiAsli})" title="Hapus koreksi">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>`:''}
+        </div>
+      </td>
+      <td>
+        <input type="text" class="alasan-input" id="alasan_${p.nip}"
+               placeholder="Tulis alasan koreksi..."
+               value="${existing.alasan||''}"/>
+      </td>
+      <td style="text-align:center" id="hasil_${p.nip}">
+        ${renderNilaiHasil(nilaiAsli, nilaiSetelah, hasKoreksi)}
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderNilaiHasil(asli, setelah, hasKoreksi){
+  if(!hasKoreksi) return `<span class="nilai-final normal">${asli.toFixed(2)}</span>`;
+  return `
+    <div style="line-height:1.5">
+      <div style="font-size:11px;color:var(--gray-400);text-decoration:line-through">${asli.toFixed(2)}</div>
+      <div class="nilai-final modified">${setelah.toFixed(2)}</div>
+    </div>`;
+}
+
+function onKoreksiInput(nip, nilaiAsli){
+  const inp=document.getElementById('inp_'+nip);
+  const val=parseFloat(inp.value)||0;
+  inp.classList.toggle('has-val', val>0);
+  const setelah=Math.max(0, Math.round((nilaiAsli-val)*100)/100);
+  document.getElementById('hasil_'+nip).innerHTML=renderNilaiHasil(nilaiAsli, setelah, val>0);
+}
+
+function clearKoreksi(nip, nilaiAsli){
+  const inp=document.getElementById('inp_'+nip);
+  inp.value=''; inp.classList.remove('has-val');
+  document.getElementById('hasil_'+nip).innerHTML=renderNilaiHasil(nilaiAsli, nilaiAsli, false);
+  // hapus tombol X
+  inp.nextElementSibling?.remove();
+}
+
+async function saveKoreksi(){
+  const btn=document.getElementById('btnSaveKoreksi'); btn.disabled=true;
+  showBanner('statusBannerKoreksi','notie','Menyimpan...');
+
+  const updates={};
+  const newRiwayat=[];
+  const now=Date.now();
+
+  allDataKoreksi.forEach(p=>{
+    const inp=document.getElementById('inp_'+p.nip);
+    const alasanEl=document.getElementById('alasan_'+p.nip);
+    if(!inp) return;
+
+    const pengurangan=parseFloat(inp.value)||0;
+    const alasan=(alasanEl?.value||'').trim();
+    const existing=KOREKSI_DB[p.nip]||{};
+
+    // Jika tidak ada perubahan, skip
+    if(pengurangan===0 && !existing.pengurangan) return;
+
+    if(pengurangan>0){
+      updates['koreksi_nilai/'+p.nip]={ pengurangan, alasan, savedAt:now };
+      // Catat riwayat hanya jika nilainya berubah dari sebelumnya
+      if(pengurangan!==(existing.pengurangan||0)||alasan!==(existing.alasan||'')){
+        newRiwayat.push({
+          nip:p.nip, nama:p.nama, jabatan:p.jabatan,
+          nilaiAsli:p.nilaiAkhirAsli,
+          pengurangan, alasan,
+          periode:currentPeriodKoreksi,
+          savedAt:now
+        });
+      }
+    } else {
+      // pengurangan = 0 → hapus koreksi
+      updates['koreksi_nilai/'+p.nip]=null;
+    }
+  });
+
+  try {
+    await fbDB.ref().update(updates);
+
+    // Simpan riwayat
+    for(const r of newRiwayat){
+      await fbDB.ref('riwayat_koreksi').push(r);
+    }
+
+    // Refresh state lokal
+    const snap=await fbDB.ref('koreksi_nilai').once('value');
+    KOREKSI_DB=snap.val()||{};
+    const snapR=await fbDB.ref('riwayat_koreksi').once('value');
+    RIWAYAT_DB=Object.values(snapR.val()||{}).sort((a,b)=>b.savedAt-a.savedAt);
+
+    showBanner('statusBannerKoreksi','saved',`✓ Koreksi berhasil disimpan. Nilai akan langsung diperbarui di dashboard.`);
+    onPeriodKoreksiChange();
+    renderRiwayat();
+  } catch(e){
+    showBanner('statusBannerKoreksi','error','Gagal menyimpan: '+e.message);
+  } finally { btn.disabled=false; }
+}
+
+/* ══════════════════════════════════════════════════════
+   PANEL 3 — RIWAYAT
+══════════════════════════════════════════════════════ */
+function renderRiwayat(){
+  const el=document.getElementById('riwayatList');
+  if(!RIWAYAT_DB.length){
+    el.innerHTML='<div class="empty-state"><p>Belum ada riwayat koreksi.</p></div>'; return;
+  }
+  el.innerHTML='<div class="riwayat-list">'+RIWAYAT_DB.map(r=>{
+    const tgl=new Date(r.savedAt).toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'});
+    const jam=new Date(r.savedAt).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    const setelah=Math.max(0,Math.round((r.nilaiAsli-r.pengurangan)*100)/100);
+    return `<div class="riwayat-card">
+      <div class="riwayat-head">
+        <div>
+          <div class="riwayat-nama">${r.nama}</div>
+          <div style="font-size:11px;color:var(--gray-400);margin-top:2px">NIP ${r.nip} · ${r.jabatan||'—'} · Periode: ${r.periode}</div>
+        </div>
+        <div class="riwayat-time">${tgl}, ${jam}</div>
+      </div>
+      <div class="riwayat-detail">
+        Nilai asli <b>${r.nilaiAsli.toFixed(2)}</b> dikurangi <b>${r.pengurangan}</b> poin → Nilai baru: <b>${setelah.toFixed(2)}</b>
+      </div>
+      ${r.alasan?`<div class="riwayat-alasan">📝 "${r.alasan}"</div>`:''}
+      <div><span class="badge-koreksi">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Koreksi Manual Admin
+      </span></div>
+    </div>`;
+  }).join('')+'</div>';
+}
+
+/* ══════════════════════════════════════════════════════
+   HELPERS UI
+══════════════════════════════════════════════════════ */
+function showBanner(elId, type, msg){
+  const cls={tie:'status-tie',notie:'status-notie',saved:'status-saved',error:'status-error'};
+  document.getElementById(elId).innerHTML=`<div class="status-banner ${cls[type]||'status-notie'}">${msg}</div>`;
+}
+
+function switchAdminTab(name, btn){
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ══ START ══ */
+if(sessionStorage.getItem('bps_admin_auth')==='1') init();
 </script>
 </body>
 </html>
