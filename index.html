@@ -12,6 +12,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+      /* Palette — Navy Government Professional */
       --navy-950: #0a1628;
       --navy-900: #0f2044;
       --navy-800: #163060;
@@ -22,18 +23,23 @@
       --navy-200: #b8cef0;
       --navy-100: #dce8f9;
       --navy-50:  #eef4fd;
+
       --gold-600: #b45309;
       --gold-500: #d97706;
       --gold-400: #f59e0b;
       --gold-100: #fef3c7;
       --gold-50:  #fffbeb;
+
       --green-700: #15803d;
       --green-600: #16a34a;
       --green-100: #dcfce7;
       --green-50:  #f0fdf4;
+
       --red-600:  #dc2626;
       --red-100:  #fee2e2;
       --red-50:   #fef2f2;
+
+      --gray-950: #0d1117;
       --gray-900: #1a1f2e;
       --gray-700: #374151;
       --gray-600: #4b5563;
@@ -44,11 +50,13 @@
       --gray-100: #f3f4f6;
       --gray-50:  #f9fafb;
       --white:    #ffffff;
+
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 14px;
       --radius-xl: 18px;
       --radius-full: 9999px;
+
       --shadow-xs: 0 1px 2px rgba(0,0,0,.06);
       --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
       --shadow-md: 0 4px 16px rgba(0,0,0,.10);
@@ -82,185 +90,454 @@
       margin: 0 auto;
     }
     .logo-box {
-      width: 52px; height: 52px;
+      width: 52px;
+      height: 52px;
       background: var(--white);
       border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden; flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
       box-shadow: 0 2px 8px rgba(0,0,0,.25);
       padding: 4px;
     }
-    .logo-box img { width: 100%; height: 100%; object-fit: contain; }
-    .logo-fallback {
-      display: none; align-items: center; justify-content: center;
-      width: 100%; height: 100%;
-      background: var(--navy-800); border-radius: 6px;
-      color: white; font-weight: 800; font-size: 14px;
+    .logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
-    .divider-v { width: 1px; height: 40px; background: rgba(255,255,255,.15); flex-shrink: 0; }
+    .divider-v {
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,.15);
+      flex-shrink: 0;
+    }
     .topbar-text { flex: 1; }
-    .topbar-title { font-size: 16px; font-weight: 800; color: var(--white); letter-spacing: -.2px; line-height: 1.2; }
-    .topbar-sub { font-size: 12px; color: rgba(255,255,255,.5); margin-top: 3px; }
-    .topbar-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .topbar-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -.2px;
+      line-height: 1.2;
+    }
+    .topbar-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+      margin-top: 3px;
+      font-weight: 400;
+    }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
     .badge-periode {
-      background: var(--gold-400); color: var(--navy-950);
-      font-size: 12px; font-weight: 700;
-      padding: 5px 14px; border-radius: var(--radius-full);
+      background: var(--gold-400);
+      color: var(--navy-950);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      letter-spacing: .2px;
     }
     .badge-tahun {
-      background: rgba(255,255,255,.1); color: rgba(255,255,255,.8);
+      background: rgba(255,255,255,.1);
+      color: rgba(255,255,255,.8);
       border: 1px solid rgba(255,255,255,.15);
-      font-size: 12px; font-weight: 600;
-      padding: 5px 14px; border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
     }
     .btn-refresh {
-      display: flex; align-items: center; gap: 7px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.15);
       color: rgba(255,255,255,.85);
-      font-size: 12px; font-weight: 600;
-      padding: 7px 16px; border-radius: var(--radius-full);
-      cursor: pointer; font-family: inherit; transition: all .2s;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 16px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all .2s;
     }
-    .btn-refresh:hover { background: rgba(255,255,255,.15); color: var(--white); }
+    .btn-refresh:hover {
+      background: rgba(255,255,255,.15);
+      color: var(--white);
+    }
     .btn-refresh.loading svg { animation: spin .8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ══ TAB NAV ══ */
-    .tab-nav { background: var(--navy-950); border-bottom: 1px solid rgba(255,255,255,.08); }
-    .tab-nav-inner { display: flex; padding: 0 32px; max-width: 1600px; margin: 0 auto; }
+    /* ══ TABS ══ */
+    .tabs-bar {
+      background: var(--navy-950);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      padding: 0 32px;
+      display: flex;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    /* override for sticky topbar that contains both */
+    .topbar .tabs-bar { max-width: none; padding: 0 32px; }
+
+    .tab-nav {
+      background: var(--navy-950);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .tab-nav-inner {
+      display: flex;
+      padding: 0 32px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
     .tab-btn {
-      padding: 13px 20px; font-size: 13px; font-weight: 500;
+      padding: 13px 20px;
+      font-size: 13px;
+      font-weight: 500;
       color: rgba(255,255,255,.45);
-      cursor: pointer; border: none; background: none;
+      cursor: pointer;
+      border: none;
+      background: none;
       font-family: inherit;
       border-bottom: 2px solid transparent;
-      transition: all .2s; white-space: nowrap;
+      transition: all .2s;
+      white-space: nowrap;
     }
     .tab-btn:hover { color: rgba(255,255,255,.75); }
-    .tab-btn.active { color: var(--gold-400); border-bottom-color: var(--gold-400); font-weight: 700; }
+    .tab-btn.active {
+      color: var(--gold-400);
+      border-bottom-color: var(--gold-400);
+      font-weight: 700;
+    }
 
-    /* ══ LOADING / ERROR ══ */
+    /* ══ LOADING / ERROR STATES ══ */
     .state-overlay {
-      position: fixed; inset: 0;
+      position: fixed;
+      inset: 0;
       background: var(--gray-100);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      z-index: 200; gap: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      gap: 16px;
     }
     .state-overlay.hidden { display: none; }
     .spinner {
-      width: 44px; height: 44px;
+      width: 44px;
+      height: 44px;
       border: 3px solid var(--navy-100);
       border-top-color: var(--navy-600);
       border-radius: 50%;
       animation: spin .7s linear infinite;
     }
-    .state-title { font-size: 16px; font-weight: 700; color: var(--navy-800); }
-    .state-sub { font-size: 13px; color: var(--gray-500); text-align: center; max-width: 380px; line-height: 1.7; }
+    .state-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy-800);
+    }
+    .state-sub {
+      font-size: 13px;
+      color: var(--gray-500);
+      text-align: center;
+      max-width: 360px;
+      line-height: 1.7;
+    }
     .btn-retry {
-      background: var(--navy-700); color: var(--white);
-      border: none; font-size: 13px; font-weight: 700;
-      padding: 10px 28px; border-radius: var(--radius-full);
-      cursor: pointer; font-family: inherit; margin-top: 8px; transition: background .2s;
+      background: var(--navy-700);
+      color: var(--white);
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 8px;
+      transition: background .2s;
     }
     .btn-retry:hover { background: var(--navy-600); }
 
     /* ══ PERIOD BAR ══ */
-    .period-bar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 10px 32px; box-shadow: var(--shadow-xs); }
-    .period-bar-inner { display: flex; align-items: center; gap: 12px; max-width: 1600px; margin: 0 auto; }
-    .period-label { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .8px; white-space: nowrap; }
+    .period-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 10px 32px;
+      box-shadow: var(--shadow-xs);
+    }
+    .period-bar-inner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .period-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      white-space: nowrap;
+    }
     .period-pills { display: flex; gap: 5px; flex-wrap: wrap; }
     .pill {
-      padding: 5px 14px; border-radius: var(--radius-full);
-      border: 1px solid var(--gray-200); background: var(--white);
-      font-size: 12px; font-weight: 500; color: var(--gray-500);
-      cursor: pointer; transition: all .15s; font-family: inherit;
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      cursor: pointer;
+      transition: all .15s;
+      font-family: inherit;
     }
     .pill:hover { border-color: var(--navy-400); color: var(--navy-700); }
-    .pill.active { background: var(--navy-50); border-color: var(--navy-500); color: var(--navy-700); font-weight: 700; }
+    .pill.active {
+      background: var(--navy-50);
+      border-color: var(--navy-500);
+      color: var(--navy-700);
+      font-weight: 700;
+    }
 
     /* ══ PAGE ══ */
-    .page { padding: 24px 32px 56px; max-width: 1600px; margin: 0 auto; }
+    .page {
+      padding: 24px 32px 56px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
     /* ══ STAT CARDS ══ */
-    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
     .stat-card {
-      background: var(--white); border: 1px solid var(--gray-200);
-      border-radius: var(--radius-lg); padding: 20px 22px;
-      box-shadow: var(--shadow-sm); position: relative; overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
       transition: box-shadow .2s, transform .15s;
     }
     .stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-    .stat-card-accent { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
-    .stat-icon { width: 38px; height: 38px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-    .stat-val { font-size: 28px; font-weight: 800; line-height: 1; letter-spacing: -1px; }
-    .stat-lbl { font-size: 12px; color: var(--gray-500); margin-top: 5px; font-weight: 500; }
-    .stat-delta { font-size: 11.5px; font-weight: 600; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+    .stat-card-accent {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+    .stat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .stat-val {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+    .stat-lbl {
+      font-size: 12px;
+      color: var(--gray-500);
+      margin-top: 5px;
+      font-weight: 500;
+    }
+    .stat-delta {
+      font-size: 11.5px;
+      font-weight: 600;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
 
     /* ══ MAIN GRID ══ */
-    .main-grid { display: grid; grid-template-columns: 1fr 300px; gap: 18px; align-items: start; }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 18px;
+      align-items: start;
+    }
 
     /* ══ PANEL ══ */
-    .panel { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); }
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
     .panel-head {
-      padding: 18px 22px; border-bottom: 1px solid var(--gray-200);
-      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
       background: var(--gray-50);
     }
-    .panel-title { font-size: 15px; font-weight: 800; color: var(--gray-900); letter-spacing: -.2px; }
-    .panel-sub { font-size: 11.5px; color: var(--gray-400); margin-top: 3px; }
+    .panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -.2px;
+    }
+    .panel-sub {
+      font-size: 11.5px;
+      color: var(--gray-400);
+      margin-top: 3px;
+      font-weight: 400;
+    }
     .filter-row { display: flex; gap: 5px; flex-wrap: wrap; }
     .fbtn {
-      padding: 5px 13px; border-radius: var(--radius-full);
-      border: 1px solid var(--gray-200); font-size: 12px; font-weight: 500;
-      color: var(--gray-500); cursor: pointer; font-family: inherit;
-      background: var(--white); transition: all .15s;
+      padding: 5px 13px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--gray-200);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-500);
+      cursor: pointer;
+      font-family: inherit;
+      background: var(--white);
+      transition: all .15s;
     }
     .fbtn:hover { border-color: var(--gold-400); color: var(--gold-600); }
-    .fbtn.active { background: var(--gold-50); border-color: var(--gold-400); color: var(--gold-600); font-weight: 700; }
+    .fbtn.active {
+      background: var(--gold-50);
+      border-color: var(--gold-400);
+      color: var(--gold-600);
+      font-weight: 700;
+    }
 
-    /* ══ TABLE ══ */
-    .rank-table { width: 100%; border-collapse: collapse; }
-    .rank-table thead tr { background: var(--gray-50); border-bottom: 2px solid var(--gray-200); }
-    .rank-table th { padding: 10px 16px; font-size: 10.5px; font-weight: 700; color: var(--gray-400); text-align: left; text-transform: uppercase; letter-spacing: .6px; white-space: nowrap; }
+    /* ══ RANK TABLE ══ */
+    .rank-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .rank-table thead tr {
+      background: var(--gray-50);
+      border-bottom: 2px solid var(--gray-200);
+    }
+    .rank-table th {
+      padding: 10px 16px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-align: left;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      white-space: nowrap;
+    }
     .rank-table th.tc { text-align: center; }
-    .rank-table tbody tr { border-bottom: 1px solid var(--gray-100); transition: background .1s; cursor: default; }
+    .rank-table tbody tr {
+      border-bottom: 1px solid var(--gray-100);
+      transition: background .1s;
+      cursor: default;
+    }
     .rank-table tbody tr:hover { background: var(--navy-50); }
     .rank-table tbody tr.top3 { background: #fffbf0; }
     .rank-table tbody tr.top3:hover { background: #fff5d6; }
-    .rank-table td { padding: 12px 16px; font-size: 13px; color: var(--gray-700); vertical-align: middle; }
+    .rank-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--gray-700);
+      vertical-align: middle;
+    }
 
-    .rank-num { width: 30px; height: 30px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+    .rank-num {
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+    }
     .rn-1 { background: #fef9c3; color: #713f12; }
     .rn-2 { background: var(--gray-200); color: var(--gray-600); }
     .rn-3 { background: var(--gold-100); color: var(--gold-600); }
     .rn-n { color: var(--gray-400); font-weight: 500; font-size: 13px; }
 
     .emp-row { display: flex; align-items: center; gap: 11px; }
-    .av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: var(--white); flex-shrink: 0; letter-spacing: .5px; }
-    .emp-name { font-size: 13px; font-weight: 700; color: var(--gray-900); line-height: 1.3; }
+    .av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--white);
+      flex-shrink: 0;
+      letter-spacing: .5px;
+    }
+    .emp-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-900);
+      line-height: 1.3;
+    }
     .emp-nip { font-size: 10.5px; color: var(--gray-400); margin-top: 1px; }
     .emp-job { font-size: 10.5px; color: var(--navy-500); margin-top: 2px; font-weight: 500; }
 
-    .chip { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: var(--radius-full); font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
     .chip-green { background: var(--green-100); color: var(--green-700); }
-    .chip-gold  { background: var(--gold-100);  color: var(--gold-600); }
-    .chip-red   { background: var(--red-100);   color: var(--red-600); }
-    .chip-blue  { background: var(--navy-100);  color: var(--navy-700); }
+    .chip-gold  { background: var(--gold-100); color: var(--gold-600); }
+    .chip-red   { background: var(--red-100); color: var(--red-600); }
+    .chip-blue  { background: var(--navy-100); color: var(--navy-700); }
 
     .sbar-wrap { display: flex; align-items: center; gap: 8px; }
-    .sbar-bg { flex: 1; height: 6px; background: var(--gray-200); border-radius: 3px; overflow: hidden; min-width: 55px; }
+    .sbar-bg {
+      flex: 1;
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: 3px;
+      overflow: hidden;
+      min-width: 55px;
+    }
     .sbar-fill { height: 100%; border-radius: 3px; transition: width .4s ease; }
     .sval { font-size: 13px; font-weight: 700; min-width: 36px; text-align: right; }
 
-    .grade-chip { display: inline-block; padding: 4px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 800; letter-spacing: .3px; }
+    .grade-chip {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
     .g-A { background: var(--green-100); color: var(--green-700); }
-    .g-B { background: var(--navy-100);  color: var(--navy-700); }
-    .g-C { background: var(--gold-100);  color: var(--gold-600); }
-    .g-D { background: var(--red-100);   color: var(--red-600); }
+    .g-B { background: var(--navy-100); color: var(--navy-700); }
+    .g-C { background: var(--gold-100); color: var(--gold-600); }
+    .g-D { background: var(--red-100); color: var(--red-600); }
 
     .na-val { font-size: 16px; font-weight: 800; }
     .na-A { color: var(--green-600); }
@@ -270,76 +547,204 @@
 
     /* ══ SIDEBAR ══ */
     .sidebar { display: flex; flex-direction: column; gap: 14px; }
+
     .podium {
       background: linear-gradient(145deg, var(--navy-950) 0%, var(--navy-800) 60%, var(--navy-700) 100%);
-      border-radius: var(--radius-xl); padding: 20px;
-      position: relative; overflow: hidden; box-shadow: var(--shadow-lg);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
     }
     .podium::after {
-      content: ''; position: absolute; bottom: -30px; right: -30px;
-      width: 120px; height: 120px; border-radius: 50%;
+      content: '';
+      position: absolute;
+      bottom: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
       background: radial-gradient(circle, rgba(245,158,11,.2) 0%, transparent 70%);
     }
-    .pod-head { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 14px; position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; }
+    .pod-head {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,.4);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
     .pod-list { display: flex; flex-direction: column; gap: 8px; position: relative; z-index: 1; }
-    .pod-item { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius-md); padding: 11px 13px; display: flex; align-items: center; gap: 10px; transition: background .2s; }
+    .pod-item {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius-md);
+      padding: 11px 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background .2s;
+    }
     .pod-item:hover { background: rgba(255,255,255,.1); }
-    .pod-item.gold { background: rgba(245,158,11,.15); border-color: rgba(245,158,11,.3); }
+    .pod-item.gold {
+      background: rgba(245,158,11,.15);
+      border-color: rgba(245,158,11,.3);
+    }
     .medal { font-size: 20px; width: 26px; text-align: center; flex-shrink: 0; }
     .pod-info { flex: 1; min-width: 0; }
-    .pod-name { font-size: 12.5px; font-weight: 700; color: var(--white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pod-name {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .pod-detail { font-size: 10.5px; color: rgba(255,255,255,.45); margin-top: 2px; }
     .pod-score { font-size: 20px; font-weight: 800; color: var(--white); flex-shrink: 0; }
 
-    .mini-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 18px; box-shadow: var(--shadow-xs); }
-    .mini-title { font-size: 13px; font-weight: 800; color: var(--gray-900); letter-spacing: -.1px; }
-    .mini-sub { font-size: 11.5px; color: var(--gray-400); margin-top: 2px; margin-bottom: 14px; }
+    .mini-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-xs);
+    }
+    .mini-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -.1px;
+    }
+    .mini-sub {
+      font-size: 11.5px;
+      color: var(--gray-400);
+      margin-top: 2px;
+      margin-bottom: 14px;
+    }
 
     .ind-item { margin-bottom: 11px; }
     .ind-item:last-of-type { margin-bottom: 0; }
-    .ind-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+    .ind-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
     .ind-name { font-size: 12px; color: var(--gray-700); font-weight: 500; }
     .ind-pct { font-size: 12px; font-weight: 800; }
     .ind-bg { height: 5px; background: var(--gray-200); border-radius: 3px; overflow: hidden; }
     .ind-fill { height: 100%; border-radius: 3px; }
-    .formula-note { margin-top: 14px; padding-top: 13px; border-top: 1px solid var(--gray-200); font-size: 11px; color: var(--gray-400); line-height: 1.9; }
+
+    .formula-note {
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid var(--gray-200);
+      font-size: 11px;
+      color: var(--gray-400);
+      line-height: 1.9;
+    }
     .formula-note b { color: var(--gray-600); }
 
     .att-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .att-cell { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 11px 13px; }
+    .att-cell {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 11px 13px;
+    }
     .att-val { font-size: 20px; font-weight: 800; letter-spacing: -0.5px; }
     .att-lbl { font-size: 11px; color: var(--gray-400); margin-top: 2px; font-weight: 500; }
 
-    /* ══ MONTH GRID ══ */
-    .month-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .month-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
-    .month-head { padding: 13px 18px; font-size: 13px; font-weight: 700; color: var(--white); display: flex; align-items: center; justify-content: space-between; }
+    /* ══ MONTH GRID (Absensi & Kinerja tabs) ══ */
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .month-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .month-head {
+      padding: 13px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
     .month-head span:last-child { font-size: 11px; opacity: .7; font-weight: 500; }
     .month-scroll { max-height: 360px; overflow-y: auto; }
     .month-scroll::-webkit-scrollbar { width: 4px; }
+    .month-scroll::-webkit-scrollbar-track { background: transparent; }
     .month-scroll::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
 
     .mini-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    .mini-table thead th { padding: 8px 12px; font-size: 10px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .5px; background: var(--gray-50); text-align: center; position: sticky; top: 0; z-index: 1; border-bottom: 1px solid var(--gray-200); }
+    .mini-table thead th {
+      padding: 8px 12px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      background: var(--gray-50);
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      border-bottom: 1px solid var(--gray-200);
+    }
     .mini-table thead th:first-child { text-align: left; }
-    .mini-table td { padding: 9px 12px; border-bottom: 1px solid var(--gray-100); text-align: center; color: var(--gray-700); }
-    .mini-table td:first-child { text-align: left; font-weight: 600; color: var(--gray-900); font-size: 11.5px; }
+    .mini-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--gray-100);
+      text-align: center;
+      color: var(--gray-700);
+    }
+    .mini-table td:first-child {
+      text-align: left;
+      font-weight: 600;
+      color: var(--gray-900);
+      font-size: 11.5px;
+    }
     .mini-table tr:hover td { background: var(--navy-50); }
 
     /* ══ EMPTY STATE ══ */
-    .empty-state { text-align: center; padding: 56px 20px; color: var(--gray-400); grid-column: 1 / -1; }
+    .empty-state {
+      text-align: center;
+      padding: 56px 20px;
+      color: var(--gray-400);
+      grid-column: 1 / -1;
+    }
     .empty-state p { font-size: 13px; line-height: 1.8; margin-top: 12px; }
 
     /* ══ FOOTER ══ */
-    .footer { text-align: center; padding: 16px; font-size: 11.5px; color: var(--gray-400); border-top: 1px solid var(--gray-200); background: var(--white); }
+    .footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 11.5px;
+      color: var(--gray-400);
+      border-top: 1px solid var(--gray-200);
+      background: var(--white);
+    }
     .footer b { color: var(--gray-600); }
 
+    /* ══ FADE IN ══ */
     @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-in   { animation: fadeUp .3s ease both; }
+    .fade-in { animation: fadeUp .3s ease both; }
     .fade-in-1 { animation-delay: .05s; }
     .fade-in-2 { animation-delay: .1s; }
     .fade-in-3 { animation-delay: .15s; }
 
+    /* ══ RESPONSIVE ══ */
     @media (max-width: 1100px) {
       .main-grid { grid-template-columns: 1fr; }
       .stat-grid { grid-template-columns: repeat(2, 1fr); }
@@ -350,19 +755,20 @@
       .stat-grid { grid-template-columns: 1fr 1fr; }
       .month-grid { grid-template-columns: 1fr; }
       .topbar-right .badge-tahun { display: none; }
+      .main-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══ LOADING ══ -->
+<!-- ══ LOADING OVERLAY ══ -->
 <div class="state-overlay" id="loadingOverlay">
   <div class="spinner"></div>
   <div class="state-title">Memuat Data...</div>
-  <div class="state-sub">Mengambil data presensi dan penilaian kinerja dari Google Sheets.</div>
+  <div class="state-sub">Mengambil data presensi dan penilaian kinerja dari server.</div>
 </div>
 
-<!-- ══ ERROR ══ -->
+<!-- ══ ERROR OVERLAY ══ -->
 <div class="state-overlay hidden" id="errorOverlay">
   <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
   <div class="state-title">Gagal Memuat Data</div>
@@ -376,7 +782,7 @@
     <div class="logo-box">
       <img src="img/logo-bps.png" alt="Logo BPS"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-      <div class="logo-fallback">BPS</div>
+      <div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;background:var(--navy-800);border-radius:6px;color:white;font-weight:800;font-size:14px;">BPS</div>
     </div>
     <div class="divider-v"></div>
     <div class="topbar-text">
@@ -385,12 +791,9 @@
     </div>
     <div class="topbar-right">
       <span class="badge-periode" id="headerPeriode">—</span>
-      <span class="badge-tahun"   id="headerTahun">—</span>
+      <span class="badge-tahun" id="headerTahun">—</span>
       <button class="btn-refresh" id="btnRefresh" onclick="loadAllData()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <path d="M21.5 2v6h-6"/><path d="M2.5 22v-6h6"/>
-          <path d="M22 13a10 10 0 0 1-17.2 7"/><path d="M2 11a10 10 0 0 1 17.2-7"/>
-        </svg>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21.5 2v6h-6"/><path d="M2.5 22v-6h6"/><path d="M22 13a10 10 0 0 1-17.2 7"/><path d="M2 11a10 10 0 0 1 17.2-7"/></svg>
         Perbarui Data
       </button>
     </div>
@@ -400,9 +803,9 @@
 <!-- ══ TAB NAV ══ -->
 <nav class="tab-nav">
   <div class="tab-nav-inner">
-    <button class="tab-btn active" onclick="switchTab('ranking',this)">📊 Peringkat Pegawai</button>
-    <button class="tab-btn"        onclick="switchTab('absensi',this)">📅 Rekap Absensi</button>
-    <button class="tab-btn"        onclick="switchTab('kinerja',this)">📋 Penilaian Kinerja</button>
+    <button class="tab-btn active" onclick="switchTab('ranking', this)">📊 Peringkat Pegawai</button>
+    <button class="tab-btn" onclick="switchTab('absensi', this)">📅 Rekap Absensi</button>
+    <button class="tab-btn" onclick="switchTab('kinerja', this)">📋 Penilaian Kinerja</button>
   </div>
 </nav>
 
@@ -414,13 +817,15 @@
   </div>
 </div>
 
-<!-- ══ MAIN ══ -->
+<!-- ══ MAIN CONTENT ══ -->
 <main class="page">
 
-  <!-- TAB RANKING -->
+  <!-- TAB: RANKING -->
   <div class="tab-content active" id="tab-ranking">
     <div class="stat-grid" id="statGrid"></div>
     <div class="main-grid">
+
+      <!-- Tabel Peringkat -->
       <div class="panel fade-in">
         <div class="panel-head">
           <div>
@@ -446,7 +851,9 @@
         </table>
       </div>
 
+      <!-- Sidebar -->
       <div class="sidebar">
+
         <!-- Podium -->
         <div class="podium fade-in fade-in-1">
           <div class="pod-head">
@@ -456,7 +863,7 @@
           <div class="pod-list" id="podiumList"></div>
         </div>
 
-        <!-- Chart -->
+        <!-- Distribusi -->
         <div class="mini-card fade-in fade-in-2">
           <div class="mini-title">Distribusi Grade</div>
           <div class="mini-sub">Sebaran nilai akhir seluruh pegawai</div>
@@ -474,11 +881,17 @@
           <div class="mini-title">Komponen Penilaian</div>
           <div class="mini-sub">Bobot formula nilai akhir</div>
           <div class="ind-item">
-            <div class="ind-row"><span class="ind-name">Kehadiran &amp; Disiplin</span><span class="ind-pct" style="color:var(--navy-600)">40%</span></div>
+            <div class="ind-row">
+              <span class="ind-name">Kehadiran &amp; Disiplin</span>
+              <span class="ind-pct" style="color:var(--navy-600)">40%</span>
+            </div>
             <div class="ind-bg"><div class="ind-fill" style="width:40%;background:var(--navy-600)"></div></div>
           </div>
           <div class="ind-item">
-            <div class="ind-row"><span class="ind-name">Rata-rata Nilai SKP</span><span class="ind-pct" style="color:var(--gold-500)">60%</span></div>
+            <div class="ind-row">
+              <span class="ind-name">Rata-rata Nilai SKP</span>
+              <span class="ind-pct" style="color:var(--gold-500)">60%</span>
+            </div>
             <div class="ind-bg"><div class="ind-fill" style="width:60%;background:var(--gold-400)"></div></div>
           </div>
           <div class="formula-note">
@@ -494,16 +907,17 @@
           <div class="mini-sub" id="absSubtitle">—</div>
           <div class="att-grid" id="attGrid"></div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- TAB ABSENSI -->
+      </div><!-- /sidebar -->
+    </div><!-- /main-grid -->
+  </div><!-- /tab-ranking -->
+
+  <!-- TAB: ABSENSI -->
   <div class="tab-content" id="tab-absensi">
     <div class="month-grid" id="absMonthGrid"></div>
   </div>
 
-  <!-- TAB KINERJA -->
+  <!-- TAB: KINERJA -->
   <div class="tab-content" id="tab-kinerja">
     <div class="month-grid" id="kinMonthGrid"></div>
   </div>
@@ -517,18 +931,16 @@
 </footer>
 
 <script>
-/* 
-   KONFIGURASI — ganti Sheet ID sesuai spreadsheet kamu
-   Cara ambil ID: buka spreadsheet → lihat URL:
-   https://docs.google.com/spreadsheets/d/ [ID_INI] /edit
- */
+/* ══════════════════════════════════════════════════════
+   KONFIGURASI SPREADSHEET
+   Ganti Sheet ID di sini jika ada perubahan file
+══════════════════════════════════════════════════════ */
 const SHEETS = {
   presensi: '1KxFyDzl9RJMePt7eLqAP3sPKfFZ-KqeH',
   nilai: [
-    '1M-X6xxYjKTIpJVGij1Dm1AYZdBbOV9gB,
-    '16k1ly7J1ShPutJZpy5In7XHfIWCLUBb_',
-    '12kto-rbs3BEz9--GJKFirQbzPdJaWZTz',
-    // tambahkan ID bulan lain di sini jika ada
+    '1M-X6xxYjKTIpJVGij1Dm1AYZdBbOV9gB',  // Desember
+    '16k1ly7J1ShPutJZpy5In7XHfIWCLUBb_',  // November
+    '12kto-rbs3BEz9--GJKFirQbzPdJaWZTz',  // Oktober
   ]
 };
 
@@ -543,17 +955,14 @@ let distChartInst = null;
 
 /* ══════════════════════════════════════════════════════
    FETCH CSV DARI GOOGLE SHEETS
-   - Spreadsheet harus di-set "Siapa saja dengan link dapat melihat"
-   - URL export CSV otomatis dihasilkan dari Sheet ID
 ══════════════════════════════════════════════════════ */
 async function fetchCSV(sheetId) {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&id=${sheetId}`;
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
   const res = await fetch(url);
-  if (!res.ok) throw new Error(`Gagal mengakses spreadsheet (ID: ${sheetId}). Pastikan akses publik sudah diaktifkan.`);
+  if (!res.ok) throw new Error(`Gagal mengakses spreadsheet (ID: ${sheetId}). Pastikan akses "Anyone with the link" sudah aktif.`);
   return await res.text();
 }
 
-/* ── CSV Parser ── */
 function parseCSVLine(line) {
   const result = [];
   let cur = '', inQ = false;
@@ -569,29 +978,29 @@ function parseCSVLine(line) {
   result.push(cur.trim());
   return result;
 }
+
 function csvToRows(text) {
   return text.split('\n').filter(l => l.trim()).map(parseCSVLine);
 }
 
 /* ══════════════════════════════════════════════════════
    PARSE PRESENSI
-   Kolom wajib di spreadsheet: Bulan, NIP, Nama, HK, HD, TK
 ══════════════════════════════════════════════════════ */
 function parsePresensi(text) {
   const rows = csvToRows(text);
   let hi = -1;
   rows.forEach((r, i) => {
-    const f = r.map(c => c.toLowerCase().replace(/"/g,''));
+    const f = r.map(c => c.toLowerCase());
     if (f.includes('nip') && f.includes('nama') && f.includes('hk') && f.includes('hd')) hi = i;
   });
-  if (hi === -1) throw new Error('Header presensi tidak ditemukan. Pastikan ada kolom: Bulan, NIP, Nama, HK, HD, TK.');
+  if (hi === -1) throw new Error('Header presensi tidak ditemukan.');
 
-  const h      = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
-  const iNip   = h.indexOf('nip');
-  const iNama  = h.indexOf('nama');
-  const iHK    = h.indexOf('hk');
-  const iHD    = h.indexOf('hd');
-  const iTK    = h.indexOf('tk');
+  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
+  const iNip  = h.indexOf('nip');
+  const iNama = h.indexOf('nama');
+  const iHK   = h.indexOf('hk');
+  const iHD   = h.indexOf('hd');
+  const iTK   = h.indexOf('tk');
   const iBulan = h.findIndex(x => x.includes('bulan') || x === 'month');
 
   const result = {};
@@ -605,21 +1014,18 @@ function parsePresensi(text) {
     const hk = parseFloat(r[iHK]) || 0;
     const hd = parseFloat(r[iHD]) || 0;
     const tk = iTK >= 0 ? parseFloat(r[iTK]) || 0 : 0;
-    const bulanRaw = iBulan >= 0 ? (r[iBulan] || '') : (r[0] || '');
-    const bulan = normBulan(bulanRaw.replace(/"/g,'').trim());
+    let bulan = iBulan >= 0 ? (r[iBulan] || '').replace(/"/g,'').trim() : (r[0] || '').replace(/"/g,'').trim();
 
     if (!bulan || hk === 0) continue;
-    if (!result[bulan]) result[bulan] = [];
-    if (!result[bulan].find(x => x.nip === nip)) result[bulan].push({ nip, nama, hk, hd, tk });
+    const key = normBulan(bulan);
+    if (!result[key]) result[key] = [];
+    if (!result[key].find(x => x.nip === nip)) result[key].push({ nip, nama, hk, hd, tk });
   }
   return result;
 }
 
 /* ══════════════════════════════════════════════════════
    PARSE NILAI SKP
-   Kolom wajib: NIP (atau NIPlama), Nama, Jabatan, Bulan,
-   Rata-rata Hasil Kerja, Rata-rata Perilaku,
-   Nilai Rata-rata, Predikat Kinerja
 ══════════════════════════════════════════════════════ */
 function parseNilai(text) {
   const rows = csvToRows(text);
@@ -632,7 +1038,7 @@ function parseNilai(text) {
   });
   if (hi === -1) throw new Error('Header nilai SKP tidak ditemukan.');
 
-  const h      = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
+  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
   const iNip   = h.findIndex(x => x.includes('nip') || x.includes('niplama'));
   const iNama  = h.indexOf('nama');
   const iJab   = h.findIndex(x => x.includes('jabatan'));
@@ -648,45 +1054,45 @@ function parseNilai(text) {
     if (r.length < 4) continue;
     const nip  = (r[iNip]  || '').replace(/"/g,'').trim();
     const nama = (r[iNama] || '').replace(/"/g,'').trim();
-    if (!nip || !nama || ['nip','niplama'].includes(nip.toLowerCase())) continue;
+    if (!nip || !nama || nip.toLowerCase() === 'nip' || nip.toLowerCase() === 'niplama') continue;
 
-    data.push({
-      nip,
-      nama,
-      jabatan    : iJab   >= 0 ? (r[iJab]  || '').replace(/"/g,'').trim() : '',
-      bulan      : iBulan >= 0 ? normBulan((r[iBulan] || '').replace(/"/g,'').trim()) : '',
-      hasilKerja : iHK    >= 0 ? parseFloat(r[iHK])   || 0 : 0,
-      perilaku   : iPeril >= 0 ? parseFloat(r[iPeril]) || 0 : 0,
-      rataRata   : iRata  >= 0 ? parseFloat(r[iRata])  || 0 : 0,
-      predikat   : iPred  >= 0 ? (r[iPred] || '').replace(/"/g,'').trim() : '',
-    });
+    const bulan    = iBulan >= 0 ? normBulan((r[iBulan] || '').replace(/"/g,'').trim()) : '';
+    const jabatan  = iJab   >= 0 ? (r[iJab]  || '').replace(/"/g,'').trim() : '';
+    const hasilKerja = iHK  >= 0 ? parseFloat(r[iHK])   || 0 : 0;
+    const perilaku   = iPeril >= 0 ? parseFloat(r[iPeril]) || 0 : 0;
+    const rataRata   = iRata >= 0 ? parseFloat(r[iRata])  || 0 : 0;
+    const predikat   = iPred >= 0 ? (r[iPred] || '').replace(/"/g,'').trim() : '';
+
+    data.push({ nip, nama, jabatan, bulan, hasilKerja, perilaku, rataRata, predikat });
   }
   return data;
 }
 
 /* ══════════════════════════════════════════════════════
-   LOAD DATA DARI SEMUA SPREADSHEET
+   LOAD SEMUA DATA
 ══════════════════════════════════════════════════════ */
 async function loadAllData() {
+  // Reset state
   PRESENSI = {}; NILAI = {};
   showLoading(true);
   setBtnLoading(true);
 
   try {
-    // 1. Ambil presensi
+    // Presensi
     const csvPresensi = await fetchCSV(SHEETS.presensi);
     PRESENSI = parsePresensi(csvPresensi);
 
-    // 2. Ambil semua file nilai SKP secara bersamaan (parallel)
+    // Nilai SKP (parallel)
     const nilaiResults = await Promise.allSettled(SHEETS.nilai.map(id => fetchCSV(id)));
     nilaiResults.forEach(res => {
-      if (res.status !== 'fulfilled') return;
-      const rows = parseNilai(res.value);
-      rows.forEach(row => {
-        if (!row.bulan) return;
-        if (!NILAI[row.bulan]) NILAI[row.bulan] = [];
-        if (!NILAI[row.bulan].find(x => x.nip === row.nip)) NILAI[row.bulan].push(row);
-      });
+      if (res.status === 'fulfilled') {
+        const rows = parseNilai(res.value);
+        rows.forEach(row => {
+          if (!row.bulan) return;
+          if (!NILAI[row.bulan]) NILAI[row.bulan] = [];
+          if (!NILAI[row.bulan].find(x => x.nip === row.nip)) NILAI[row.bulan].push(row);
+        });
+      }
     });
 
     showLoading(false);
@@ -706,7 +1112,8 @@ function showLoading(v) {
 }
 function showError(msg) {
   document.getElementById('loadingOverlay').classList.add('hidden');
-  document.getElementById('errorOverlay').classList.remove('hidden');
+  const eo = document.getElementById('errorOverlay');
+  eo.classList.remove('hidden');
   document.getElementById('errorMsg').textContent = msg || 'Terjadi kesalahan saat memuat data.';
 }
 function setBtnLoading(v) {
@@ -715,7 +1122,7 @@ function setBtnLoading(v) {
 function updateFooterTime() {
   const now = new Date();
   document.getElementById('footerUpdate').textContent =
-    `Diperbarui: ${now.toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric'})} ${now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}`;
+    `Diperbarui: ${now.toLocaleDateString('id-ID', {day:'2-digit',month:'long',year:'numeric'})} ${now.toLocaleTimeString('id-ID', {hour:'2-digit',minute:'2-digit'})}`;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -729,9 +1136,10 @@ function initDashboard() {
   if (bulanList.length > 1) periods.push('Kumulatif');
 
   const tahunSet = new Set(bulanList.map(b => b.split(' ')[1]).filter(Boolean));
-  document.getElementById('headerTahun').textContent    = [...tahunSet].join(' / ');
-  document.getElementById('headerPeriode').textContent  = bulanList.length > 1 ? `${bulanList.length} Bulan` : bulanList[0];
+  document.getElementById('headerTahun').textContent = [...tahunSet].join(' / ');
+  document.getElementById('headerPeriode').textContent = bulanList.length > 1 ? `${bulanList.length} Bulan` : bulanList[0];
 
+  // Period pills
   const pillsEl = document.getElementById('periodPills');
   pillsEl.innerHTML = '';
   periods.forEach((p, i) => {
@@ -751,7 +1159,7 @@ function initDashboard() {
 }
 
 /* ══════════════════════════════════════════════════════
-   HITUNG NILAI AKHIR
+   HITUNG DATA
 ══════════════════════════════════════════════════════ */
 function avgNilaiSKP(nip) {
   let sum = 0, cnt = 0;
@@ -793,10 +1201,10 @@ function buildData(period) {
   }
 
   return presList.map(p => {
-    const pctHadir   = p.hk > 0 ? (p.hd / p.hk) * 100 : 0;
-    const skorHadir  = Math.min(100, Math.max(0, pctHadir - p.tk * 2));
-    const nilaiSKP   = avgNilaiSKP(p.nip);
-    const jabatan    = getJabatan(p.nip);
+    const pctHadir  = p.hk > 0 ? (p.hd / p.hk) * 100 : 0;
+    const skorHadir = Math.min(100, Math.max(0, pctHadir - p.tk * 2));
+    const nilaiSKP  = avgNilaiSKP(p.nip);
+    const jabatan   = getJabatan(p.nip);
     const nilaiAkhir = nilaiSKP != null
       ? Math.round((skorHadir * 0.4 + nilaiSKP * 0.6) * 100) / 100
       : Math.round(skorHadir * 100) / 100;
@@ -814,132 +1222,182 @@ function buildData(period) {
 }
 
 /* ══════════════════════════════════════════════════════
-   RENDER
+   RENDER DASHBOARD
 ══════════════════════════════════════════════════════ */
 const AV_COLORS = ['#1e4080','#d97706','#15803d','#7c3aed','#db2777','#0891b2','#ea580c','#4f46e5','#0f766e','#b45309'];
-function avColor(nip) { return AV_COLORS[nip.split('').reduce((a,c)=>a+c.charCodeAt(0),0) % AV_COLORS.length]; }
-function initials(nama) { return nama.replace(/[^a-zA-Z\s]/g,'').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function avColor(nip) {
+  const h = nip.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  return AV_COLORS[h % AV_COLORS.length];
+}
+function initials(nama) {
+  return nama.replace(/[^a-zA-Z\s]/g,'').trim().split(/\s+/).slice(0,2).map(w => w[0]).join('').toUpperCase();
+}
 
 function render() {
   const data     = buildData(currentPeriod);
   const filtered = currentFilter === 'Semua' ? data : data.filter(p => p.kat === currentFilter);
 
-  const avgHadir = data.length ? Math.round(data.reduce((s,p)=>s+p.pctHadir,0)/data.length*10)/10 : 0;
-  const avgNA    = data.length ? Math.round(data.reduce((s,p)=>s+p.nilaiAkhir,0)/data.length*100)/100 : 0;
-  const totalTK  = data.reduce((s,p)=>s+p.tk,0);
+  // Stat cards
+  const avgHadir = data.length ? Math.round(data.reduce((s,p) => s + p.pctHadir, 0) / data.length * 10) / 10 : 0;
+  const avgNA    = data.length ? Math.round(data.reduce((s,p) => s + p.nilaiAkhir, 0) / data.length * 100) / 100 : 0;
+  const totalTK  = data.reduce((s,p) => s + p.tk, 0);
 
-  // ── Stat cards ──
   const statGrid = document.getElementById('statGrid');
   statGrid.innerHTML = '';
   [
-    { accent:'var(--navy-600)', iconBg:'var(--navy-50)', iconColor:'var(--navy-700)',
-      icon:`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6"/><path d="M16 11l2 2 4-4"/></svg>`,
-      val:data.length, valColor:'var(--navy-700)', lbl:'Total Pegawai', delta:currentPeriod, deltaStyle:'' },
-    { accent:'var(--gold-400)', iconBg:'var(--gold-50)', iconColor:'var(--gold-600)',
-      icon:`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><path d="M9 14l2 2 4-4"/></svg>`,
-      val:avgHadir+'%', valColor:'var(--gold-600)', lbl:'Rata-rata Kehadiran',
-      delta: avgHadir>=95?'↑ Sangat Baik':avgHadir>=90?'→ Baik':'↓ Perlu Perhatian',
-      deltaStyle: avgHadir>=95?'color:var(--green-600)':avgHadir>=90?'color:var(--gold-500)':'color:var(--red-600)' },
-    { accent:'var(--green-600)', iconBg:'var(--green-50)', iconColor:'var(--green-700)',
-      icon:`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>`,
-      val:avgNA, valColor:'var(--green-700)', lbl:'Rata-rata Nilai Akhir', delta:'↑ Presensi + SKP', deltaStyle:'color:var(--green-600)' },
-    { accent: totalTK===0?'var(--green-600)':'var(--red-600)',
-      iconBg:  totalTK===0?'var(--green-50)':'var(--red-50)',
-      iconColor:totalTK===0?'var(--green-700)':'var(--red-600)',
-      icon:`<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-      val:totalTK, valColor:totalTK===0?'var(--green-700)':'var(--red-600)', lbl:'Total Hari TK',
-      delta: totalTK===0?'✓ Tidak ada TK':'Absen tanpa keterangan',
-      deltaStyle: totalTK===0?'color:var(--green-600)':'color:var(--red-600)' }
+    { accent: 'var(--navy-600)', iconBg: 'var(--navy-50)', iconColor: 'var(--navy-700)',
+      icon: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6"/><path d="M16 11l2 2 4-4"/></svg>`,
+      val: data.length, valColor: 'var(--navy-700)', lbl: 'Total Pegawai', delta: currentPeriod, deltaClass: '' },
+    { accent: 'var(--gold-400)', iconBg: 'var(--gold-50)', iconColor: 'var(--gold-600)',
+      icon: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><path d="M9 14l2 2 4-4"/></svg>`,
+      val: avgHadir + '%', valColor: 'var(--gold-600)', lbl: 'Rata-rata Kehadiran',
+      delta: avgHadir >= 95 ? '↑ Sangat Baik' : avgHadir >= 90 ? '→ Baik' : '↓ Perlu Perhatian',
+      deltaClass: avgHadir >= 95 ? 'color:var(--green-600)' : avgHadir >= 90 ? 'color:var(--gold-500)' : 'color:var(--red-600)' },
+    { accent: 'var(--green-600)', iconBg: 'var(--green-50)', iconColor: 'var(--green-700)',
+      icon: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>`,
+      val: avgNA, valColor: 'var(--green-700)', lbl: 'Rata-rata Nilai Akhir',
+      delta: '↑ Presensi + SKP', deltaClass: 'color:var(--green-600)' },
+    { accent: totalTK === 0 ? 'var(--green-600)' : 'var(--red-600)',
+      iconBg: totalTK === 0 ? 'var(--green-50)' : 'var(--red-50)',
+      iconColor: totalTK === 0 ? 'var(--green-700)' : 'var(--red-600)',
+      icon: `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+      val: totalTK, valColor: totalTK === 0 ? 'var(--green-700)' : 'var(--red-600)',
+      lbl: 'Total Hari TK',
+      delta: totalTK === 0 ? '✓ Tidak ada TK' : 'Absen tanpa keterangan',
+      deltaClass: totalTK === 0 ? 'color:var(--green-600)' : 'color:var(--red-600)' }
   ].forEach((s, i) => {
     const d = document.createElement('div');
-    d.className = 'stat-card fade-in';
+    d.className = `stat-card fade-in`;
     d.style.animationDelay = (i * 0.07) + 's';
     d.innerHTML = `
       <div class="stat-card-accent" style="background:${s.accent}"></div>
       <div class="stat-icon" style="background:${s.iconBg};color:${s.iconColor}">${s.icon}</div>
       <div class="stat-val" style="color:${s.valColor}">${s.val}</div>
       <div class="stat-lbl">${s.lbl}</div>
-      <div class="stat-delta" style="${s.deltaStyle}">${s.delta}</div>`;
+      <div class="stat-delta" style="${s.deltaClass}">${s.delta}</div>`;
     statGrid.appendChild(d);
   });
 
-  // ── Panel title ──
-  document.getElementById('panelTitle').textContent   = `Peringkat Pegawai — ${currentPeriod}`;
-  document.getElementById('absSubtitle').textContent  = `Periode: ${currentPeriod}`;
+  // Panel title
+  document.getElementById('panelTitle').textContent = `Peringkat Pegawai — ${currentPeriod}`;
+  document.getElementById('absSubtitle').textContent = `Periode: ${currentPeriod}`;
 
-  // ── Filter buttons ──
-  const kats = ['Semua', ...new Set(data.map(p=>p.kat).filter(Boolean))];
+  // Filter buttons
+  const kats = ['Semua', ...new Set(data.map(p => p.kat).filter(Boolean))];
   document.getElementById('filterRow').innerHTML = kats.map(k =>
-    `<button class="fbtn${k===currentFilter?' active':''}" onclick="filterJab(this,'${k}')">${k}</button>`
+    `<button class="fbtn${k === currentFilter ? ' active' : ''}" onclick="filterJab(this,'${k}')">${k}</button>`
   ).join('');
 
-  // ── Tabel ──
+  // Tabel
   const tbody = document.getElementById('rankBody');
   tbody.innerHTML = '';
   filtered.forEach((p, i) => {
     const rank = i + 1;
-    const rnHtml = rank===1?`<div class="rank-num rn-1">1</div>`:rank===2?`<div class="rank-num rn-2">2</div>`:rank===3?`<div class="rank-num rn-3">3</div>`:`<span class="rn-n">${rank}</span>`;
-    const hChip  = p.pctHadir===100?`<span class="chip chip-green">100%</span>`:p.pctHadir>=90?`<span class="chip chip-gold">${p.pctHadir}%</span>`:`<span class="chip chip-red">${p.pctHadir}%</span>`;
-    const tkChip = p.tk===0?`<span class="chip chip-green">0</span>`:`<span class="chip chip-red">${p.tk}×</span>`;
-    const bColor = p.skorHadir>=95?'var(--navy-600)':p.skorHadir>=90?'var(--gold-500)':'var(--gray-400)';
-    const sColor = !p.nilaiSKP?'var(--gray-300)':p.nilaiSKP>=95?'var(--green-600)':p.nilaiSKP>=90?'var(--navy-600)':'var(--gold-500)';
+    let rnHtml;
+    if (rank === 1) rnHtml = `<div class="rank-num rn-1">1</div>`;
+    else if (rank === 2) rnHtml = `<div class="rank-num rn-2">2</div>`;
+    else if (rank === 3) rnHtml = `<div class="rank-num rn-3">3</div>`;
+    else rnHtml = `<span class="rn-n">${rank}</span>`;
+
+    const hChip = p.pctHadir === 100
+      ? `<span class="chip chip-green">100%</span>`
+      : p.pctHadir >= 90
+        ? `<span class="chip chip-gold">${p.pctHadir}%</span>`
+        : `<span class="chip chip-red">${p.pctHadir}%</span>`;
+
+    const tkChip = p.tk === 0
+      ? `<span class="chip chip-green">0</span>`
+      : `<span class="chip chip-red">${p.tk}×</span>`;
+
+    const bColor = p.skorHadir >= 95 ? 'var(--navy-600)' : p.skorHadir >= 90 ? 'var(--gold-500)' : 'var(--gray-400)';
+    const sColor = !p.nilaiSKP ? 'var(--gray-300)' : p.nilaiSKP >= 95 ? 'var(--green-600)' : p.nilaiSKP >= 90 ? 'var(--navy-600)' : 'var(--gold-500)';
+
     const tr = document.createElement('tr');
-    if (rank<=3) tr.className='top3';
+    if (rank <= 3) tr.className = 'top3';
     tr.innerHTML = `
       <td>${rnHtml}</td>
-      <td><div class="emp-row">
-        <div class="av" style="background:${avColor(p.nip)}">${initials(p.nama)}</div>
-        <div>
-          <div class="emp-name">${p.nama}</div>
-          <div class="emp-nip">NIP ${p.nip}</div>
-          <div class="emp-job">${p.jabatan||'—'}</div>
+      <td>
+        <div class="emp-row">
+          <div class="av" style="background:${avColor(p.nip)}">${initials(p.nama)}</div>
+          <div>
+            <div class="emp-name">${p.nama}</div>
+            <div class="emp-nip">NIP ${p.nip}</div>
+            <div class="emp-job">${p.jabatan || '—'}</div>
+          </div>
         </div>
-      </div></td>
+      </td>
       <td style="text-align:center">${hChip}</td>
       <td style="text-align:center">${tkChip}</td>
-      <td><div class="sbar-wrap"><div class="sbar-bg"><div class="sbar-fill" style="width:${p.skorHadir}%;background:${bColor}"></div></div><span class="sval" style="color:${bColor}">${p.skorHadir}</span></div></td>
-      <td><div class="sbar-wrap"><div class="sbar-bg"><div class="sbar-fill" style="width:${p.nilaiSKP||0}%;background:${sColor}"></div></div><span class="sval" style="color:${sColor}">${p.nilaiSKP!=null?p.nilaiSKP:'—'}</span></div></td>
+      <td>
+        <div class="sbar-wrap">
+          <div class="sbar-bg"><div class="sbar-fill" style="width:${p.skorHadir}%;background:${bColor}"></div></div>
+          <span class="sval" style="color:${bColor}">${p.skorHadir}</span>
+        </div>
+      </td>
+      <td>
+        <div class="sbar-wrap">
+          <div class="sbar-bg"><div class="sbar-fill" style="width:${p.nilaiSKP || 0}%;background:${sColor}"></div></div>
+          <span class="sval" style="color:${sColor}">${p.nilaiSKP != null ? p.nilaiSKP : '—'}</span>
+        </div>
+      </td>
       <td style="text-align:center"><span class="na-val na-${p.grade}">${p.nilaiAkhir.toFixed(2)}</span></td>
       <td style="text-align:center"><span class="grade-chip g-${p.grade}">${p.grade}</span></td>`;
     tbody.appendChild(tr);
   });
 
-  // ── Podium ──
+  // Podium
   const podEl = document.getElementById('podiumList');
   podEl.innerHTML = '';
   ['🥇','🥈','🥉'].forEach((medal, i) => {
     if (!filtered[i]) return;
     const p = filtered[i];
     const div = document.createElement('div');
-    div.className = 'pod-item' + (i===0?' gold':'');
-    div.innerHTML = `<span class="medal">${medal}</span><div class="pod-info"><div class="pod-name">${p.nama.split(',')[0].split(' ').slice(0,3).join(' ')}</div><div class="pod-detail">${(p.jabatan||'').split(' ').slice(0,4).join(' ')||'—'} · Grade ${p.grade}</div></div><div class="pod-score">${p.nilaiAkhir.toFixed(1)}</div>`;
+    div.className = 'pod-item' + (i === 0 ? ' gold' : '');
+    div.innerHTML = `
+      <span class="medal">${medal}</span>
+      <div class="pod-info">
+        <div class="pod-name">${p.nama.split(',')[0].split(' ').slice(0,3).join(' ')}</div>
+        <div class="pod-detail">${(p.jabatan || '').split(' ').slice(0,4).join(' ') || '—'} · Grade ${p.grade}</div>
+      </div>
+      <div class="pod-score">${p.nilaiAkhir.toFixed(1)}</div>`;
     podEl.appendChild(div);
   });
 
-  // ── Att grid ──
-  const avgHD = data.length ? Math.round(data.reduce((s,p)=>s+p.hd,0)/data.length*10)/10 : 0;
+  // Att grid
+  const avgHD = data.length ? Math.round(data.reduce((s,p) => s + p.hd, 0) / data.length * 10) / 10 : 0;
   document.getElementById('attGrid').innerHTML = `
     <div class="att-cell"><div class="att-val" style="color:var(--green-600)">${avgHadir}%</div><div class="att-lbl">Rata-rata Kehadiran</div></div>
-    <div class="att-cell"><div class="att-val" style="color:${totalTK===0?'var(--green-600)':'var(--red-600)'}">${totalTK}</div><div class="att-lbl">Total Hari TK</div></div>
+    <div class="att-cell"><div class="att-val" style="color:${totalTK === 0 ? 'var(--green-600)' : 'var(--red-600)'}">${totalTK}</div><div class="att-lbl">Total Hari TK</div></div>
     <div class="att-cell"><div class="att-val" style="color:var(--navy-600)">${avgHD}</div><div class="att-lbl">Rata-rata Hari Hadir</div></div>
-    <div class="att-cell"><div class="att-val" style="color:var(--gold-500)">${data.filter(p=>p.pctHadir<100).length}</div><div class="att-lbl">Tidak Hadir Penuh</div></div>`;
+    <div class="att-cell"><div class="att-val" style="color:var(--gold-500)">${data.filter(p => p.pctHadir < 100).length}</div><div class="att-lbl">Tidak Hadir Penuh</div></div>`;
 
-  // ── Chart ──
-  const grades = {A:0,B:0,C:0,D:0};
+  // Chart
+  const grades = { A: 0, B: 0, C: 0, D: 0 };
   data.forEach(p => grades[p.grade]++);
   if (distChartInst) { distChartInst.destroy(); distChartInst = null; }
   distChartInst = new Chart(document.getElementById('distChart'), {
     type: 'doughnut',
     data: {
-      labels: ['A (≥95)','B (90–94)','C (80–89)','D (<80)'],
-      datasets: [{ data:[grades.A,grades.B,grades.C,grades.D], backgroundColor:['#16a34a','#2452a0','#f59e0b','#dc2626'], borderWidth:3, borderColor:'#ffffff', hoverOffset:6 }]
+      labels: ['A (≥95)', 'B (90–94)', 'C (80–89)', 'D (<80)'],
+      datasets: [{
+        data: [grades.A, grades.B, grades.C, grades.D],
+        backgroundColor: ['#16a34a', '#2452a0', '#f59e0b', '#dc2626'],
+        borderWidth: 3,
+        borderColor: '#ffffff',
+        hoverOffset: 6
+      }]
     },
-    options: { responsive:true, maintainAspectRatio:false, cutout:'68%', plugins:{legend:{display:false}} }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: { legend: { display: false } }
+    }
   });
 }
 
 /* ══════════════════════════════════════════════════════
-   TAB ABSENSI & KINERJA
+   TAB ABSENSI
 ══════════════════════════════════════════════════════ */
 const MONTH_COLORS = [
   'linear-gradient(90deg,#163060,#2452a0)',
@@ -951,27 +1409,28 @@ const MONTH_COLORS = [
 ];
 
 function renderAbsensiTab() {
+  const bulanList = Object.keys(PRESENSI).sort(sortBulan);
   const container = document.getElementById('absMonthGrid');
   container.innerHTML = '';
-  Object.keys(PRESENSI).sort(sortBulan).forEach((bulan, idx) => {
-    const rows = [...PRESENSI[bulan]].sort((a,b)=>(b.hd/b.hk)-(a.hd/a.hk));
+  bulanList.forEach((bulan, idx) => {
+    const rows = [...PRESENSI[bulan]].sort((a, b) => (b.hd / b.hk) - (a.hd / a.hk));
     const card = document.createElement('div');
     card.className = 'month-card fade-in';
     card.style.animationDelay = (idx * 0.05) + 's';
     card.innerHTML = `
-      <div class="month-head" style="background:${MONTH_COLORS[idx%MONTH_COLORS.length]}">
-        <span>${bulan}</span><span>${rows[0]?.hk||'?'} Hari Kerja</span>
+      <div class="month-head" style="background:${MONTH_COLORS[idx % MONTH_COLORS.length]}">
+        <span>${bulan}</span><span>${rows[0]?.hk || '?'} Hari Kerja</span>
       </div>
       <div class="month-scroll">
         <table class="mini-table">
           <thead><tr><th>Nama Pegawai</th><th>HK</th><th>HD</th><th>TK</th><th>%</th></tr></thead>
-          <tbody>${rows.map(p=>{
-            const pct = p.hk>0?Math.round(p.hd/p.hk*100):0;
-            const cl  = pct===100?'color:var(--green-600)':pct>=90?'color:var(--gold-500)':'color:var(--red-600)';
+          <tbody>${rows.map(p => {
+            const pct = p.hk > 0 ? Math.round(p.hd / p.hk * 100) : 0;
+            const cl = pct === 100 ? 'color:var(--green-600)' : pct >= 90 ? 'color:var(--gold-500)' : 'color:var(--red-600)';
             return `<tr>
               <td>${p.nama.split(',')[0].split(' ').slice(0,4).join(' ')}</td>
               <td>${p.hk}</td><td>${p.hd}</td>
-              <td style="${p.tk>0?'color:var(--red-600);font-weight:700':''}">${p.tk}</td>
+              <td style="${p.tk > 0 ? 'color:var(--red-600);font-weight:700' : ''}">${p.tk}</td>
               <td style="${cl};font-weight:700">${pct}%</td>
             </tr>`;
           }).join('')}</tbody>
@@ -981,15 +1440,9 @@ function renderAbsensiTab() {
   });
 }
 
-const KIN_COLORS = [
-  'linear-gradient(90deg,#15803d,#16a34a)',
-  'linear-gradient(90deg,#b45309,#d97706)',
-  'linear-gradient(90deg,#6d28d9,#7c3aed)',
-  'linear-gradient(90deg,#0369a1,#0284c7)',
-  'linear-gradient(90deg,#be185d,#db2777)',
-  'linear-gradient(90deg,#163060,#2452a0)',
-];
-
+/* ══════════════════════════════════════════════════════
+   TAB KINERJA
+══════════════════════════════════════════════════════ */
 function renderKinerjaTab() {
   const bulanList = Object.keys(NILAI).sort(sortBulan);
   const container = document.getElementById('kinMonthGrid');
@@ -997,30 +1450,38 @@ function renderKinerjaTab() {
   if (!bulanList.length) {
     container.innerHTML = `<div class="empty-state">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      <p>Data nilai SKP belum tersedia.<br>Pastikan Sheet ID sudah diisi dan akses spreadsheet sudah publik.</p>
+      <p>Data nilai SKP belum tersedia.</p>
     </div>`;
     return;
   }
+  const kinColors = [
+    'linear-gradient(90deg,#15803d,#16a34a)',
+    'linear-gradient(90deg,#b45309,#d97706)',
+    'linear-gradient(90deg,#6d28d9,#7c3aed)',
+    'linear-gradient(90deg,#0369a1,#0284c7)',
+    'linear-gradient(90deg,#be185d,#db2777)',
+    'linear-gradient(90deg,#163060,#2452a0)',
+  ];
   bulanList.forEach((bulan, idx) => {
-    const rows = [...NILAI[bulan]].sort((a,b)=>b.rataRata-a.rataRata);
+    const rows = [...NILAI[bulan]].sort((a, b) => b.rataRata - a.rataRata);
     const card = document.createElement('div');
     card.className = 'month-card fade-in';
     card.style.animationDelay = (idx * 0.05) + 's';
     card.innerHTML = `
-      <div class="month-head" style="background:${KIN_COLORS[idx%KIN_COLORS.length]}">
+      <div class="month-head" style="background:${kinColors[idx % kinColors.length]}">
         <span>${bulan}</span><span>${rows.length} Pegawai</span>
       </div>
       <div class="month-scroll">
         <table class="mini-table">
           <thead><tr><th>Nama Pegawai</th><th>H.Kerja</th><th>Perilaku</th><th>Rata-rata</th><th>Predikat</th></tr></thead>
-          <tbody>${rows.map(p=>{
-            const isSB = p.predikat==='Sangat Baik';
+          <tbody>${rows.map(p => {
+            const isSB = p.predikat === 'Sangat Baik';
             return `<tr>
               <td>${p.nama.split(',')[0].split(' ').slice(0,3).join(' ')}</td>
               <td style="font-weight:700">${p.hasilKerja.toFixed(2)}</td>
               <td>${p.perilaku.toFixed(2)}</td>
               <td style="font-weight:800;color:var(--navy-700)">${p.rataRata.toFixed(2)}</td>
-              <td style="font-size:10.5px;font-weight:700;${isSB?'color:var(--green-600)':'color:var(--gold-600)'}">${p.predikat}</td>
+              <td style="font-size:10.5px;font-weight:700;${isSB ? 'color:var(--green-600)' : 'color:var(--gold-600)'}">${p.predikat}</td>
             </tr>`;
           }).join('')}</tbody>
         </table>
@@ -1037,26 +1498,26 @@ const BULAN_ORDER = ['Januari','Februari','Maret','April','Mei','Juni','Juli','A
 function normBulan(raw) {
   const r = raw.toLowerCase().trim();
   const y = r.match(/\d{4}/)?.[0] || '';
-  const tag = v => y ? `${v} ${y}` : v;
-  if (r.includes('jan')) return tag('Januari');
-  if (r.includes('feb')) return tag('Februari');
-  if (r.includes('mar')) return tag('Maret');
-  if (r.includes('apr')) return tag('April');
-  if (r.includes('mei') || r.includes('may')) return tag('Mei');
-  if (r.includes('jun')) return tag('Juni');
-  if (r.includes('jul')) return tag('Juli');
-  if (r.includes('agu') || r.includes('aug')) return tag('Agustus');
-  if (r.includes('sep')) return tag('September');
-  if (r.includes('okt') || r.includes('oct')) return tag('Oktober');
-  if (r.includes('nov')) return tag('November');
-  if (r.includes('des') || r.includes('dec')) return tag('Desember');
+  const hasYear = v => y ? `${v} ${y}` : v;
+  if (r.includes('jan')) return hasYear('Januari');
+  if (r.includes('feb')) return hasYear('Februari');
+  if (r.includes('mar')) return hasYear('Maret');
+  if (r.includes('apr')) return hasYear('April');
+  if (r.includes('mei') || r.includes('may')) return hasYear('Mei');
+  if (r.includes('jun')) return hasYear('Juni');
+  if (r.includes('jul')) return hasYear('Juli');
+  if (r.includes('agu') || r.includes('aug')) return hasYear('Agustus');
+  if (r.includes('sep')) return hasYear('September');
+  if (r.includes('okt') || r.includes('oct')) return hasYear('Oktober');
+  if (r.includes('nov')) return hasYear('November');
+  if (r.includes('des') || r.includes('dec')) return hasYear('Desember');
   return raw.trim();
 }
 
 function sortBulan(a, b) {
   const [bA, yA] = a.split(' ');
   const [bB, yB] = b.split(' ');
-  if (yA !== yB) return (parseInt(yA)||0) - (parseInt(yB)||0);
+  if (yA !== yB) return (parseInt(yA) || 0) - (parseInt(yB) || 0);
   return BULAN_ORDER.indexOf(bA) - BULAN_ORDER.indexOf(bB);
 }
 
