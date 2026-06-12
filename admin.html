@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Admin — Sistem Penilaian Pegawai BPS Kota Palu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy-950: #0a1628;
+      --navy-900: #0f2044;
+      --navy-800: #163060;
+      --navy-700: #1e4080;
+      --navy-600: #2452a0;
+      --navy-100: #dce8f9;
+      --navy-50:  #eef4fd;
+      --gold-600: #b45309;
+      --gold-500: #d97706;
+      --gold-400: #f59e0b;
+      --gold-100: #fef3c7;
+      --green-600: #16a34a;
+      --green-100: #dcfce7;
+      --red-600:  #dc2626;
+      --red-100:  #fee2e2;
+      --gray-900: #1a1f2e;
+      --gray-700: #374151;
+      --gray-500: #6b7280;
+      --gray-400: #9ca3af;
+      --gray-300: #d1d5db;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --gray-50:  #f9fafb;
+      --white:    #ffffff;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 18px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,.13);
+    }
+    html { font-size: 14px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-100);
+      color: var(--gray-900);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══ TOPBAR ══ */
+    .topbar {
+      background: var(--navy-900);
+      border-bottom: 3px solid var(--gold-400);
+      box-shadow: var(--shadow-lg);
+    }
+    .topbar-inner {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 32px; max-width: 1100px; margin: 0 auto;
+    }
+    .logo-box {
+      width: 48px; height: 48px; background: var(--white);
+      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
+      overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,.25); padding: 4px;
+    }
+    .logo-box img { width: 100%; height: 100%; object-fit: contain; }
+    .logo-fallback {
+      display:none; align-items:center; justify-content:center; width:100%; height:100%;
+      background: var(--navy-800); border-radius: 6px; color: white; font-weight: 800; font-size: 13px;
+    }
+    .topbar-text { flex: 1; }
+    .topbar-title { font-size: 15px; font-weight: 800; color: var(--white); }
+    .topbar-sub { font-size: 11.5px; color: rgba(255,255,255,.5); margin-top: 2px; }
+    .admin-badge {
+      background: var(--gold-400); color: var(--navy-950);
+      font-size: 11.5px; font-weight: 700; padding: 5px 14px; border-radius: var(--radius-full);
+    }
+    .link-back {
+      color: rgba(255,255,255,.6); font-size: 12.5px; text-decoration: none;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .link-back:hover { color: var(--white); }
+
+    /* ══ PAGE ══ */
+    .page { max-width: 1100px; margin: 0 auto; padding: 32px; }
+
+    /* ══ LOGIN ══ */
+    .login-wrap {
+      min-height: 70vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-card {
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-radius: var(--radius-xl); padding: 36px;
+      box-shadow: var(--shadow-md); width: 100%; max-width: 380px; text-align: center;
+    }
+    .login-icon {
+      width: 56px; height: 56px; background: var(--navy-50); color: var(--navy-700);
+      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+    }
+    .login-card h2 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
+    .login-card p { font-size: 12.5px; color: var(--gray-500); line-height: 1.7; margin-bottom: 22px; }
+    .login-input {
+      width: 100%; padding: 12px 16px; border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md); font-size: 14px; font-family: inherit;
+      margin-bottom: 14px; transition: border-color .15s;
+    }
+    .login-input:focus { outline: none; border-color: var(--navy-500); }
+    .login-error {
+      color: var(--red-600); font-size: 12px; font-weight: 600; margin-bottom: 12px;
+      display: none;
+    }
+    .login-error.show { display: block; }
+    .btn-primary {
+      width: 100%; background: var(--navy-700); color: var(--white);
+      border: none; font-size: 14px; font-weight: 700;
+      padding: 12px; border-radius: var(--radius-full);
+      cursor: pointer; font-family: inherit; transition: background .2s;
+    }
+    .btn-primary:hover { background: var(--navy-600); }
+
+    /* ══ ADMIN CONTENT ══ */
+    .admin-content { display: none; }
+    .admin-content.show { display: block; }
+
+    .intro-card {
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg); padding: 20px 24px;
+      box-shadow: var(--shadow-sm); margin-bottom: 20px;
+    }
+    .intro-card h1 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
+    .intro-card p { font-size: 13px; color: var(--gray-500); line-height: 1.8; }
+    .intro-card p b { color: var(--gray-700); }
+
+    .period-select-wrap {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .period-select-wrap label { font-size: 12.5px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; }
+    .period-select {
+      padding: 9px 16px; border: 1px solid var(--gray-200);
+      border-radius: var(--radius-full); font-size: 13px; font-weight: 600;
+      font-family: inherit; background: var(--white); color: var(--gray-900);
+      cursor: pointer;
+    }
+
+    /* ══ STATUS ══ */
+    .status-banner {
+      padding: 12px 18px; border-radius: var(--radius-md);
+      font-size: 12.5px; font-weight: 600; margin-bottom: 18px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .status-tie { background: var(--gold-100); color: var(--gold-600); }
+    .status-notie { background: var(--gray-100); color: var(--gray-500); }
+    .status-saved { background: var(--green-100); color: #15803d; }
+
+    /* ══ RANK CARDS ══ */
+    .rank-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .rank-card {
+      background: var(--white); border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg); padding: 14px 18px;
+      display: flex; align-items: center; gap: 14px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .rank-card.tied { border-color: var(--gold-400); background: var(--gold-100)0a; }
+    .rank-card.dragging { opacity: .5; }
+
+    .drag-handle {
+      cursor: grab; color: var(--gray-300); flex-shrink: 0;
+      display: flex; align-items: center;
+    }
+    .drag-handle:active { cursor: grabbing; }
+
+    .rank-pos {
+      width: 38px; height: 38px; border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 800; flex-shrink: 0;
+    }
+    .rp-1 { background: #fef9c3; color: #713f12; }
+    .rp-2 { background: var(--gray-200); color: var(--gray-600); }
+    .rp-3 { background: var(--gold-100); color: var(--gold-600); }
+    .rp-n { background: var(--gray-50); color: var(--gray-400); }
+
+    .rank-info { flex: 1; min-width: 0; }
+    .rank-name { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+    .rank-detail { font-size: 11.5px; color: var(--gray-400); margin-top: 2px; }
+    .rank-job { font-size: 11.5px; color: var(--navy-600); margin-top: 1px; font-weight: 500; }
+
+    .rank-score { text-align: right; flex-shrink: 0; }
+    .rank-score-val { font-size: 20px; font-weight: 800; color: var(--navy-700); }
+    .rank-score-lbl { font-size: 10.5px; color: var(--gray-400); margin-top: 2px; }
+
+    .tie-tag {
+      background: var(--gold-400); color: var(--navy-950);
+      font-size: 10px; font-weight: 800; padding: 3px 9px;
+      border-radius: var(--radius-full); flex-shrink: 0; text-transform: uppercase; letter-spacing: .4px;
+    }
+
+    /* ══ ACTIONS ══ */
+    .action-bar {
+      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+      padding-top: 16px; border-top: 1px solid var(--gray-200);
+    }
+    .btn-save {
+      background: var(--navy-700); color: var(--white); border: none;
+      font-size: 13.5px; font-weight: 700; padding: 11px 28px;
+      border-radius: var(--radius-full); cursor: pointer; font-family: inherit;
+      transition: background .2s; display: flex; align-items: center; gap: 8px;
+    }
+    .btn-save:hover { background: var(--navy-600); }
+    .btn-save:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-reset-order {
+      background: var(--white); color: var(--gray-600); border: 1px solid var(--gray-200);
+      font-size: 13px; font-weight: 600; padding: 10px 22px;
+      border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: all .2s;
+    }
+    .btn-reset-order:hover { border-color: var(--red-600); color: var(--red-600); }
+
+    .empty-state {
+      text-align: center; padding: 60px 20px; color: var(--gray-400);
+    }
+    .empty-state svg { margin: 0 auto 14px; display: block; }
+    .empty-state p { font-size: 13px; line-height: 1.8; }
+
+    @media (max-width: 600px) {
+      .page { padding: 18px; }
+      .rank-card { padding: 12px 14px; gap: 10px; }
+      .rank-name { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo-box">
+      <img src="img/logo-bps.png" alt="Logo BPS"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <div class="logo-fallback">BPS</div>
+    </div>
+    <div class="topbar-text">
+      <div class="topbar-title">Halaman Admin</div>
+      <div class="topbar-sub">Sistem Penilaian Pegawai Terbaik — BPS Kota Palu</div>
+    </div>
+    <span class="admin-badge">Khusus Admin</span>
+    <a class="link-back" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      Kembali ke Dashboard
+    </a>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- ══ LOGIN ══ -->
+  <div class="login-wrap" id="loginWrap">
+    <div class="login-card">
+      <div class="login-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <h2>Masuk sebagai Admin</h2>
+      <p>Masukkan password untuk mengatur urutan peringkat pegawai yang memiliki nilai sama.</p>
+      <div class="login-error" id="loginError">Password salah. Coba lagi.</div>
+      <input type="password" class="login-input" id="loginInput" placeholder="Password admin" onkeydown="if(event.key==='Enter')doLogin()"/>
+      <button class="btn-primary" onclick="doLogin()">Masuk</button>
+    </div>
+  </div>
+
+  <!-- ══ ADMIN CONTENT ══ -->
+  <div class="admin-content" id="adminContent">
+
+    <div class="intro-card">
+      <h1>Atur Peringkat Pegawai Terbaik</h1>
+      <p>
+        Jika ada <b>2 atau lebih pegawai dengan nilai akhir yang sama</b> di posisi 3 besar,
+        Anda dapat mengatur urutan tampilannya di dashboard dengan cara <b>drag &amp; drop</b> kartu di bawah.
+        Perubahan akan langsung tersinkron dan terlihat oleh semua pengguna.
+      </p>
+    </div>
+
+    <div class="period-select-wrap">
+      <label>Periode</label>
+      <select class="period-select" id="periodSelect" onchange="onPeriodChange()"></select>
+    </div>
+
+    <div id="statusBanner"></div>
+    <div class="rank-list" id="rankList"></div>
+
+    <div class="action-bar" id="actionBar" style="display:none">
+      <button class="btn-save" id="btnSave" onclick="saveOverride()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Simpan Urutan
+      </button>
+      <button class="btn-reset-order" onclick="resetOrder()">Reset ke Urutan Asli</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   AUTH SEDERHANA
+══════════════════════════════════════════════════════ */
+const ADMIN_PASSWORD = 'bps7271';
+
+function doLogin() {
+  const val = document.getElementById('loginInput').value;
+  if (val === ADMIN_PASSWORD) {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminContent').classList.add('show');
+    sessionStorage.setItem('bps_admin_auth', '1');
+    init();
+  } else {
+    document.getElementById('loginError').classList.add('show');
+  }
+}
+
+// Auto-login jika sudah pernah login di tab ini
+if (sessionStorage.getItem('bps_admin_auth') === '1') {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('adminContent').classList.add('show');
+}
+
+/* ══════════════════════════════════════════════════════
+   FIREBASE CONFIG
+══════════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyA3Mz21v-ag7rL0dnBZEqvXC71PPoPPSNo",
+  authDomain: "sistem-penilaian-pegawai.firebaseapp.com",
+  databaseURL: "https://sistem-penilaian-pegawai-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "sistem-penilaian-pegawai",
+  storageBucket: "sistem-penilaian-pegawai.firebasestorage.app",
+  messagingSenderId: "914274054765",
+  appId: "1:914274054765:web:b38baf00bce1275bec0564"
+};
+firebase.initializeApp(firebaseConfig);
+const fbDB = firebase.database();
+
+/* ══════════════════════════════════════════════════════
+   KONFIGURASI SPREADSHEET — sama seperti index.html
+══════════════════════════════════════════════════════ */
+const SHEETS = {
+  presensi: '1KxFyDzl9RJMePt7eLqAP3sPKfFZ-KqeH',
+  nilai: [
+    '1M-X6xxYjKTIpJVGij1Dm1AYZdBbOV9gB',
+    '16k1ly7J1ShPutJZpy5In7XHfIWCLUBb_',
+    '12kto-rbs3BEz9--GJKFirQbzPdJaWZTz',
+  ]
+};
+
+let PRESENSI = {};
+let NILAI = {};
+let OVERRIDES = {};
+let currentPeriod = '';
+let currentTop3 = [];   // urutan kerja saat ini (bisa diubah drag)
+let originalTop3 = [];  // urutan asli berdasarkan nilai
+
+/* ══════════════════════════════════════════════════════
+   FETCH & PARSE (sama seperti index.html)
+══════════════════════════════════════════════════════ */
+async function fetchCSV(sheetId) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Gagal mengakses spreadsheet (ID: ${sheetId})`);
+  return await res.text();
+}
+function parseCSVLine(line) {
+  const result = []; let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { if (inQ && line[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
+    else cur += c;
+  }
+  result.push(cur.trim());
+  return result;
+}
+function csvToRows(text) { return text.split('\n').filter(l => l.trim()).map(parseCSVLine); }
+
+function parsePresensi(text) {
+  const rows = csvToRows(text);
+  let hi = -1;
+  rows.forEach((r, i) => {
+    const f = r.map(c => c.toLowerCase().replace(/"/g,''));
+    if (f.includes('nip') && f.includes('nama') && f.includes('hk') && f.includes('hd')) hi = i;
+  });
+  if (hi === -1) throw new Error('Header presensi tidak ditemukan.');
+  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
+  const iNip = h.indexOf('nip'), iNama = h.indexOf('nama'), iHK = h.indexOf('hk'), iHD = h.indexOf('hd'), iTK = h.indexOf('tk');
+  const iBulan = h.findIndex(x => x.includes('bulan') || x === 'month');
+  const result = {};
+  for (let i = hi + 1; i < rows.length; i++) {
+    const r = rows[i]; if (r.length < 4) continue;
+    const nip = (r[iNip]||'').replace(/"/g,'').trim();
+    const nama = (r[iNama]||'').replace(/"/g,'').trim();
+    if (!nip || !nama || nip.toLowerCase() === 'nip') continue;
+    const hk = parseFloat(r[iHK]) || 0;
+    const hd = parseFloat(r[iHD]) || 0;
+    const tk = iTK >= 0 ? parseFloat(r[iTK]) || 0 : 0;
+    const bulanRaw = iBulan >= 0 ? (r[iBulan]||'') : (r[0]||'');
+    const bulan = normBulan(bulanRaw.replace(/"/g,'').trim());
+    if (!bulan || hk === 0) continue;
+    if (!result[bulan]) result[bulan] = [];
+    if (!result[bulan].find(x => x.nip === nip)) result[bulan].push({ nip, nama, hk, hd, tk });
+  }
+  return result;
+}
+
+function parseNilai(text) {
+  const rows = csvToRows(text);
+  let hi = -1;
+  rows.forEach((r, i) => {
+    const f = r.map(c => c.toLowerCase().replace(/"/g,''));
+    if ((f.some(x => x.includes('nip') || x.includes('niplama'))) && f.some(x => x.includes('nama')) && f.some(x => x.includes('rata'))) hi = i;
+  });
+  if (hi === -1) throw new Error('Header nilai SKP tidak ditemukan.');
+  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
+  const iNip = h.findIndex(x => x.includes('nip') || x.includes('niplama'));
+  const iNama = h.indexOf('nama');
+  const iJab = h.findIndex(x => x.includes('jabatan'));
+  const iBulan = h.indexOf('bulan');
+  const iRata = h.findIndex(x => x.includes('nilai rata') || x === 'nilai rata-rata');
+  const data = [];
+  for (let i = hi + 1; i < rows.length; i++) {
+    const r = rows[i]; if (r.length < 4) continue;
+    const nip = (r[iNip]||'').replace(/"/g,'').trim();
+    const nama = (r[iNama]||'').replace(/"/g,'').trim();
+    if (!nip || !nama || ['nip','niplama'].includes(nip.toLowerCase())) continue;
+    data.push({
+      nip, nama,
+      jabatan: iJab >= 0 ? (r[iJab]||'').replace(/"/g,'').trim() : '',
+      bulan: iBulan >= 0 ? normBulan((r[iBulan]||'').replace(/"/g,'').trim()) : '',
+      rataRata: iRata >= 0 ? parseFloat(r[iRata]) || 0 : 0,
+    });
+  }
+  return data;
+}
+
+const BULAN_ORDER = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+function normBulan(raw) {
+  const r = raw.toLowerCase().trim();
+  const y = r.match(/\d{4}/)?.[0] || '';
+  const tag = v => y ? `${v} ${y}` : v;
+  if (r.includes('jan')) return tag('Januari');
+  if (r.includes('feb')) return tag('Februari');
+  if (r.includes('mar')) return tag('Maret');
+  if (r.includes('apr')) return tag('April');
+  if (r.includes('mei') || r.includes('may')) return tag('Mei');
+  if (r.includes('jun')) return tag('Juni');
+  if (r.includes('jul')) return tag('Juli');
+  if (r.includes('agu') || r.includes('aug')) return tag('Agustus');
+  if (r.includes('sep')) return tag('September');
+  if (r.includes('okt') || r.includes('oct')) return tag('Oktober');
+  if (r.includes('nov')) return tag('November');
+  if (r.includes('des') || r.includes('dec')) return tag('Desember');
+  return raw.trim();
+}
+function sortBulan(a, b) {
+  const [bA,yA] = a.split(' '), [bB,yB] = b.split(' ');
+  if (yA !== yB) return (parseInt(yA)||0) - (parseInt(yB)||0);
+  return BULAN_ORDER.indexOf(bA) - BULAN_ORDER.indexOf(bB);
+}
+
+/* ══════════════════════════════════════════════════════
+   HITUNG DATA (sama seperti index.html, versi ringkas)
+══════════════════════════════════════════════════════ */
+function avgNilaiSKP(nip) {
+  let sum = 0, cnt = 0;
+  Object.values(NILAI).forEach(arr => {
+    const row = arr.find(r => r.nip === nip);
+    if (row && row.rataRata > 0) { sum += row.rataRata; cnt++; }
+  });
+  return cnt > 0 ? sum / cnt : null;
+}
+function getJabatan(nip) {
+  for (const arr of Object.values(NILAI)) {
+    const row = arr.find(r => r.nip === nip);
+    if (row && row.jabatan) return row.jabatan;
+  }
+  return '';
+}
+function buildData(period) {
+  let presList;
+  if (period === 'Kumulatif') {
+    const all = {};
+    Object.values(PRESENSI).flat().forEach(p => {
+      if (!all[p.nip]) all[p.nip] = { nip: p.nip, nama: p.nama, hk: 0, hd: 0, tk: 0 };
+      all[p.nip].hk += p.hk; all[p.nip].hd += p.hd; all[p.nip].tk += p.tk;
+    });
+    presList = Object.values(all);
+  } else {
+    presList = PRESENSI[period] || [];
+  }
+  return presList.map(p => {
+    const pctHadir = p.hk > 0 ? (p.hd / p.hk) * 100 : 0;
+    const skorHadir = Math.min(100, Math.max(0, pctHadir - p.tk * 2));
+    const nilaiSKP = avgNilaiSKP(p.nip);
+    const jabatan = getJabatan(p.nip);
+    const nilaiAkhir = nilaiSKP != null
+      ? Math.round((skorHadir * 0.4 + nilaiSKP * 0.6) * 100) / 100
+      : Math.round(skorHadir * 100) / 100;
+    return { nip: p.nip, nama: p.nama, jabatan, nilaiAkhir };
+  }).sort((a, b) => b.nilaiAkhir - a.nilaiAkhir);
+}
+
+/* ══════════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════════ */
+async function init() {
+  document.getElementById('rankList').innerHTML = `<div class="empty-state"><p>Memuat data...</p></div>`;
+  try {
+    const csvPresensi = await fetchCSV(SHEETS.presensi);
+    PRESENSI = parsePresensi(csvPresensi);
+
+    const nilaiResults = await Promise.allSettled(SHEETS.nilai.map(id => fetchCSV(id)));
+    nilaiResults.forEach(res => {
+      if (res.status !== 'fulfilled') return;
+      parseNilai(res.value).forEach(row => {
+        if (!row.bulan) return;
+        if (!NILAI[row.bulan]) NILAI[row.bulan] = [];
+        if (!NILAI[row.bulan].find(x => x.nip === row.nip)) NILAI[row.bulan].push(row);
+      });
+    });
+
+    const snap = await fbDB.ref('overrides').once('value');
+    OVERRIDES = snap.val() || {};
+
+    const bulanList = Object.keys(PRESENSI).sort(sortBulan);
+    const periods = [...bulanList];
+    if (bulanList.length > 1) periods.push('Kumulatif');
+
+    const sel = document.getElementById('periodSelect');
+    sel.innerHTML = periods.map(p => `<option value="${p}">${p}</option>`).join('');
+    currentPeriod = periods[periods.length - 1];
+    sel.value = currentPeriod;
+
+    onPeriodChange();
+
+  } catch (e) {
+    document.getElementById('rankList').innerHTML = `<div class="empty-state">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--red-600)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p>Gagal memuat data: ${e.message}</p>
+    </div>`;
+  }
+}
+
+function onPeriodChange() {
+  currentPeriod = document.getElementById('periodSelect').value;
+  const data = buildData(currentPeriod);
+  originalTop3 = data.slice(0, 3);
+
+  // cek apakah ada override tersimpan untuk periode ini
+  const order = OVERRIDES[currentPeriod];
+  if (order && order.length) {
+    const byNip = {};
+    originalTop3.forEach(p => byNip[p.nip] = p);
+    const reordered = [];
+    order.forEach(nip => { if (byNip[nip]) { reordered.push(byNip[nip]); delete byNip[nip]; } });
+    Object.values(byNip).forEach(p => reordered.push(p));
+    currentTop3 = reordered;
+  } else {
+    currentTop3 = [...originalTop3];
+  }
+
+  renderRankList();
+}
+
+/* ══════════════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════════════ */
+const RP_CLASS = ['rp-1', 'rp-2', 'rp-3'];
+const MEDALS = ['🥇', '🥈', '🥉'];
+
+function renderRankList() {
+  const list = document.getElementById('rankList');
+  const banner = document.getElementById('statusBanner');
+  const actionBar = document.getElementById('actionBar');
+
+  if (!currentTop3.length) {
+    list.innerHTML = `<div class="empty-state"><p>Tidak ada data pegawai untuk periode ini.</p></div>`;
+    actionBar.style.display = 'none';
+    banner.innerHTML = '';
+    return;
+  }
+
+  const vals = currentTop3.map(p => p.nilaiAkhir);
+  const hasTie = new Set(vals).size < vals.length;
+
+  if (hasTie) {
+    banner.innerHTML = `<div class="status-banner status-tie">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Ada nilai yang sama di posisi 3 besar. Geser kartu untuk mengatur urutan, lalu klik <b>Simpan Urutan</b>.
+    </div>`;
+  } else {
+    banner.innerHTML = `<div class="status-banner status-notie">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+      Tidak ada nilai yang sama di posisi 3 besar — urutan ditentukan otomatis oleh nilai.
+    </div>`;
+  }
+
+  list.innerHTML = '';
+  currentTop3.forEach((p, i) => {
+    const tied = vals.filter(v => v === p.nilaiAkhir).length > 1;
+    const card = document.createElement('div');
+    card.className = 'rank-card' + (tied ? ' tied' : '');
+    card.draggable = hasTie;
+    card.dataset.idx = i;
+    card.innerHTML = `
+      <div class="drag-handle">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
+      </div>
+      <div class="rank-pos ${RP_CLASS[i]}">${MEDALS[i]}</div>
+      <div class="rank-info">
+        <div class="rank-name">${p.nama}</div>
+        <div class="rank-detail">NIP ${p.nip}</div>
+        <div class="rank-job">${p.jabatan || '—'}</div>
+      </div>
+      ${tied ? '<span class="tie-tag">Seri</span>' : ''}
+      <div class="rank-score">
+        <div class="rank-score-val">${p.nilaiAkhir.toFixed(2)}</div>
+        <div class="rank-score-lbl">Nilai Akhir</div>
+      </div>`;
+
+    if (hasTie) {
+      card.addEventListener('dragstart', e => {
+        card.classList.add('dragging');
+        e.dataTransfer.setData('text/plain', i);
+      });
+      card.addEventListener('dragend', () => card.classList.remove('dragging'));
+      card.addEventListener('dragover', e => e.preventDefault());
+      card.addEventListener('drop', e => {
+        e.preventDefault();
+        const from = parseInt(e.dataTransfer.getData('text/plain'));
+        const to = parseInt(card.dataset.idx);
+        if (from === to) return;
+        const moved = currentTop3.splice(from, 1)[0];
+        currentTop3.splice(to, 0, moved);
+        renderRankList();
+      });
+    }
+
+    list.appendChild(card);
+  });
+
+  actionBar.style.display = hasTie ? 'flex' : 'none';
+}
+
+/* ══════════════════════════════════════════════════════
+   SAVE / RESET
+══════════════════════════════════════════════════════ */
+function saveOverride() {
+  const btn = document.getElementById('btnSave');
+  btn.disabled = true;
+  const order = currentTop3.map(p => p.nip);
+  fbDB.ref('overrides/' + encodeKey(currentPeriod)).set(order)
+    .then(() => {
+      OVERRIDES[currentPeriod] = order;
+      document.getElementById('statusBanner').innerHTML = `<div class="status-banner status-saved">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+        Urutan berhasil disimpan dan langsung tampil untuk semua pengguna.
+      </div>`;
+    })
+    .catch(e => alert('Gagal menyimpan: ' + e.message))
+    .finally(() => { btn.disabled = false; });
+}
+
+function resetOrder() {
+  currentTop3 = [...originalTop3];
+  fbDB.ref('overrides/' + encodeKey(currentPeriod)).remove()
+    .then(() => { delete OVERRIDES[currentPeriod]; })
+    .catch(() => {});
+  renderRankList();
+}
+
+// Firebase key tidak boleh mengandung '.', '#', '$', '[', ']', '/'
+function encodeKey(period) {
+  return period.replace(/[.#$\[\]\/]/g, '_');
+}
+</script>
+</body>
+</html>
