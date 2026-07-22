@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -203,6 +204,38 @@
     .empty-state { text-align: center; padding: 56px 20px; color: var(--gray-400); grid-column: 1/-1; }
     .empty-state p { font-size: 13px; line-height: 1.8; margin-top: 12px; }
 
+    /* ── UPLOAD PANEL ── */
+    .upload-section { margin-bottom: 28px; }
+    .upload-section-title { font-size: 13px; font-weight: 800; color: var(--gray-700); margin-bottom: 4px; display: flex; align-items: center; gap: 7px; }
+    .upload-section-sub { font-size: 12px; color: var(--gray-400); margin-bottom: 12px; line-height: 1.6; }
+    .upload-drop-area {
+      border: 2px dashed var(--gray-300); border-radius: var(--radius-xl);
+      padding: 28px 24px; text-align: center; cursor: pointer;
+      transition: all .2s; background: var(--gray-50); position: relative;
+    }
+    .upload-drop-area:hover, .upload-drop-area.drag-over { border-color: var(--navy-500); background: var(--navy-50); }
+    .upload-drop-area.has-file { border-color: var(--green-600); background: var(--green-50); border-style: solid; }
+    .upload-drop-area input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .drop-icon { width: 40px; height: 40px; background: var(--gray-200); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; color: var(--gray-400); transition: all .2s; }
+    .upload-drop-area.has-file .drop-icon { background: var(--green-100); color: var(--green-600); }
+    .drop-label { font-size: 13px; font-weight: 600; color: var(--gray-600); }
+    .drop-sub { font-size: 11.5px; color: var(--gray-400); margin-top: 4px; }
+    .file-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px; }
+    .file-chip { display: inline-flex; align-items: center; gap: 5px; background: var(--green-100); color: var(--green-700); font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-full); }
+    .file-chip-err { background: var(--red-100); color: var(--red-600); }
+    .upload-progress { margin-top: 14px; }
+    .progress-bar-bg { height: 6px; background: var(--gray-200); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+    .progress-bar-fill { height: 100%; background: var(--navy-600); border-radius: 3px; transition: width .3s; }
+    .progress-label { font-size: 11.5px; color: var(--gray-500); text-align: center; }
+    .btn-upload-submit { background: var(--navy-700); color: var(--white); border: none; font-size: 13.5px; font-weight: 700; padding: 11px 28px; border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: background .2s; display: flex; align-items: center; gap: 8px; }
+    .btn-upload-submit:hover { background: var(--navy-600); }
+    .btn-upload-submit:disabled { opacity: .45; cursor: not-allowed; }
+    .current-data-card { background: var(--navy-50); border: 1px solid var(--navy-200); border-radius: var(--radius-lg); padding: 14px 18px; margin-bottom: 18px; }
+    .current-data-title { font-size: 12px; font-weight: 700; color: var(--navy-700); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
+    .current-data-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .current-pill { display: inline-flex; align-items: center; gap: 4px; background: var(--navy-100); color: var(--navy-700); font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-full); }
+    .current-pill-none { color: var(--gray-400); font-size: 12px; font-style: italic; }
+
     @media (max-width: 700px) {
       .page { padding: 16px; }
       .topbar-inner { padding: 12px 16px; }
@@ -253,9 +286,78 @@
 
     <!-- TABS -->
     <div class="admin-tabs">
+      <button class="admin-tab" onclick="switchAdminTab('upload',this)">📁 Upload File Excel</button>
       <button class="admin-tab active" onclick="switchAdminTab('urutan',this)">🏆 Atur Urutan Peringkat</button>
       <button class="admin-tab" onclick="switchAdminTab('koreksi',this)">✏️ Koreksi Nilai</button>
       <button class="admin-tab" onclick="switchAdminTab('riwayat',this)">📋 Riwayat Koreksi</button>
+    </div>
+
+    <!-- ══ PANEL 0: UPLOAD FILE EXCEL ══ -->
+    <div class="admin-panel" id="panel-upload">
+      <div class="intro-card">
+        <h1>Upload File Excel</h1>
+        <p>Upload file Rekap Presensi dan Rekap Nilai SKP. Setelah disimpan, data akan langsung diperbarui di halaman dashboard tanpa perlu mengubah kode apapun.</p>
+      </div>
+
+      <!-- Data yang sudah tersimpan -->
+      <div class="current-data-card" id="currentDataCard">
+        <div class="current-data-title">📦 Data tersimpan saat ini</div>
+        <div class="current-data-pills" id="currentDataPills">
+          <span class="current-pill-none">Memuat...</span>
+        </div>
+      </div>
+
+      <!-- Upload Presensi -->
+      <div class="upload-section">
+        <div class="upload-section-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          File Rekap Presensi
+        </div>
+        <div class="upload-section-sub">File Excel rekap absensi pegawai (Triwulan atau bulanan). Kolom wajib: <b>Bulan, NIP, Nama, HK, HD, TK</b>.</div>
+        <div class="upload-drop-area" id="dropPresensi">
+          <input type="file" id="filePresensi" accept=".xlsx,.xls" onchange="handleFilePresensi(this)"/>
+          <div class="drop-icon" id="iconPresensi">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="drop-label" id="labelPresensi">Klik atau seret file Rekap Presensi ke sini</div>
+          <div class="drop-sub" id="subPresensi">.xlsx atau .xls · Bisa berisi beberapa bulan sekaligus</div>
+          <div class="file-chips" id="chipsPresensi"></div>
+        </div>
+      </div>
+
+      <!-- Upload Nilai SKP -->
+      <div class="upload-section">
+        <div class="upload-section-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          File Rekap Nilai SKP
+        </div>
+        <div class="upload-section-sub">Bisa upload beberapa file sekaligus (Oktober, November, Desember, dst). Kolom wajib: <b>NIP, Nama, Jabatan, Bulan, Nilai Rata-rata</b>.</div>
+        <div class="upload-drop-area" id="dropNilai">
+          <input type="file" id="fileNilai" accept=".xlsx,.xls" multiple onchange="handleFileNilai(this)"/>
+          <div class="drop-icon" id="iconNilai">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="drop-label" id="labelNilai">Klik atau seret file Rekap Nilai SKP ke sini</div>
+          <div class="drop-sub" id="subNilai">.xlsx atau .xls · Boleh pilih beberapa file sekaligus</div>
+          <div class="file-chips" id="chipsNilai"></div>
+        </div>
+      </div>
+
+      <!-- Progress & Tombol Simpan -->
+      <div id="uploadProgressWrap" style="display:none" class="upload-progress">
+        <div class="progress-label" id="uploadProgressLabel">Memproses...</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="uploadProgressBar" style="width:0%"></div></div>
+      </div>
+
+      <div id="statusBannerUpload" style="margin-bottom:14px"></div>
+
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn-upload-submit" id="btnUploadSimpan" onclick="simpanSemuaKeFirebase()" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Simpan ke Database
+        </button>
+        <button class="btn-outline" onclick="resetUploadPanel()">Reset</button>
+      </div>
     </div>
 
     <!-- ══ PANEL 1: URUTAN PERINGKAT ══ -->
@@ -880,6 +982,266 @@ function switchAdminTab(name, btn){
 
 /* ══ START ══ */
 if(sessionStorage.getItem('bps_admin_auth')==='1') init();
+
+/* ══════════════════════════════════════════════════════
+   UPLOAD FILE EXCEL → FIREBASE
+   Alur:
+   1. Admin pilih file Excel
+   2. SheetJS baca isi Excel → ubah jadi JSON
+   3. JSON disimpan ke Firebase Realtime Database
+   4. index.html baca JSON dari Firebase → tampil otomatis
+══════════════════════════════════════════════════════ */
+
+// State upload
+let parsedPresensi = null;   // hasil parse presensi { "Januari 2026": [...] }
+let parsedNilai    = {};     // hasil parse nilai     { "Oktober 2025": [...] }
+
+/* ── Baca file Excel pakai SheetJS ── */
+function readExcelFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const wb   = XLSX.read(data, { type: 'array' });
+        resolve(wb);
+      } catch(err) { reject(err); }
+    };
+    reader.onerror = reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+/* ── Handler file presensi ── */
+async function handleFilePresensi(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const drop  = document.getElementById('dropPresensi');
+  const chips = document.getElementById('chipsPresensi');
+  const label = document.getElementById('labelPresensi');
+  const sub   = document.getElementById('subPresensi');
+
+  chips.innerHTML = '<span style="font-size:12px;color:var(--gray-400)">⏳ Membaca file...</span>';
+
+  try {
+    const wb   = await readExcelFile(file);
+    // Ambil sheet pertama → konversi ke CSV text → parse pakai parser yang sudah ada
+    const ws   = wb.Sheets[wb.SheetNames[0]];
+    const csv  = XLSX.utils.sheet_to_csv(ws);
+    parsedPresensi = parsePresensi(csv);
+
+    const bulanList = Object.keys(parsedPresensi);
+    if (!bulanList.length) throw new Error('Tidak ada data valid ditemukan. Periksa format kolom.');
+
+    drop.classList.add('has-file');
+    label.textContent = file.name;
+    sub.textContent   = `${bulanList.length} bulan ditemukan`;
+    chips.innerHTML   = bulanList.map(b =>
+      `<span class="file-chip">✓ ${b} (${parsedPresensi[b].length} pegawai)</span>`
+    ).join('');
+    checkUploadReady();
+  } catch(e) {
+    parsedPresensi = null;
+    drop.classList.remove('has-file');
+    chips.innerHTML = `<span class="file-chip file-chip-err">✗ ${e.message}</span>`;
+    checkUploadReady();
+  }
+}
+
+/* ── Handler file nilai SKP (bisa multiple) ── */
+async function handleFileNilai(input) {
+  const files = Array.from(input.files);
+  if (!files.length) return;
+
+  const drop  = document.getElementById('dropNilai');
+  const chips = document.getElementById('chipsNilai');
+  const label = document.getElementById('labelNilai');
+  const sub   = document.getElementById('subNilai');
+
+  parsedNilai = {};
+  chips.innerHTML = '<span style="font-size:12px;color:var(--gray-400)">⏳ Membaca file...</span>';
+
+  const results = [];
+  for (const file of files) {
+    try {
+      const wb  = await readExcelFile(file);
+      const ws  = wb.Sheets[wb.SheetNames[0]];
+      const csv = XLSX.utils.sheet_to_csv(ws);
+
+      // Deteksi nama bulan dari nama file jika tidak ada di kolom
+      const bulanFile = getBulanDariNamaFile(file.name);
+      const rows = parseNilai(csv);
+
+      rows.forEach(row => {
+        const key = row.bulan || bulanFile;
+        if (!key) return;
+        if (!parsedNilai[key]) parsedNilai[key] = [];
+        if (!parsedNilai[key].find(x => x.nip === row.nip)) {
+          parsedNilai[key].push({ ...row, bulan: key });
+        }
+      });
+
+      results.push({ nama: file.name, ok: true, bulan: bulanFile });
+    } catch(e) {
+      results.push({ nama: file.name, ok: false, error: e.message });
+    }
+  }
+
+  const bulanList = Object.keys(parsedNilai);
+  const hasOk = results.some(r => r.ok);
+
+  drop.classList.toggle('has-file', hasOk);
+  label.textContent = `${files.length} file dipilih`;
+  sub.textContent   = `${bulanList.length} bulan nilai ditemukan`;
+  chips.innerHTML   = results.map(r =>
+    r.ok
+      ? `<span class="file-chip">✓ ${r.nama.replace(/\.xlsx?$/i,'')}</span>`
+      : `<span class="file-chip file-chip-err" title="${r.error}">✗ ${r.nama}</span>`
+  ).join('');
+
+  checkUploadReady();
+}
+
+/* ── Deteksi nama bulan dari nama file ── */
+function getBulanDariNamaFile(nama) {
+  const n = nama.toLowerCase();
+  const y = n.match(/\d{4}/)?.[0] || '';
+  const tag = v => y ? `${v} ${y}` : v;
+  if (n.includes('jan')) return tag('Januari');
+  if (n.includes('feb')) return tag('Februari');
+  if (n.includes('mar')) return tag('Maret');
+  if (n.includes('apr')) return tag('April');
+  if (n.includes('mei') || n.includes('may')) return tag('Mei');
+  if (n.includes('jun')) return tag('Juni');
+  if (n.includes('jul')) return tag('Juli');
+  if (n.includes('agu') || n.includes('aug')) return tag('Agustus');
+  if (n.includes('sep')) return tag('September');
+  if (n.includes('okt') || n.includes('oct')) return tag('Oktober');
+  if (n.includes('nov')) return tag('November');
+  if (n.includes('des') || n.includes('dec')) return tag('Desember');
+  return '';
+}
+
+/* ── Cek apakah tombol simpan bisa diaktifkan ── */
+function checkUploadReady() {
+  const hasPresensi = parsedPresensi && Object.keys(parsedPresensi).length > 0;
+  const hasNilai    = Object.keys(parsedNilai).length > 0;
+  document.getElementById('btnUploadSimpan').disabled = !(hasPresensi || hasNilai);
+}
+
+/* ── Simpan ke Firebase Database ── */
+async function simpanSemuaKeFirebase() {
+  const btn = document.getElementById('btnUploadSimpan');
+  btn.disabled = true;
+
+  const progressWrap = document.getElementById('uploadProgressWrap');
+  const progressBar  = document.getElementById('uploadProgressBar');
+  const progressLbl  = document.getElementById('uploadProgressLabel');
+  progressWrap.style.display = 'block';
+
+  try {
+    const updates = {};
+    let step = 0, total = 0;
+
+    if (parsedPresensi) total++;
+    total += Object.keys(parsedNilai).length;
+
+    // Simpan presensi
+    if (parsedPresensi) {
+      progressLbl.textContent = 'Menyimpan data presensi...';
+      progressBar.style.width = '10%';
+      updates['data_excel/presensi'] = parsedPresensi;
+      step++;
+      progressBar.style.width = Math.round((step/total)*80) + '%';
+    }
+
+    // Simpan nilai per bulan
+    for (const [bulan, rows] of Object.entries(parsedNilai)) {
+      progressLbl.textContent = `Menyimpan nilai ${bulan}...`;
+      const key = 'data_excel/nilai/' + encodeKey(bulan);
+      updates[key] = rows;
+      step++;
+      progressBar.style.width = Math.round((step/total)*80) + '%';
+    }
+
+    // Tulis semua sekaligus ke Firebase
+    progressLbl.textContent = 'Mengunggah ke database...';
+    await fbDB.ref().update(updates);
+
+    // Log waktu upload
+    await fbDB.ref('data_excel/last_updated').set({
+      timestamp: Date.now(),
+      presensi_bulan: parsedPresensi ? Object.keys(parsedPresensi) : [],
+      nilai_bulan: Object.keys(parsedNilai),
+    });
+
+    progressBar.style.width = '100%';
+    progressLbl.textContent = 'Selesai!';
+
+    showBanner('statusBannerUpload', 'saved',
+      `✓ Data berhasil disimpan ke database! Presensi: ${Object.keys(parsedPresensi||{}).length} bulan · Nilai SKP: ${Object.keys(parsedNilai).length} bulan. Dashboard akan otomatis memuat data terbaru.`
+    );
+
+    // Refresh tampilan data tersimpan
+    await loadCurrentDataInfo();
+
+  } catch(e) {
+    progressBar.style.width = '0%';
+    showBanner('statusBannerUpload', 'error', '✗ Gagal menyimpan: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => { progressWrap.style.display = 'none'; }, 3000);
+  }
+}
+
+/* ── Tampilkan info data yang sudah ada di Firebase ── */
+async function loadCurrentDataInfo() {
+  const el = document.getElementById('currentDataPills');
+  try {
+    const snap = await fbDB.ref('data_excel/last_updated').once('value');
+    const info = snap.val();
+    if (!info) {
+      el.innerHTML = '<span class="current-pill-none">Belum ada data yang diupload</span>';
+      return;
+    }
+    const tgl = new Date(info.timestamp).toLocaleDateString('id-ID',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const presBulan = (info.presensi_bulan || []).map(b => `<span class="current-pill">📅 ${b}</span>`).join('');
+    const nilBulan  = (info.nilai_bulan   || []).map(b => `<span class="current-pill">📋 ${b}</span>`).join('');
+    el.innerHTML = `
+      <div style="width:100%;font-size:11px;color:var(--gray-400);margin-bottom:6px">Upload terakhir: ${tgl}</div>
+      ${presBulan || '<span class="current-pill-none">Tidak ada presensi</span>'}
+      ${nilBulan  || '<span class="current-pill-none">Tidak ada nilai SKP</span>'}`;
+  } catch(e) {
+    el.innerHTML = '<span class="current-pill-none">Gagal memuat info</span>';
+  }
+}
+
+/* ── Reset panel upload ── */
+function resetUploadPanel() {
+  parsedPresensi = null;
+  parsedNilai    = {};
+  ['Presensi','Nilai'].forEach(t => {
+    document.getElementById('drop'+t).classList.remove('has-file');
+    document.getElementById('chips'+t).innerHTML = '';
+    document.getElementById('label'+t).textContent = t==='Presensi'
+      ? 'Klik atau seret file Rekap Presensi ke sini'
+      : 'Klik atau seret file Rekap Nilai SKP ke sini';
+    document.getElementById('sub'+t).textContent = t==='Presensi'
+      ? '.xlsx atau .xls · Bisa berisi beberapa bulan sekaligus'
+      : '.xlsx atau .xls · Boleh pilih beberapa file sekaligus';
+    document.getElementById('file'+t).value = '';
+  });
+  document.getElementById('statusBannerUpload').innerHTML = '';
+  document.getElementById('btnUploadSimpan').disabled = true;
+}
+
+/* Panggil loadCurrentDataInfo saat panel upload dibuka */
+const _origSwitchAdminTab = switchAdminTab;
+function switchAdminTab(name, btn) {
+  _origSwitchAdminTab(name, btn);
+  if (name === 'upload') loadCurrentDataInfo();
+}
 </script>
 </body>
 </html>
