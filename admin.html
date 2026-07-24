@@ -7,228 +7,155 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --navy-950: #0a1628;
-      --navy-900: #0f2044;
-      --navy-800: #163060;
-      --navy-700: #1e4080;
-      --navy-600: #2452a0;
-      --navy-100: #dce8f9;
-      --navy-50:  #eef4fd;
-      --gold-600: #b45309;
-      --gold-500: #d97706;
-      --gold-400: #f59e0b;
-      --gold-100: #fef3c7;
-      --green-600: #16a34a;
-      --green-100: #dcfce7;
-      --red-600:  #dc2626;
-      --red-100:  #fee2e2;
-      --gray-900: #1a1f2e;
-      --gray-700: #374151;
-      --gray-500: #6b7280;
-      --gray-400: #9ca3af;
-      --gray-300: #d1d5db;
-      --gray-200: #e5e7eb;
-      --gray-100: #f3f4f6;
-      --gray-50:  #f9fafb;
-      --white:    #ffffff;
-      --radius-md: 10px;
-      --radius-lg: 14px;
-      --radius-xl: 18px;
-      --radius-full: 9999px;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
-      --shadow-md: 0 4px 16px rgba(0,0,0,.10);
-      --shadow-lg: 0 8px 32px rgba(0,0,0,.13);
+      --navy-950: #0a1628; --navy-900: #0f2044; --navy-800: #163060;
+      --navy-700: #1e4080; --navy-600: #2452a0; --navy-100: #dce8f9; --navy-50: #eef4fd;
+      --gold-600: #b45309; --gold-500: #d97706; --gold-400: #f59e0b;
+      --gold-100: #fef3c7; --gold-50: #fffbeb;
+      --green-700: #15803d; --green-600: #16a34a; --green-100: #dcfce7; --green-50: #f0fdf4;
+      --red-600: #dc2626; --red-100: #fee2e2;
+      --gray-900: #1a1f2e; --gray-700: #374151; --gray-600: #4b5563;
+      --gray-500: #6b7280; --gray-400: #9ca3af; --gray-300: #d1d5db;
+      --gray-200: #e5e7eb; --gray-100: #f3f4f6; --gray-50: #f9fafb; --white: #ffffff;
+      --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 18px; --radius-full: 9999px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.08); --shadow-md: 0 4px 16px rgba(0,0,0,.10); --shadow-lg: 0 8px 32px rgba(0,0,0,.13);
     }
     html { font-size: 14px; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--gray-100);
-      color: var(--gray-900);
-      min-height: 100vh;
-      -webkit-font-smoothing: antialiased;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--gray-100); color: var(--gray-900); min-height: 100vh; -webkit-font-smoothing: antialiased; }
 
-    /* ══ TOPBAR ══ */
-    .topbar {
-      background: var(--navy-900);
-      border-bottom: 3px solid var(--gold-400);
-      box-shadow: var(--shadow-lg);
-    }
-    .topbar-inner {
-      display: flex; align-items: center; gap: 16px;
-      padding: 14px 32px; max-width: 1100px; margin: 0 auto;
-    }
-    .logo-box {
-      width: 48px; height: 48px; background: var(--white);
-      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
-      overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,.25); padding: 4px;
-    }
+    /* TOPBAR */
+    .topbar { background: var(--navy-900); border-bottom: 3px solid var(--gold-400); box-shadow: var(--shadow-lg); }
+    .topbar-inner { display: flex; align-items: center; gap: 16px; padding: 14px 32px; max-width: 1200px; margin: 0 auto; }
+    .logo-box { width: 48px; height: 48px; background: var(--white); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,.25); padding: 4px; }
     .logo-box img { width: 100%; height: 100%; object-fit: contain; }
-    .logo-fallback {
-      display:none; align-items:center; justify-content:center; width:100%; height:100%;
-      background: var(--navy-800); border-radius: 6px; color: white; font-weight: 800; font-size: 13px;
-    }
     .topbar-text { flex: 1; }
     .topbar-title { font-size: 15px; font-weight: 800; color: var(--white); }
     .topbar-sub { font-size: 11.5px; color: rgba(255,255,255,.5); margin-top: 2px; }
-    .admin-badge {
-      background: var(--gold-400); color: var(--navy-950);
-      font-size: 11.5px; font-weight: 700; padding: 5px 14px; border-radius: var(--radius-full);
-    }
-    .link-back {
-      color: rgba(255,255,255,.6); font-size: 12.5px; text-decoration: none;
-      display: flex; align-items: center; gap: 5px;
-    }
+    .admin-badge { background: var(--gold-400); color: var(--navy-950); font-size: 11.5px; font-weight: 700; padding: 5px 14px; border-radius: var(--radius-full); }
+    .link-back { color: rgba(255,255,255,.6); font-size: 12.5px; text-decoration: none; display: flex; align-items: center; gap: 5px; }
     .link-back:hover { color: var(--white); }
 
-    /* ══ PAGE ══ */
-    .page { max-width: 1100px; margin: 0 auto; padding: 32px; }
-
-    /* ══ LOGIN ══ */
-    .login-wrap {
-      min-height: 70vh; display: flex; align-items: center; justify-content: center;
-    }
-    .login-card {
-      background: var(--white); border: 1px solid var(--gray-200);
-      border-radius: var(--radius-xl); padding: 36px;
-      box-shadow: var(--shadow-md); width: 100%; max-width: 380px; text-align: center;
-    }
-    .login-icon {
-      width: 56px; height: 56px; background: var(--navy-50); color: var(--navy-700);
-      border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px;
-    }
+    /* LOGIN */
+    .login-wrap { min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 32px; }
+    .login-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-xl); padding: 36px; box-shadow: var(--shadow-md); width: 100%; max-width: 380px; text-align: center; }
+    .login-icon { width: 56px; height: 56px; background: var(--navy-50); color: var(--navy-700); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
     .login-card h2 { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
     .login-card p { font-size: 12.5px; color: var(--gray-500); line-height: 1.7; margin-bottom: 22px; }
-    .login-input {
-      width: 100%; padding: 12px 16px; border: 1px solid var(--gray-200);
-      border-radius: var(--radius-md); font-size: 14px; font-family: inherit;
-      margin-bottom: 14px; transition: border-color .15s;
-    }
-    .login-input:focus { outline: none; border-color: var(--navy-500); }
-    .login-error {
-      color: var(--red-600); font-size: 12px; font-weight: 600; margin-bottom: 12px;
-      display: none;
-    }
+    .login-error { color: var(--red-600); font-size: 12px; font-weight: 600; margin-bottom: 12px; display: none; }
     .login-error.show { display: block; }
-    .btn-primary {
-      width: 100%; background: var(--navy-700); color: var(--white);
-      border: none; font-size: 14px; font-weight: 700;
-      padding: 12px; border-radius: var(--radius-full);
-      cursor: pointer; font-family: inherit; transition: background .2s;
-    }
-    .btn-primary:hover { background: var(--navy-600); }
+    .login-input { width: 100%; padding: 12px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-md); font-size: 14px; font-family: inherit; margin-bottom: 14px; transition: border-color .15s; }
+    .login-input:focus { outline: none; border-color: var(--navy-500); }
 
-    /* ══ ADMIN CONTENT ══ */
+    /* BUTTONS */
+    .btn-primary { background: var(--navy-700); color: var(--white); border: none; font-size: 13.5px; font-weight: 700; padding: 11px 28px; border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: background .2s; display: inline-flex; align-items: center; gap: 7px; }
+    .btn-primary:hover { background: var(--navy-600); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+    .btn-ghost { background: var(--white); color: var(--gray-600); border: 1px solid var(--gray-200); font-size: 13px; font-weight: 600; padding: 10px 22px; border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: all .2s; display: inline-flex; align-items: center; gap: 7px; }
+    .btn-ghost:hover { border-color: var(--red-600); color: var(--red-600); }
+    .btn-gold { background: var(--gold-400); color: var(--navy-950); border: none; font-size: 13.5px; font-weight: 700; padding: 11px 28px; border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: all .2s; display: inline-flex; align-items: center; gap: 7px; }
+    .btn-gold:hover { background: var(--gold-500); }
+    .btn-gold:disabled { opacity: .5; cursor: not-allowed; }
+
+    /* PAGE */
+    .page { max-width: 1200px; margin: 0 auto; padding: 28px 32px 56px; }
     .admin-content { display: none; }
     .admin-content.show { display: block; }
 
-    .intro-card {
-      background: var(--white); border: 1px solid var(--gray-200);
-      border-radius: var(--radius-lg); padding: 20px 24px;
-      box-shadow: var(--shadow-sm); margin-bottom: 20px;
-    }
-    .intro-card h1 { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
-    .intro-card p { font-size: 13px; color: var(--gray-500); line-height: 1.8; }
-    .intro-card p b { color: var(--gray-700); }
+    /* TABS */
+    .admin-tabs { display: flex; gap: 4px; margin-bottom: 22px; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-xl); padding: 5px; box-shadow: var(--shadow-sm); width: fit-content; }
+    .atab { padding: 9px 20px; border-radius: var(--radius-lg); font-size: 13px; font-weight: 600; color: var(--gray-500); cursor: pointer; border: none; background: none; font-family: inherit; transition: all .18s; display: flex; align-items: center; gap: 7px; }
+    .atab:hover { color: var(--gray-700); }
+    .atab.active { background: var(--navy-900); color: var(--white); }
+    .atab-content { display: none; }
+    .atab-content.active { display: block; }
 
-    .period-select-wrap {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .period-select-wrap label { font-size: 12.5px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: .5px; }
-    .period-select {
-      padding: 9px 16px; border: 1px solid var(--gray-200);
-      border-radius: var(--radius-full); font-size: 13px; font-weight: 600;
-      font-family: inherit; background: var(--white); color: var(--gray-900);
-      cursor: pointer;
-    }
+    /* SECTION CARD */
+    .section-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 18px; }
+    .section-head { padding: 18px 22px; border-bottom: 1px solid var(--gray-200); background: var(--gray-50); }
+    .section-title { font-size: 15px; font-weight: 800; color: var(--gray-900); }
+    .section-sub { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
+    .section-body { padding: 22px; }
 
-    /* ══ STATUS ══ */
-    .status-banner {
-      padding: 12px 18px; border-radius: var(--radius-md);
-      font-size: 12.5px; font-weight: 600; margin-bottom: 18px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .status-tie { background: var(--gold-100); color: var(--gold-600); }
-    .status-notie { background: var(--gray-100); color: var(--gray-500); }
-    .status-saved { background: var(--green-100); color: #15803d; }
+    /* UPLOAD AREA */
+    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+    .upload-zone { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 22px; text-align: center; cursor: pointer; transition: all .2s; position: relative; background: var(--gray-50); }
+    .upload-zone:hover { border-color: var(--navy-400); background: var(--navy-50); }
+    .upload-zone.has-file { border-style: solid; border-color: var(--green-600); background: var(--green-50); }
+    .upload-zone.error-file { border-style: solid; border-color: var(--red-600); background: var(--red-100); }
+    .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .uz-icon { width: 40px; height: 40px; border-radius: var(--radius-md); background: var(--gray-200); display: flex; align-items: center; justify-content: center; margin: 0 auto 11px; color: var(--gray-400); transition: all .2s; }
+    .upload-zone.has-file .uz-icon { background: var(--green-100); color: var(--green-600); }
+    .uz-title { font-size: 13.5px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+    .uz-sub { font-size: 11.5px; color: var(--gray-400); line-height: 1.6; }
+    .uz-status { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; padding: 4px 11px; border-radius: var(--radius-full); font-size: 11.5px; font-weight: 600; }
+    .uz-wait { background: var(--gray-100); color: var(--gray-400); }
+    .uz-ok   { background: var(--green-100); color: var(--green-700); }
+    .uz-err  { background: var(--red-100); color: var(--red-600); }
 
-    /* ══ RANK CARDS ══ */
-    .rank-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-    .rank-card {
-      background: var(--white); border: 1px solid var(--gray-200);
-      border-radius: var(--radius-lg); padding: 14px 18px;
-      display: flex; align-items: center; gap: 14px;
-      box-shadow: var(--shadow-sm);
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .rank-card.tied { border-color: var(--gold-400); background: var(--gold-100)0a; }
-    .rank-card.dragging { opacity: .5; }
+    /* MULTI UPLOAD (nilai SKP) */
+    .multi-upload-zone { border: 2px dashed var(--gray-200); border-radius: var(--radius-lg); padding: 18px 22px; transition: all .2s; background: var(--gray-50); margin-bottom: 18px; }
+    .multi-upload-zone:hover { border-color: var(--gold-400); background: var(--gold-50); }
+    .mu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .mu-label { display: flex; align-items: center; gap: 10px; }
+    .mu-icon { width: 36px; height: 36px; border-radius: var(--radius-md); background: var(--gray-200); display: flex; align-items: center; justify-content: center; color: var(--gray-400); }
+    .mu-title { font-size: 13.5px; font-weight: 700; color: var(--gray-900); }
+    .mu-sub { font-size: 11.5px; color: var(--gray-400); margin-top: 2px; }
+    .mu-btn { position: relative; background: var(--navy-700); color: var(--white); font-size: 12px; font-weight: 700; padding: 7px 16px; border-radius: var(--radius-full); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; overflow: hidden; }
+    .mu-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .mu-chips { display: flex; flex-wrap: wrap; gap: 7px; min-height: 24px; }
+    .mu-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: var(--radius-full); font-size: 11.5px; font-weight: 600; }
+    .mu-chip-ok  { background: var(--green-100); color: var(--green-700); }
+    .mu-chip-err { background: var(--red-100); color: var(--red-600); }
+    .mu-chip-wait { background: var(--gray-100); color: var(--gray-400); }
 
-    .drag-handle {
-      cursor: grab; color: var(--gray-300); flex-shrink: 0;
-      display: flex; align-items: center;
-    }
+    /* PROCESS RESULT */
+    .process-bar { display: flex; align-items: center; gap: 12px; padding: 16px 22px; border-top: 1px solid var(--gray-200); background: var(--gray-50); }
+    .result-log { background: var(--navy-950); border-radius: var(--radius-md); padding: 14px 18px; font-size: 12px; font-family: monospace; color: #a3e635; line-height: 1.9; margin-top: 14px; max-height: 180px; overflow-y: auto; display: none; }
+    .result-log.show { display: block; }
+
+    /* PERIOD SELECT */
+    .period-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .period-bar label { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .8px; white-space: nowrap; }
+    .period-select { padding: 9px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-full); font-size: 13px; font-weight: 600; font-family: inherit; background: var(--white); color: var(--gray-900); cursor: pointer; }
+
+    /* STATUS BANNER */
+    .status-banner { padding: 12px 18px; border-radius: var(--radius-md); font-size: 12.5px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .s-tie    { background: var(--gold-100); color: var(--gold-600); }
+    .s-notie  { background: var(--gray-100); color: var(--gray-500); }
+    .s-saved  { background: var(--green-100); color: var(--green-700); }
+
+    /* RANK CARDS */
+    .rank-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+    .rank-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 14px 18px; display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-sm); transition: border-color .2s; }
+    .rank-card.tied { border-color: var(--gold-400); }
+    .rank-card.dragging { opacity: .45; }
+    .drag-handle { cursor: grab; color: var(--gray-300); flex-shrink: 0; }
     .drag-handle:active { cursor: grabbing; }
-
-    .rank-pos {
-      width: 38px; height: 38px; border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 800; flex-shrink: 0;
-    }
+    .rank-pos { width: 38px; height: 38px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; }
     .rp-1 { background: #fef9c3; color: #713f12; }
     .rp-2 { background: var(--gray-200); color: var(--gray-600); }
     .rp-3 { background: var(--gold-100); color: var(--gold-600); }
-    .rp-n { background: var(--gray-50); color: var(--gray-400); }
-
     .rank-info { flex: 1; min-width: 0; }
     .rank-name { font-size: 14px; font-weight: 700; color: var(--gray-900); }
     .rank-detail { font-size: 11.5px; color: var(--gray-400); margin-top: 2px; }
-    .rank-job { font-size: 11.5px; color: var(--navy-600); margin-top: 1px; font-weight: 500; }
-
+    .rank-job { font-size: 11.5px; color: var(--navy-600); margin-top: 2px; font-weight: 500; }
+    .tie-tag { background: var(--gold-400); color: var(--navy-950); font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: var(--radius-full); flex-shrink: 0; text-transform: uppercase; letter-spacing: .4px; }
     .rank-score { text-align: right; flex-shrink: 0; }
     .rank-score-val { font-size: 20px; font-weight: 800; color: var(--navy-700); }
     .rank-score-lbl { font-size: 10.5px; color: var(--gray-400); margin-top: 2px; }
+    .action-bar { display: flex; gap: 10px; align-items: center; padding-top: 16px; border-top: 1px solid var(--gray-200); }
 
-    .tie-tag {
-      background: var(--gold-400); color: var(--navy-950);
-      font-size: 10px; font-weight: 800; padding: 3px 9px;
-      border-radius: var(--radius-full); flex-shrink: 0; text-transform: uppercase; letter-spacing: .4px;
-    }
+    .empty-state { text-align: center; padding: 48px 20px; color: var(--gray-400); }
+    .empty-state p { font-size: 13px; line-height: 1.8; margin-top: 12px; }
+    .loading-state { text-align: center; padding: 40px; color: var(--gray-400); font-size: 13px; }
 
-    /* ══ ACTIONS ══ */
-    .action-bar {
-      display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-      padding-top: 16px; border-top: 1px solid var(--gray-200);
-    }
-    .btn-save {
-      background: var(--navy-700); color: var(--white); border: none;
-      font-size: 13.5px; font-weight: 700; padding: 11px 28px;
-      border-radius: var(--radius-full); cursor: pointer; font-family: inherit;
-      transition: background .2s; display: flex; align-items: center; gap: 8px;
-    }
-    .btn-save:hover { background: var(--navy-600); }
-    .btn-save:disabled { opacity: .5; cursor: not-allowed; }
-    .btn-reset-order {
-      background: var(--white); color: var(--gray-600); border: 1px solid var(--gray-200);
-      font-size: 13px; font-weight: 600; padding: 10px 22px;
-      border-radius: var(--radius-full); cursor: pointer; font-family: inherit; transition: all .2s;
-    }
-    .btn-reset-order:hover { border-color: var(--red-600); color: var(--red-600); }
-
-    .empty-state {
-      text-align: center; padding: 60px 20px; color: var(--gray-400);
-    }
-    .empty-state svg { margin: 0 auto 14px; display: block; }
-    .empty-state p { font-size: 13px; line-height: 1.8; }
-
-    @media (max-width: 600px) {
-      .page { padding: 18px; }
-      .rank-card { padding: 12px 14px; gap: 10px; }
-      .rank-name { font-size: 13px; }
+    @media (max-width: 700px) {
+      .topbar-inner, .page { padding-left: 16px; padding-right: 16px; }
+      .upload-grid { grid-template-columns: 1fr; }
+      .admin-tabs { width: 100%; }
     }
   </style>
 </head>
@@ -237,9 +164,7 @@
 <header class="topbar">
   <div class="topbar-inner">
     <div class="logo-box">
-      <img src="img/logo-bps.png" alt="Logo BPS"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
-      <div class="logo-fallback">BPS</div>
+      <img src="img/logo-bps.png" alt="Logo BPS" onerror="this.style.display='none'"/>
     </div>
     <div class="topbar-text">
       <div class="topbar-title">Halaman Admin</div>
@@ -253,216 +178,192 @@
   </div>
 </header>
 
-<div class="page">
-
-  <!-- ══ LOGIN ══ -->
-  <div class="login-wrap" id="loginWrap">
+<!-- LOGIN -->
+<div id="loginWrap">
+  <div class="login-wrap">
     <div class="login-card">
       <div class="login-icon">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
       <h2>Masuk sebagai Admin</h2>
-      <p>Masukkan password untuk mengatur urutan peringkat pegawai yang memiliki nilai sama.</p>
+      <p>Masukkan password untuk mengakses fitur pengelolaan data pegawai.</p>
       <div class="login-error" id="loginError">Password salah. Coba lagi.</div>
       <input type="password" class="login-input" id="loginInput" placeholder="Password admin" onkeydown="if(event.key==='Enter')doLogin()"/>
-      <button class="btn-primary" onclick="doLogin()">Masuk</button>
+      <button class="btn-primary" onclick="doLogin()" style="width:100%;justify-content:center">Masuk</button>
     </div>
   </div>
+</div>
 
-  <!-- ══ ADMIN CONTENT ══ -->
-  <div class="admin-content" id="adminContent">
+<!-- ADMIN CONTENT -->
+<div class="admin-content" id="adminContent">
+  <div class="page">
 
-    <div class="intro-card">
-      <h1>Atur Peringkat Pegawai Terbaik</h1>
-      <p>
-        Jika ada <b>2 atau lebih pegawai dengan nilai akhir yang sama</b> di posisi 3 besar,
-        Anda dapat mengatur urutan tampilannya di dashboard dengan cara <b>drag &amp; drop</b> kartu di bawah.
-        Perubahan akan langsung tersinkron dan terlihat oleh semua pengguna.
-      </p>
-    </div>
-
-    <div class="period-select-wrap">
-      <label>Periode</label>
-      <select class="period-select" id="periodSelect" onchange="onPeriodChange()"></select>
-    </div>
-
-    <div id="statusBanner"></div>
-    <div class="rank-list" id="rankList"></div>
-
-    <div class="action-bar" id="actionBar" style="display:none">
-      <button class="btn-save" id="btnSave" onclick="saveOverride()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-        Simpan Urutan
+    <div class="admin-tabs">
+      <button class="atab active" onclick="switchAdminTab('upload',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Upload Data
       </button>
-      <button class="btn-reset-order" onclick="resetOrder()">Reset ke Urutan Asli</button>
+      <button class="atab" onclick="switchAdminTab('peringkat',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+        Atur Peringkat
+      </button>
     </div>
+
+    <!-- TAB: UPLOAD -->
+    <div class="atab-content active" id="atab-upload">
+
+      <!-- Upload Presensi -->
+      <div class="section-card">
+        <div class="section-head">
+          <div class="section-title">Upload Rekap Presensi</div>
+          <div class="section-sub">Upload file Excel rekap presensi bulanan. Bisa upload beberapa bulan sekaligus.</div>
+        </div>
+        <div class="section-body">
+          <div class="multi-upload-zone" id="presensiZone">
+            <div class="mu-header">
+              <div class="mu-label">
+                <div class="mu-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div>
+                  <div class="mu-title">File Presensi</div>
+                  <div class="mu-sub">Format: NIP, Nama, HK, HD, TK, Bulan — bisa multi-file</div>
+                </div>
+              </div>
+              <label class="mu-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Pilih File
+                <input type="file" accept=".xlsx,.xls" multiple onchange="handlePresensiUpload(this)"/>
+              </label>
+            </div>
+            <div class="mu-chips" id="presensiChips">
+              <span class="mu-chip mu-chip-wait">Belum ada file</span>
+            </div>
+          </div>
+
+          <!-- Upload Nilai SKP -->
+          <div class="multi-upload-zone" id="nilaiZone" style="margin-bottom:0">
+            <div class="mu-header">
+              <div class="mu-label">
+                <div class="mu-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <div>
+                  <div class="mu-title">File Nilai SKP</div>
+                  <div class="mu-sub">Format: NIP, Nama, Jabatan, Bulan, Nilai rata-rata, Predikat — bisa multi-file</div>
+                </div>
+              </div>
+              <label class="mu-btn">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Pilih File
+                <input type="file" accept=".xlsx,.xls" multiple onchange="handleNilaiUpload(this)"/>
+              </label>
+            </div>
+            <div class="mu-chips" id="nilaiChips">
+              <span class="mu-chip mu-chip-wait">Belum ada file</span>
+            </div>
+          </div>
+        </div>
+        <div class="process-bar">
+          <button class="btn-gold" id="btnProses" onclick="prosesUpload()" disabled>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 3l14 9-14 9V3z"/></svg>
+            Proses & Tampilkan di Dashboard
+          </button>
+          <button class="btn-ghost" onclick="resetUpload()">Reset</button>
+          <span id="prosesNote" style="font-size:12px;color:var(--gray-400)">Upload minimal file presensi untuk memproses.</span>
+        </div>
+        <div class="result-log" id="resultLog"></div>
+      </div>
+
+    </div><!-- /atab-upload -->
+
+    <!-- TAB: PERINGKAT -->
+    <div class="atab-content" id="atab-peringkat">
+      <div class="section-card">
+        <div class="section-head">
+          <div class="section-title">Atur Peringkat 3 Besar</div>
+          <div class="section-sub">Jika ada nilai yang sama di posisi 3 besar, drag &amp; drop untuk menentukan urutan. Perubahan langsung tersinkron ke semua pengguna.</div>
+        </div>
+        <div class="section-body">
+          <div class="period-bar">
+            <label>Periode</label>
+            <select class="period-select" id="periodSelect" onchange="onPeriodChange()"></select>
+            <button class="btn-ghost" onclick="loadPeringkatData()" style="padding:8px 16px;font-size:12px">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21.5 2v6h-6"/><path d="M2.5 22v-6h6"/><path d="M22 13a10 10 0 0 1-17.2 7"/><path d="M2 11a10 10 0 0 1 17.2-7"/></svg>
+              Muat Ulang
+            </button>
+          </div>
+          <div id="statusBanner"></div>
+          <div class="rank-list" id="rankList"><div class="loading-state">Pilih tab ini untuk memuat data...</div></div>
+          <div class="action-bar" id="actionBar" style="display:none">
+            <button class="btn-primary" id="btnSave" onclick="saveOverride()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+              Simpan Urutan
+            </button>
+            <button class="btn-ghost" onclick="resetOrder()">Reset ke Urutan Asli</button>
+          </div>
+        </div>
+      </div>
+    </div><!-- /atab-peringkat -->
 
   </div>
 </div>
 
 <script>
 /* ══════════════════════════════════════════════════════
-   AUTH SEDERHANA
+   AUTH
 ══════════════════════════════════════════════════════ */
 const ADMIN_PASSWORD = 'bps7271';
-
 function doLogin() {
-  const val = document.getElementById('loginInput').value;
-  if (val === ADMIN_PASSWORD) {
+  if (document.getElementById('loginInput').value === ADMIN_PASSWORD) {
     document.getElementById('loginWrap').style.display = 'none';
     document.getElementById('adminContent').classList.add('show');
-    sessionStorage.setItem('bps_admin_auth', '1');
-    init();
+    sessionStorage.setItem('bps_admin', '1');
   } else {
     document.getElementById('loginError').classList.add('show');
   }
 }
-
-// Auto-login jika sudah pernah login di tab ini
-if (sessionStorage.getItem('bps_admin_auth') === '1') {
+if (sessionStorage.getItem('bps_admin') === '1') {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('adminContent').classList.add('show');
 }
 
 /* ══════════════════════════════════════════════════════
-   FIREBASE REST API — tanpa SDK, tanpa eval, aman untuk CSP
+   FIREBASE REST API (tanpa SDK, tanpa eval)
 ══════════════════════════════════════════════════════ */
-const FB_DB_URL = 'https://sistem-penilaian-pegawai-default-rtdb.asia-southeast1.firebasedatabase.app';
-
+const FB_URL = 'https://sistem-penilaian-pegawai-default-rtdb.asia-southeast1.firebasedatabase.app';
 async function fbGet(path) {
-  const res = await fetch(`${FB_DB_URL}/${path}.json`);
-  return res.ok ? (await res.json() || {}) : {};
+  try { const r = await fetch(`${FB_URL}/${path}.json`); return r.ok ? (await r.json() || {}) : {}; }
+  catch { return {}; }
 }
 async function fbSet(path, data) {
-  const res = await fetch(`${FB_DB_URL}/${path}.json`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error('Gagal menyimpan ke database.');
+  const r = await fetch(`${FB_URL}/${path}.json`, { method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+  if (!r.ok) throw new Error('Gagal menyimpan ke database.');
 }
 async function fbDelete(path) {
-  await fetch(`${FB_DB_URL}/${path}.json`, { method: 'DELETE' });
+  await fetch(`${FB_URL}/${path}.json`, { method:'DELETE' });
+}
+function encodeKey(s) { return s.replace(/[.#$\[\]\/\s]/g, '_'); }
+
+/* ══════════════════════════════════════════════════════
+   TAB SWITCH
+══════════════════════════════════════════════════════ */
+let peringkatLoaded = false;
+function switchAdminTab(name, btn) {
+  document.querySelectorAll('.atab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.atab').forEach(b => b.classList.remove('active'));
+  document.getElementById('atab-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'peringkat' && !peringkatLoaded) loadPeringkatData();
 }
 
 /* ══════════════════════════════════════════════════════
-   KONFIGURASI SPREADSHEET — sama seperti index.html
+   PARSE HELPERS (SheetJS)
 ══════════════════════════════════════════════════════ */
-const SHEETS = {
-  presensi: [
-    '1xIMdL-orc7-4lXj5AYRwCe8kyvABx45Z',  // Presensi April 2026
-    '19NcIvty9HMyLuxUxxDJbZWsgS6ES5339',  // Presensi Mei 2026
-    '1tw4Vv8AMwwZnLo2iw_umEUOteuyv0HkT',  // Presensi Juni 2026
-  ],
-  nilai: [
-    '1M-X6xxYjKTIpJVGij1Dm1AYZdBbOV9gB',  // Desember 2025
-    '16k1ly7J1ShPutJZpy5In7XHfIWCLUBb_',  // November 2025
-    '12kto-rbs3BEz9--GJKFirQbzPdJaWZTz',  // Oktober 2025
-    '1OgKv2FX-dkwLTbcCsAY3c1vMsNNpvfdF',  // Nilai Triwulan 1 2026
-  ]
-};
-
-let PRESENSI = {};
-let NILAI = {};
-let OVERRIDES = {};
-let currentPeriod = '';
-let currentTop3 = [];   // urutan kerja saat ini (bisa diubah drag)
-let originalTop3 = [];  // urutan asli berdasarkan nilai
-
-/* ══════════════════════════════════════════════════════
-   FETCH & PARSE (sama seperti index.html)
-══════════════════════════════════════════════════════ */
-async function fetchCSV(sheetId) {
-  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Gagal mengakses spreadsheet (ID: ${sheetId})`);
-  return await res.text();
-}
-function parseCSVLine(line) {
-  const result = []; let cur = '', inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const c = line[i];
-    if (c === '"') { if (inQ && line[i+1] === '"') { cur += '"'; i++; } else inQ = !inQ; }
-    else if (c === ',' && !inQ) { result.push(cur.trim()); cur = ''; }
-    else cur += c;
-  }
-  result.push(cur.trim());
-  return result;
-}
-function csvToRows(text) { return text.split('\n').filter(l => l.trim()).map(parseCSVLine); }
-
-function parsePresensi(text) {
-  const rows = csvToRows(text);
-
-  // Cari nama bulan dari baris "Bulan : ..." (format baru)
-  let bulanFromMeta = '';
-  rows.forEach(r => {
-    const cell = r.map(c => c.replace(/"/g,'').trim()).join(' ');
-    const match = cell.match(/bulan\s*[:：]\s*([a-zA-Z]+)/i);
-    if (match) bulanFromMeta = normBulan(match[1].trim());
-  });
-
-  let hi = -1;
-  rows.forEach((r, i) => {
-    const f = r.map(c => c.toLowerCase().replace(/"/g,'').trim());
-    if (f.includes('nip') && f.includes('nama') && f.includes('hk') && f.includes('hd')) hi = i;
-  });
-  if (hi === -1) throw new Error('Header presensi tidak ditemukan.');
-  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
-  const iNip = h.indexOf('nip'), iNama = h.indexOf('nama'), iHK = h.indexOf('hk'), iHD = h.indexOf('hd'), iTK = h.indexOf('tk');
-  const iBulan = h.findIndex(x => x.includes('bulan') || x === 'month');
-  const result = {};
-  for (let i = hi + 1; i < rows.length; i++) {
-    const r = rows[i]; if (r.length < 3) continue;
-    const nip = (r[iNip]||'').replace(/"/g,'').trim();
-    const nama = (r[iNama]||'').replace(/"/g,'').trim();
-    if (!nip || !nama || nip.toLowerCase() === 'nip') continue;
-    const hk = parseFloat(r[iHK]) || 0;
-    const hd = parseFloat(r[iHD]) || 0;
-    const tk = iTK >= 0 ? parseFloat(r[iTK]) || 0 : 0;
-    let bulan = '';
-    if (iBulan >= 0 && r[iBulan]) bulan = normBulan((r[iBulan]||'').replace(/"/g,'').trim());
-    if (!bulan) bulan = bulanFromMeta;
-    if (!bulan || hk === 0) continue;
-    if (!result[bulan]) result[bulan] = [];
-    if (!result[bulan].find(x => x.nip === nip)) result[bulan].push({ nip, nama, hk, hd, tk });
-  }
-  return result;
-}
-
-function parseNilai(text) {
-  const rows = csvToRows(text);
-  let hi = -1;
-  rows.forEach((r, i) => {
-    const f = r.map(c => c.toLowerCase().replace(/"/g,''));
-    if ((f.some(x => x.includes('nip') || x.includes('niplama'))) && f.some(x => x.includes('nama')) && f.some(x => x.includes('rata'))) hi = i;
-  });
-  if (hi === -1) throw new Error('Header nilai SKP tidak ditemukan.');
-  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
-  const iNip = h.findIndex(x => x.includes('nip') || x.includes('niplama'));
-  const iNama = h.indexOf('nama');
-  const iJab = h.findIndex(x => x.includes('jabatan'));
-  const iBulan = h.indexOf('bulan');
-  const iRata = h.findIndex(x => x.includes('nilai rata') || x === 'nilai rata-rata');
-  const data = [];
-  for (let i = hi + 1; i < rows.length; i++) {
-    const r = rows[i]; if (r.length < 4) continue;
-    const nip = (r[iNip]||'').replace(/"/g,'').trim();
-    const nama = (r[iNama]||'').replace(/"/g,'').trim();
-    if (!nip || !nama || ['nip','niplama'].includes(nip.toLowerCase())) continue;
-    data.push({
-      nip, nama,
-      jabatan: iJab >= 0 ? (r[iJab]||'').replace(/"/g,'').trim() : '',
-      bulan: iBulan >= 0 ? normBulan((r[iBulan]||'').replace(/"/g,'').trim()) : '',
-      rataRata: iRata >= 0 ? parseFloat(r[iRata]) || 0 : 0,
-    });
-  }
-  return data;
-}
-
 const BULAN_ORDER = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 function normBulan(raw) {
-  const r = raw.toLowerCase().trim();
+  if (!raw) return '';
+  const r = String(raw).toLowerCase().trim();
   const y = r.match(/\d{4}/)?.[0] || '';
   const tag = v => y ? `${v} ${y}` : v;
   if (r.includes('jan')) return tag('Januari');
@@ -480,236 +381,413 @@ function normBulan(raw) {
   return raw.trim();
 }
 function sortBulan(a, b) {
-  const [bA,yA] = a.split(' '), [bB,yB] = b.split(' ');
+  const [bA, yA] = a.split(' '), [bB, yB] = b.split(' ');
   if (yA !== yB) return (parseInt(yA)||0) - (parseInt(yB)||0);
   return BULAN_ORDER.indexOf(bA) - BULAN_ORDER.indexOf(bB);
 }
+function readExcel(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = e => {
+      try { res(XLSX.read(new Uint8Array(e.target.result), { type:'array' })); }
+      catch(err) { rej(err); }
+    };
+    r.onerror = rej;
+    r.readAsArrayBuffer(file);
+  });
+}
+function sheetToRows(wb) {
+  const ws = wb.Sheets[wb.SheetNames[0]];
+  return XLSX.utils.sheet_to_json(ws, { header:1, defval:'' });
+}
+
+/* ── Parse Presensi ── */
+function parsePresensiRows(rows) {
+  // Cari bulan dari baris meta "Bulan : April"
+  let bulanMeta = '';
+  rows.forEach(r => {
+    const cell = r.map(c => String(c).trim()).join(' ');
+    const m = cell.match(/bulan\s*[:：]\s*([a-zA-Z]+)/i);
+    if (m) bulanMeta = normBulan(m[1]);
+  });
+  // Cari header row
+  let hi = -1;
+  rows.forEach((r, i) => {
+    const f = r.map(c => String(c).toLowerCase().trim());
+    if (f.includes('nip') && f.includes('nama') && f.includes('hk') && f.includes('hd')) hi = i;
+  });
+  if (hi === -1) throw new Error('Header presensi tidak ditemukan (butuh kolom NIP, Nama, HK, HD)');
+  const h = rows[hi].map(c => String(c).toLowerCase().trim());
+  const iNip=h.indexOf('nip'), iNama=h.indexOf('nama'), iHK=h.indexOf('hk'), iHD=h.indexOf('hd'), iTK=h.indexOf('tk');
+  const iBulan = h.findIndex(x => x.includes('bulan') || x==='month');
+  const result = {};
+  for (let i = hi+1; i < rows.length; i++) {
+    const r = rows[i];
+    const nip  = String(r[iNip]||'').trim();
+    const nama = String(r[iNama]||'').trim();
+    if (!nip || !nama || nip.toLowerCase()==='nip') continue;
+    const hk = parseFloat(r[iHK])||0;
+    const hd = parseFloat(r[iHD])||0;
+    const tk = iTK>=0 ? parseFloat(r[iTK])||0 : 0;
+    let bulan = (iBulan>=0 && r[iBulan]) ? normBulan(String(r[iBulan])) : bulanMeta;
+    if (!bulan || hk===0) continue;
+    if (!result[bulan]) result[bulan] = [];
+    if (!result[bulan].find(x=>x.nip===nip)) result[bulan].push({nip,nama,hk,hd,tk});
+  }
+  return result;
+}
+
+/* ── Parse Nilai SKP ── */
+function parseNilaiRows(rows) {
+  let hi = -1;
+  rows.forEach((r, i) => {
+    const f = r.map(c => String(c).toLowerCase());
+    if ((f.some(x=>x.includes('nip')||x.includes('niplama'))) && f.some(x=>x.includes('nama')) && f.some(x=>x.includes('rata'))) hi = i;
+  });
+  if (hi === -1) throw new Error('Header nilai SKP tidak ditemukan (butuh kolom NIP/Niplama, Nama, Nilai rata-rata)');
+  const h = rows[hi].map(c => String(c).toLowerCase().trim());
+  const iNip=h.findIndex(x=>x.includes('nip')||x.includes('niplama'));
+  const iNama=h.indexOf('nama'), iJab=h.findIndex(x=>x.includes('jabatan'));
+  const iBulan=h.indexOf('bulan');
+  const iHK=h.findIndex(x=>x.includes('hasil kerja'));
+  const iPeril=h.findIndex(x=>x.includes('perilaku'));
+  const iRata=h.findIndex(x=>x.includes('nilai rata')||x==='nilai rata-rata');
+  const iPred=h.findIndex(x=>x.includes('predikat'));
+  const data = [];
+  for (let i = hi+1; i < rows.length; i++) {
+    const r = rows[i];
+    const nip  = String(r[iNip]||'').trim();
+    const nama = String(r[iNama]||'').trim();
+    if (!nip || !nama || ['nip','niplama'].includes(nip.toLowerCase())) continue;
+    data.push({
+      nip, nama,
+      jabatan   : iJab>=0  ? String(r[iJab]||'').trim() : '',
+      bulan     : iBulan>=0 ? normBulan(String(r[iBulan]||'')) : '',
+      hasilKerja: iHK>=0   ? parseFloat(r[iHK])||0 : 0,
+      perilaku  : iPeril>=0 ? parseFloat(r[iPeril])||0 : 0,
+      rataRata  : iRata>=0  ? parseFloat(r[iRata])||0 : 0,
+      predikat  : iPred>=0  ? String(r[iPred]||'').trim() : '',
+    });
+  }
+  return data;
+}
 
 /* ══════════════════════════════════════════════════════
-   HITUNG DATA (sama seperti index.html, versi ringkas)
+   UPLOAD STATE
 ══════════════════════════════════════════════════════ */
-function avgNilaiSKP(nip) {
-  let sum = 0, cnt = 0;
-  Object.values(NILAI).forEach(arr => {
-    const row = arr.find(r => r.nip === nip);
-    if (row && row.rataRata > 0) { sum += row.rataRata; cnt++; }
-  });
-  return cnt > 0 ? sum / cnt : null;
-}
-function getJabatan(nip) {
-  for (const arr of Object.values(NILAI)) {
-    const row = arr.find(r => r.nip === nip);
-    if (row && row.jabatan) return row.jabatan;
+let uploadedPresensi = {};  // { "April 2026": [{nip,nama,hk,hd,tk}] }
+let uploadedNilai    = {};  // { "Oktober 2025": [{...}] }
+let presensiFileList = [];
+let nilaiFileList    = [];
+
+async function handlePresensiUpload(input) {
+  const files = Array.from(input.files);
+  const chipsEl = document.getElementById('presensiChips');
+  chipsEl.innerHTML = '<span class="mu-chip mu-chip-wait">⏳ Membaca...</span>';
+  for (const file of files) {
+    try {
+      const wb   = await readExcel(file);
+      const rows = sheetToRows(wb);
+      const parsed = parsePresensiRows(rows);
+      const bulanList = Object.keys(parsed);
+      if (!bulanList.length) throw new Error('Tidak ada data valid');
+      Object.entries(parsed).forEach(([b, list]) => {
+        if (!uploadedPresensi[b]) uploadedPresensi[b] = [];
+        list.forEach(p => { if (!uploadedPresensi[b].find(x=>x.nip===p.nip)) uploadedPresensi[b].push(p); });
+      });
+      presensiFileList.push({ nama: file.name, bulan: bulanList.join(', '), ok: true });
+    } catch(e) {
+      presensiFileList.push({ nama: file.name, error: e.message, ok: false });
+    }
   }
-  return '';
+  renderPresensiChips();
+  updateProsesState();
 }
-function buildData(period) {
+
+async function handleNilaiUpload(input) {
+  const files = Array.from(input.files);
+  const chipsEl = document.getElementById('nilaiChips');
+  chipsEl.innerHTML = '<span class="mu-chip mu-chip-wait">⏳ Membaca...</span>';
+  for (const file of files) {
+    try {
+      const wb   = await readExcel(file);
+      const rows = sheetToRows(wb);
+      const parsed = parseNilaiRows(rows);
+      parsed.forEach(row => {
+        if (!row.bulan) return;
+        if (!uploadedNilai[row.bulan]) uploadedNilai[row.bulan] = [];
+        if (!uploadedNilai[row.bulan].find(x=>x.nip===row.nip)) uploadedNilai[row.bulan].push(row);
+      });
+      const bulanList = [...new Set(parsed.map(r=>r.bulan).filter(Boolean))];
+      nilaiFileList.push({ nama: file.name, bulan: bulanList.join(', ') || '?', ok: true });
+    } catch(e) {
+      nilaiFileList.push({ nama: file.name, error: e.message, ok: false });
+    }
+  }
+  renderNilaiChips();
+  updateProsesState();
+}
+
+function renderPresensiChips() {
+  const el = document.getElementById('presensiChips');
+  if (!presensiFileList.length) { el.innerHTML = '<span class="mu-chip mu-chip-wait">Belum ada file</span>'; return; }
+  el.innerHTML = presensiFileList.map(f =>
+    `<span class="mu-chip ${f.ok?'mu-chip-ok':'mu-chip-err'}" title="${f.ok?f.nama:f.error}">${f.ok?'✓ '+f.bulan:'✗ '+f.nama}</span>`
+  ).join('');
+}
+function renderNilaiChips() {
+  const el = document.getElementById('nilaiChips');
+  if (!nilaiFileList.length) { el.innerHTML = '<span class="mu-chip mu-chip-wait">Belum ada file</span>'; return; }
+  el.innerHTML = nilaiFileList.map(f =>
+    `<span class="mu-chip ${f.ok?'mu-chip-ok':'mu-chip-err'}" title="${f.ok?f.nama:f.error}">${f.ok?'✓ '+f.bulan:'✗ '+f.nama}</span>`
+  ).join('');
+}
+function updateProsesState() {
+  const hasPresensi = Object.keys(uploadedPresensi).length > 0;
+  const hasNilai    = Object.keys(uploadedNilai).length > 0;
+  document.getElementById('btnProses').disabled = !hasPresensi;
+  document.getElementById('prosesNote').textContent = hasPresensi && hasNilai
+    ? `✓ Siap! ${Object.keys(uploadedPresensi).length} bulan presensi + ${Object.keys(uploadedNilai).length} bulan nilai SKP.`
+    : hasPresensi
+      ? 'Presensi siap. Nilai SKP opsional.'
+      : 'Upload minimal file presensi untuk memproses.';
+}
+function resetUpload() {
+  uploadedPresensi={}; uploadedNilai={}; presensiFileList=[]; nilaiFileList=[];
+  renderPresensiChips(); renderNilaiChips(); updateProsesState();
+  document.getElementById('resultLog').className = 'result-log';
+  document.getElementById('resultLog').innerHTML = '';
+}
+
+/* ══════════════════════════════════════════════════════
+   SIMPAN KE FIREBASE & TAMPILKAN
+══════════════════════════════════════════════════════ */
+async function prosesUpload() {
+  const btn = document.getElementById('btnProses');
+  const log = document.getElementById('resultLog');
+  btn.disabled = true;
+  log.className = 'result-log show';
+  log.innerHTML = '';
+  const addLog = (msg) => { log.innerHTML += msg + '\n'; log.scrollTop = log.scrollHeight; };
+
+  try {
+    addLog('▶ Menyimpan data presensi ke database...');
+    // Simpan presensi per bulan
+    for (const [bulan, list] of Object.entries(uploadedPresensi)) {
+      await fbSet(`presensi/${encodeKey(bulan)}`, list);
+      addLog(`  ✓ Presensi ${bulan} (${list.length} pegawai)`);
+    }
+
+    // Simpan nilai per bulan
+    if (Object.keys(uploadedNilai).length) {
+      addLog('▶ Menyimpan data nilai SKP...');
+      for (const [bulan, list] of Object.entries(uploadedNilai)) {
+        await fbSet(`nilai/${encodeKey(bulan)}`, list);
+        addLog(`  ✓ Nilai SKP ${bulan} (${list.length} pegawai)`);
+      }
+    }
+
+    addLog('\n✅ Semua data berhasil disimpan!');
+    addLog('   Dashboard akan otomatis memuat data terbaru saat direfresh.');
+
+    // Reset setelah sukses
+    setTimeout(() => resetUpload(), 3000);
+
+  } catch(e) {
+    addLog(`\n✗ Error: ${e.message}`);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   ATUR PERINGKAT — baca dari Firebase
+══════════════════════════════════════════════════════ */
+let PRESENSI_FB = {}, NILAI_FB = {}, OVERRIDES = {};
+let currentPeriod = '', currentTop3 = [], originalTop3 = [];
+
+async function loadPeringkatData() {
+  document.getElementById('rankList').innerHTML = '<div class="loading-state">⏳ Memuat data dari database...</div>';
+  document.getElementById('actionBar').style.display = 'none';
+  document.getElementById('statusBanner').innerHTML = '';
+  const sel = document.getElementById('periodSelect');
+
+  try {
+    // Baca dari Firebase
+    const [pData, nData, oData] = await Promise.all([
+      fbGet('presensi'), fbGet('nilai'), fbGet('overrides')
+    ]);
+
+    // Decode back
+    PRESENSI_FB = {};
+    Object.entries(pData||{}).forEach(([k,v]) => {
+      const bulan = k.replace(/_/g, ' ');
+      PRESENSI_FB[bulan] = v;
+    });
+
+    NILAI_FB = {};
+    Object.entries(nData||{}).forEach(([k,v]) => {
+      const bulan = k.replace(/_/g, ' ');
+      NILAI_FB[bulan] = v;
+    });
+
+    OVERRIDES = oData || {};
+
+    const bulanList = Object.keys(PRESENSI_FB).sort(sortBulan);
+    if (!bulanList.length) {
+      document.getElementById('rankList').innerHTML = `<div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <p>Belum ada data presensi di database.<br>Upload file terlebih dahulu di tab <b>Upload Data</b>.</p>
+      </div>`;
+      return;
+    }
+
+    const periods = [...bulanList];
+    if (bulanList.length > 1) periods.push('Kumulatif');
+
+    sel.innerHTML = periods.map(p => `<option value="${p}">${p}</option>`).join('');
+    currentPeriod = periods[periods.length - 1];
+    sel.value = currentPeriod;
+    peringkatLoaded = true;
+    onPeriodChange();
+
+  } catch(e) {
+    document.getElementById('rankList').innerHTML = `<div class="empty-state"><p>Gagal memuat: ${e.message}</p></div>`;
+  }
+}
+
+function buildDataFB(period) {
   let presList;
   if (period === 'Kumulatif') {
     const all = {};
-    Object.values(PRESENSI).flat().forEach(p => {
-      if (!all[p.nip]) all[p.nip] = { nip: p.nip, nama: p.nama, hk: 0, hd: 0, tk: 0 };
+    Object.values(PRESENSI_FB).flat().forEach(p => {
+      if (!all[p.nip]) all[p.nip] = { nip:p.nip, nama:p.nama, hk:0, hd:0, tk:0 };
       all[p.nip].hk += p.hk; all[p.nip].hd += p.hd; all[p.nip].tk += p.tk;
     });
     presList = Object.values(all);
   } else {
-    presList = PRESENSI[period] || [];
+    presList = PRESENSI_FB[period] || [];
   }
   return presList.map(p => {
-    const pctHadir = p.hk > 0 ? (p.hd / p.hk) * 100 : 0;
-    const skorHadir = Math.min(100, Math.max(0, pctHadir - p.tk * 2));
-    const nilaiSKP = avgNilaiSKP(p.nip);
-    const jabatan = getJabatan(p.nip);
-    const nilaiAkhir = nilaiSKP != null
-      ? Math.round((skorHadir * 0.4 + nilaiSKP * 0.6) * 100) / 100
-      : Math.round(skorHadir * 100) / 100;
-    return { nip: p.nip, nama: p.nama, jabatan, nilaiAkhir };
-  }).sort((a, b) => b.nilaiAkhir - a.nilaiAkhir);
-}
-
-/* ══════════════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════════════ */
-async function init() {
-  document.getElementById('rankList').innerHTML = `<div class="empty-state"><p>Memuat data...</p></div>`;
-  try {
-    const presensiIds = Array.isArray(SHEETS.presensi) ? SHEETS.presensi : [SHEETS.presensi];
-    const presensiResults = await Promise.allSettled(presensiIds.map(id => fetchCSV(id)));
-    presensiResults.forEach(res => {
-      if (res.status !== 'fulfilled') return;
-      const parsed = parsePresensi(res.value);
-      Object.entries(parsed).forEach(([bulan, list]) => {
-        if (!PRESENSI[bulan]) PRESENSI[bulan] = [];
-        list.forEach(p => { if (!PRESENSI[bulan].find(x => x.nip === p.nip)) PRESENSI[bulan].push(p); });
-      });
+    const pctHadir  = p.hk>0 ? (p.hd/p.hk)*100 : 0;
+    const skorHadir = Math.min(100, Math.max(0, pctHadir - p.tk*2));
+    let nilaiSKP = null, jabatan = '';
+    Object.values(NILAI_FB).forEach(arr => {
+      const row = arr.find(r => r.nip === p.nip);
+      if (row) { if (row.rataRata>0 && nilaiSKP===null) nilaiSKP=(nilaiSKP||0)+row.rataRata; if (row.jabatan) jabatan=row.jabatan; }
     });
-
-    const nilaiResults = await Promise.allSettled(SHEETS.nilai.map(id => fetchCSV(id)));
-    nilaiResults.forEach(res => {
-      if (res.status !== 'fulfilled') return;
-      parseNilai(res.value).forEach(row => {
-        if (!row.bulan) return;
-        if (!NILAI[row.bulan]) NILAI[row.bulan] = [];
-        if (!NILAI[row.bulan].find(x => x.nip === row.nip)) NILAI[row.bulan].push(row);
-      });
-    });
-
-    const snap = await fbGet('overrides');
-    OVERRIDES = snap || {};
-
-    const bulanList = Object.keys(PRESENSI).sort(sortBulan);
-    const periods = [...bulanList];
-    if (bulanList.length > 1) periods.push('Kumulatif');
-
-    const sel = document.getElementById('periodSelect');
-    sel.innerHTML = periods.map(p => `<option value="${p}">${p}</option>`).join('');
-    currentPeriod = periods[periods.length - 1];
-    sel.value = currentPeriod;
-
-    onPeriodChange();
-
-  } catch (e) {
-    document.getElementById('rankList').innerHTML = `<div class="empty-state">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--red-600)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <p>Gagal memuat data: ${e.message}</p>
-    </div>`;
-  }
+    // avg SKP across months
+    const months = Object.values(NILAI_FB);
+    let sum=0, cnt=0;
+    months.forEach(arr => { const row=arr.find(r=>r.nip===p.nip); if(row&&row.rataRata>0){sum+=row.rataRata;cnt++;} });
+    nilaiSKP = cnt>0 ? Math.round(sum/cnt*100)/100 : null;
+    const nilaiAkhir = nilaiSKP!=null
+      ? Math.round((skorHadir*0.4+nilaiSKP*0.6)*100)/100
+      : Math.round(skorHadir*100)/100;
+    return { nip:p.nip, nama:p.nama, jabatan, nilaiAkhir };
+  }).sort((a,b) => b.nilaiAkhir-a.nilaiAkhir);
 }
 
 function onPeriodChange() {
   currentPeriod = document.getElementById('periodSelect').value;
-  const data = buildData(currentPeriod);
-  originalTop3 = data.slice(0, 3);
-
-  // cek apakah ada override tersimpan untuk periode ini
-  const order = OVERRIDES[currentPeriod];
+  const data = buildDataFB(currentPeriod);
+  originalTop3 = data.slice(0,3);
+  const order = OVERRIDES[encodeKey(currentPeriod)];
   if (order && order.length) {
-    const byNip = {};
-    originalTop3.forEach(p => byNip[p.nip] = p);
+    const byNip = {}; originalTop3.forEach(p => byNip[p.nip]=p);
     const reordered = [];
-    order.forEach(nip => { if (byNip[nip]) { reordered.push(byNip[nip]); delete byNip[nip]; } });
+    order.forEach(nip => { if(byNip[nip]){reordered.push(byNip[nip]);delete byNip[nip];} });
     Object.values(byNip).forEach(p => reordered.push(p));
     currentTop3 = reordered;
   } else {
     currentTop3 = [...originalTop3];
   }
-
   renderRankList();
 }
-
-/* ══════════════════════════════════════════════════════
-   RENDER
-══════════════════════════════════════════════════════ */
-const RP_CLASS = ['rp-1', 'rp-2', 'rp-3'];
-const MEDALS = ['🥇', '🥈', '🥉'];
 
 function renderRankList() {
   const list = document.getElementById('rankList');
   const banner = document.getElementById('statusBanner');
   const actionBar = document.getElementById('actionBar');
-
   if (!currentTop3.length) {
-    list.innerHTML = `<div class="empty-state"><p>Tidak ada data pegawai untuk periode ini.</p></div>`;
-    actionBar.style.display = 'none';
-    banner.innerHTML = '';
-    return;
+    list.innerHTML = '<div class="empty-state"><p>Tidak ada data untuk periode ini.</p></div>';
+    actionBar.style.display = 'none'; banner.innerHTML = ''; return;
   }
-
-  const vals = currentTop3.map(p => p.nilaiAkhir);
+  const vals = currentTop3.map(p=>p.nilaiAkhir);
   const hasTie = new Set(vals).size < vals.length;
-
   if (hasTie) {
-    banner.innerHTML = `<div class="status-banner status-tie">
+    banner.innerHTML = `<div class="status-banner s-tie">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Ada nilai yang sama di posisi 3 besar. Geser kartu untuk mengatur urutan, lalu klik <b>Simpan Urutan</b>.
+      Ada nilai yang sama. Geser kartu untuk mengatur urutan, lalu klik <b>Simpan Urutan</b>.
     </div>`;
   } else {
-    banner.innerHTML = `<div class="status-banner status-notie">
+    banner.innerHTML = `<div class="status-banner s-notie">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-      Tidak ada nilai yang sama di posisi 3 besar — urutan ditentukan otomatis oleh nilai.
+      Tidak ada nilai sama — urutan ditentukan otomatis.
     </div>`;
   }
-
   list.innerHTML = '';
-  currentTop3.forEach((p, i) => {
-    const tied = vals.filter(v => v === p.nilaiAkhir).length > 1;
+  const MEDALS = ['🥇','🥈','🥉'];
+  const RP = ['rp-1','rp-2','rp-3'];
+  currentTop3.forEach((p,i) => {
+    const tied = vals.filter(v=>v===p.nilaiAkhir).length>1;
     const card = document.createElement('div');
-    card.className = 'rank-card' + (tied ? ' tied' : '');
+    card.className = 'rank-card'+(tied?' tied':'');
     card.draggable = hasTie;
     card.dataset.idx = i;
     card.innerHTML = `
       <div class="drag-handle">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="18" r="1"/></svg>
       </div>
-      <div class="rank-pos ${RP_CLASS[i]}">${MEDALS[i]}</div>
+      <div class="rank-pos ${RP[i]}">${MEDALS[i]}</div>
       <div class="rank-info">
         <div class="rank-name">${p.nama}</div>
         <div class="rank-detail">NIP ${p.nip}</div>
-        <div class="rank-job">${p.jabatan || '—'}</div>
+        <div class="rank-job">${p.jabatan||'—'}</div>
       </div>
-      ${tied ? '<span class="tie-tag">Seri</span>' : ''}
+      ${tied?'<span class="tie-tag">Seri</span>':''}
       <div class="rank-score">
         <div class="rank-score-val">${p.nilaiAkhir.toFixed(2)}</div>
         <div class="rank-score-lbl">Nilai Akhir</div>
       </div>`;
-
     if (hasTie) {
-      card.addEventListener('dragstart', e => {
-        card.classList.add('dragging');
-        e.dataTransfer.setData('text/plain', i);
-      });
+      card.addEventListener('dragstart', e => { card.classList.add('dragging'); e.dataTransfer.setData('text/plain', i); });
       card.addEventListener('dragend', () => card.classList.remove('dragging'));
       card.addEventListener('dragover', e => e.preventDefault());
       card.addEventListener('drop', e => {
         e.preventDefault();
         const from = parseInt(e.dataTransfer.getData('text/plain'));
-        const to = parseInt(card.dataset.idx);
-        if (from === to) return;
-        const moved = currentTop3.splice(from, 1)[0];
-        currentTop3.splice(to, 0, moved);
+        const to   = parseInt(card.dataset.idx);
+        if (from===to) return;
+        const moved = currentTop3.splice(from,1)[0];
+        currentTop3.splice(to,0,moved);
         renderRankList();
       });
     }
-
     list.appendChild(card);
   });
-
   actionBar.style.display = hasTie ? 'flex' : 'none';
 }
 
-/* ══════════════════════════════════════════════════════
-   SAVE / RESET
-══════════════════════════════════════════════════════ */
 async function saveOverride() {
   const btn = document.getElementById('btnSave');
   btn.disabled = true;
-  const order = currentTop3.map(p => p.nip);
   try {
-    await fbSet('overrides/' + encodeKey(currentPeriod), order);
-    OVERRIDES[currentPeriod] = order;
-    document.getElementById('statusBanner').innerHTML = `<div class="status-banner status-saved">
+    const order = currentTop3.map(p=>p.nip);
+    await fbSet('overrides/'+encodeKey(currentPeriod), order);
+    OVERRIDES[encodeKey(currentPeriod)] = order;
+    document.getElementById('statusBanner').innerHTML = `<div class="status-banner s-saved">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
       Urutan berhasil disimpan dan langsung tampil untuk semua pengguna.
     </div>`;
-  } catch(e) {
-    alert('Gagal menyimpan: ' + e.message);
-  } finally {
-    btn.disabled = false;
-  }
+  } catch(e) { alert('Gagal menyimpan: '+e.message); }
+  finally { btn.disabled = false; }
 }
 
 async function resetOrder() {
   currentTop3 = [...originalTop3];
-  try {
-    await fbDelete('overrides/' + encodeKey(currentPeriod));
-    delete OVERRIDES[currentPeriod];
-  } catch {}
+  try { await fbDelete('overrides/'+encodeKey(currentPeriod)); delete OVERRIDES[encodeKey(currentPeriod)]; } catch {}
   renderRankList();
-}
-
-// Firebase key tidak boleh mengandung '.', '#', '$', '[', ']', '/'
-function encodeKey(period) {
-  return period.replace(/[.#$\[\]\/]/g, '_');
 }
 </script>
 </body>
