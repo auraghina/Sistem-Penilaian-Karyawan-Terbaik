@@ -936,17 +936,29 @@
 ══════════════════════════════════════════════════════ */
 /* ══════════════════════════════════════════════════════
    FIREBASE REST API — tanpa SDK, tanpa eval, aman untuk CSP
-   Baca override peringkat 3 besar dari Realtime Database
+   Baca override peringkat & data dari Firebase (diupload via admin.html)
+   Fallback ke Google Sheets jika Firebase kosong
 ══════════════════════════════════════════════════════ */
 const FB_DB_URL = 'https://sistem-penilaian-pegawai-default-rtdb.asia-southeast1.firebasedatabase.app';
 
 let OVERRIDES = {};
 
+async function fbFetch(path) {
+  try { const r = await fetch(`${FB_DB_URL}/${path}.json`); return r.ok ? (await r.json() || null) : null; }
+  catch { return null; }
+}
+
 async function loadOverrides() {
-  try {
-    const res = await fetch(`${FB_DB_URL}/overrides.json`);
-    OVERRIDES = res.ok ? (await res.json() || {}) : {};
-  } catch { OVERRIDES = {}; }
+  const data = await fbFetch('overrides');
+  OVERRIDES = data || {};
+}
+
+async function loadFromFirebase() {
+  const [pData, nData] = await Promise.all([fbFetch('presensi'), fbFetch('nilai')]);
+  const presensi = {}, nilai = {};
+  if (pData) Object.entries(pData).forEach(([k,v]) => { presensi[k.replace(/_/g,' ')] = v; });
+  if (nData) Object.entries(nData).forEach(([k,v]) => { nilai[k.replace(/_/g,' ')] = v; });
+  return { presensi, nilai };
 }
 
 /* ══════════════════════════════════════════════════════
@@ -1107,42 +1119,48 @@ function parseNilai(text) {
 
 /* ══════════════════════════════════════════════════════
    LOAD SEMUA DATA
+   Prioritas: Firebase (dari upload admin) → Google Sheets (hardcoded)
 ══════════════════════════════════════════════════════ */
 async function loadAllData() {
-  // Reset state
   PRESENSI = {}; NILAI = {};
   showLoading(true);
   setBtnLoading(true);
 
   try {
-    // Presensi — sekarang bisa banyak file (per bulan)
-    const presensiIds = Array.isArray(SHEETS.presensi) ? SHEETS.presensi : [SHEETS.presensi];
-    const presensiResults = await Promise.allSettled(presensiIds.map(id => fetchCSV(id)));
-    presensiResults.forEach(res => {
-      if (res.status !== 'fulfilled') return;
-      const parsed = parsePresensi(res.value);
-      Object.entries(parsed).forEach(([bulan, pegawaiList]) => {
-        if (!PRESENSI[bulan]) PRESENSI[bulan] = [];
-        pegawaiList.forEach(p => {
-          if (!PRESENSI[bulan].find(x => x.nip === p.nip)) PRESENSI[bulan].push(p);
+    // 1. Coba baca dari Firebase dulu (data dari upload admin)
+    const fbData = await loadFromFirebase();
+    const hasFBPresensi = Object.keys(fbData.presensi).length > 0;
+    const hasFBNilai    = Object.keys(fbData.nilai).length > 0;
+
+    if (hasFBPresensi) {
+      // Pakai data Firebase
+      PRESENSI = fbData.presensi;
+      if (hasFBNilai) NILAI = fbData.nilai;
+    } else {
+      // Fallback: baca dari Google Sheets hardcoded
+      const presensiIds = Array.isArray(SHEETS.presensi) ? SHEETS.presensi : [SHEETS.presensi];
+      const presensiResults = await Promise.allSettled(presensiIds.map(id => fetchCSV(id)));
+      presensiResults.forEach(res => {
+        if (res.status !== 'fulfilled') return;
+        const parsed = parsePresensi(res.value);
+        Object.entries(parsed).forEach(([bulan, list]) => {
+          if (!PRESENSI[bulan]) PRESENSI[bulan] = [];
+          list.forEach(p => { if (!PRESENSI[bulan].find(x=>x.nip===p.nip)) PRESENSI[bulan].push(p); });
         });
       });
-    });
 
-    // Nilai SKP (parallel)
-    const nilaiResults = await Promise.allSettled(SHEETS.nilai.map(id => fetchCSV(id)));
-    nilaiResults.forEach(res => {
-      if (res.status === 'fulfilled') {
-        const rows = parseNilai(res.value);
-        rows.forEach(row => {
+      const nilaiResults = await Promise.allSettled(SHEETS.nilai.map(id => fetchCSV(id)));
+      nilaiResults.forEach(res => {
+        if (res.status !== 'fulfilled') return;
+        parseNilai(res.value).forEach(row => {
           if (!row.bulan) return;
           if (!NILAI[row.bulan]) NILAI[row.bulan] = [];
-          if (!NILAI[row.bulan].find(x => x.nip === row.nip)) NILAI[row.bulan].push(row);
+          if (!NILAI[row.bulan].find(x=>x.nip===row.nip)) NILAI[row.bulan].push(row);
         });
-      }
-    });
+      });
+    }
 
-    // Override peringkat 3 besar dari admin
+    // 2. Baca override peringkat
     await loadOverrides();
 
     showLoading(false);
