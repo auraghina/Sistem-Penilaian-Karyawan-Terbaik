@@ -962,14 +962,16 @@ function loadOverrides() {
    Ganti Sheet ID di sini jika ada perubahan file
 ══════════════════════════════════════════════════════ */
 const SHEETS = {
-  presensi: '1OgKv2FX-dkwLTbcCsAY3c1vMsNNpvfdF',
+  presensi: [
+    '1xIMdL-orc7-4lXj5AYRwCe8kyvABx45Z',  // Presensi April 2026
+    '19NcIvty9HMyLuxUxxDJbZWsgS6ES5339',  // Presensi Mei 2026
+    '1tw4Vv8AMwwZnLo2iw_umEUOteuyv0HkT',  // Presensi Juni 2026
+  ],
   nilai: [
     '1M-X6xxYjKTIpJVGij1Dm1AYZdBbOV9gB',  // Desember 2025
     '16k1ly7J1ShPutJZpy5In7XHfIWCLUBb_',  // November 2025
     '12kto-rbs3BEz9--GJKFirQbzPdJaWZTz',  // Oktober 2025
-    '1xIMdL-orc7-4lXj5AYRwCe8kyvABx45Z',  // April 2026
-    '19NcIvty9HMyLuxUxxDJbZWsgS6ES5339',  // Mei 2026
-    '1tw4Vv8AMwwZnLo2iw_umEUOteuyv0HkT',  // Juni 2026
+    '1OgKv2FX-dkwLTbcCsAY3c1vMsNNpvfdF',  // Nilai Triwulan 1 2026
   ]
 };
 
@@ -1015,27 +1017,37 @@ function csvToRows(text) {
 /* ══════════════════════════════════════════════════════
    PARSE PRESENSI
 ══════════════════════════════════════════════════════ */
-function parsePresensi(text) {
+function parsePresensi(text, fallbackBulan) {
   const rows = csvToRows(text);
+
+  // Cari nama bulan dari baris "Bulan : ..." (format baru tanpa kolom bulan)
+  let bulanFromMeta = '';
+  rows.forEach(r => {
+    const cell = r.map(c => c.replace(/"/g,'').trim()).join(' ');
+    const match = cell.match(/bulan\s*[:：]\s*([a-zA-Z]+)/i);
+    if (match) bulanFromMeta = normBulan(match[1].trim());
+  });
+
+  // Cari baris header (ada kolom NIP, Nama, HK, HD)
   let hi = -1;
   rows.forEach((r, i) => {
-    const f = r.map(c => c.toLowerCase());
+    const f = r.map(c => c.toLowerCase().replace(/"/g,'').trim());
     if (f.includes('nip') && f.includes('nama') && f.includes('hk') && f.includes('hd')) hi = i;
   });
-  if (hi === -1) throw new Error('Header presensi tidak ditemukan.');
+  if (hi === -1) throw new Error('Header presensi tidak ditemukan. Pastikan ada kolom NIP, Nama, HK, HD.');
 
-  const h = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
-  const iNip  = h.indexOf('nip');
-  const iNama = h.indexOf('nama');
-  const iHK   = h.indexOf('hk');
-  const iHD   = h.indexOf('hd');
-  const iTK   = h.indexOf('tk');
+  const h      = rows[hi].map(c => c.toLowerCase().replace(/"/g,'').trim());
+  const iNip   = h.indexOf('nip');
+  const iNama  = h.indexOf('nama');
+  const iHK    = h.indexOf('hk');
+  const iHD    = h.indexOf('hd');
+  const iTK    = h.indexOf('tk');
   const iBulan = h.findIndex(x => x.includes('bulan') || x === 'month');
 
   const result = {};
   for (let i = hi + 1; i < rows.length; i++) {
     const r = rows[i];
-    if (r.length < 4) continue;
+    if (r.length < 3) continue;
     const nip  = (r[iNip]  || '').replace(/"/g,'').trim();
     const nama = (r[iNama] || '').replace(/"/g,'').trim();
     if (!nip || !nama || nip.toLowerCase() === 'nip') continue;
@@ -1043,12 +1055,16 @@ function parsePresensi(text) {
     const hk = parseFloat(r[iHK]) || 0;
     const hd = parseFloat(r[iHD]) || 0;
     const tk = iTK >= 0 ? parseFloat(r[iTK]) || 0 : 0;
-    let bulan = iBulan >= 0 ? (r[iBulan] || '').replace(/"/g,'').trim() : (r[0] || '').replace(/"/g,'').trim();
+
+    // Prioritas bulan: kolom bulan → baris meta "Bulan : xxx" → fallback
+    let bulan = '';
+    if (iBulan >= 0 && r[iBulan]) bulan = normBulan((r[iBulan]||'').replace(/"/g,'').trim());
+    if (!bulan) bulan = bulanFromMeta;
+    if (!bulan) bulan = fallbackBulan || '';
 
     if (!bulan || hk === 0) continue;
-    const key = normBulan(bulan);
-    if (!result[key]) result[key] = [];
-    if (!result[key].find(x => x.nip === nip)) result[key].push({ nip, nama, hk, hd, tk });
+    if (!result[bulan]) result[bulan] = [];
+    if (!result[bulan].find(x => x.nip === nip)) result[bulan].push({ nip, nama, hk, hd, tk });
   }
   return result;
 }
@@ -1107,9 +1123,19 @@ async function loadAllData() {
   setBtnLoading(true);
 
   try {
-    // Presensi
-    const csvPresensi = await fetchCSV(SHEETS.presensi);
-    PRESENSI = parsePresensi(csvPresensi);
+    // Presensi — sekarang bisa banyak file (per bulan)
+    const presensiIds = Array.isArray(SHEETS.presensi) ? SHEETS.presensi : [SHEETS.presensi];
+    const presensiResults = await Promise.allSettled(presensiIds.map(id => fetchCSV(id)));
+    presensiResults.forEach(res => {
+      if (res.status !== 'fulfilled') return;
+      const parsed = parsePresensi(res.value);
+      Object.entries(parsed).forEach(([bulan, pegawaiList]) => {
+        if (!PRESENSI[bulan]) PRESENSI[bulan] = [];
+        pegawaiList.forEach(p => {
+          if (!PRESENSI[bulan].find(x => x.nip === p.nip)) PRESENSI[bulan].push(p);
+        });
+      });
+    });
 
     // Nilai SKP (parallel)
     const nilaiResults = await Promise.allSettled(SHEETS.nilai.map(id => fetchCSV(id)));
