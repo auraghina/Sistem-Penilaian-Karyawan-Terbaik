@@ -8,8 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -936,25 +934,19 @@
 /* ══════════════════════════════════════════════════════
    FIREBASE CONFIG (untuk override peringkat 3 besar oleh admin)
 ══════════════════════════════════════════════════════ */
-const firebaseConfig = {
-  apiKey: "AIzaSyA3Mz21v-ag7rL0dnBZEqvXC71PPoPPSNo",
-  authDomain: "sistem-penilaian-pegawai.firebaseapp.com",
-  databaseURL: "https://sistem-penilaian-pegawai-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "sistem-penilaian-pegawai",
-  storageBucket: "sistem-penilaian-pegawai.firebasestorage.app",
-  messagingSenderId: "914274054765",
-  appId: "1:914274054765:web:b38baf00bce1275bec0564"
-};
-firebase.initializeApp(firebaseConfig);
-const fbDB = firebase.database();
+/* ══════════════════════════════════════════════════════
+   FIREBASE REST API — tanpa SDK, tanpa eval, aman untuk CSP
+   Baca override peringkat 3 besar dari Realtime Database
+══════════════════════════════════════════════════════ */
+const FB_DB_URL = 'https://sistem-penilaian-pegawai-default-rtdb.asia-southeast1.firebasedatabase.app';
 
-// Override peringkat 3 besar: { period: { nipOrder: ['nip1','nip2','nip3'] } }
 let OVERRIDES = {};
 
-function loadOverrides() {
-  return fbDB.ref('overrides').once('value').then(snap => {
-    OVERRIDES = snap.val() || {};
-  }).catch(() => { OVERRIDES = {}; });
+async function loadOverrides() {
+  try {
+    const res = await fetch(`${FB_DB_URL}/overrides.json`);
+    OVERRIDES = res.ok ? (await res.json() || {}) : {};
+  } catch { OVERRIDES = {}; }
 }
 
 /* ══════════════════════════════════════════════════════
