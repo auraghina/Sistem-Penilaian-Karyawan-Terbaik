@@ -1164,6 +1164,7 @@ async function loadAllData() {
     await loadOverrides();
 
     showLoading(false);
+    initDashboard();
     updateFooterTime();
 
   } catch (e) {
